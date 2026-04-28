@@ -152,7 +152,7 @@
   }
 
   /* ── CHART ────────────────────────────────────────── */
-  .chart-wrap { position: relative; height: 280px; }
+  .chart-wrap { position: relative; height: 420px; }
 
   /* ── FORECAST TABLE ───────────────────────────────── */
   .forecast-rows { display: flex; flex-direction: column; gap: .6rem; }
@@ -259,22 +259,22 @@
     </div>
   </div>
 
-  <!-- CHART + FORECAST -->
-  <div class="columns">
-    <div class="panel">
-      <h3>📈 Trend ARI – historická data + forecast</h3>
-      <div class="chart-wrap">
-        <canvas id="ari-chart"></canvas>
-      </div>
+  <!-- CHART – full width -->
+  <div class="panel" style="margin-bottom:1.5rem">
+    <h3>📈 Trend ARI – posledních ~104 týdnů + forecast &nbsp;<span style="font-size:.7rem;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">Šedá oblast = stejné období loni pro srovnání</span></h3>
+    <div class="chart-wrap">
+      <canvas id="ari-chart"></canvas>
     </div>
-    <div class="panel">
-      <h3>🔭 Forecast – příštích 4 týdnů</h3>
-      <div class="forecast-rows" id="forecast-rows">
-        <div class="skeleton" style="height:60px"></div>
-        <div class="skeleton" style="height:60px"></div>
-        <div class="skeleton" style="height:60px"></div>
-        <div class="skeleton" style="height:60px"></div>
-      </div>
+  </div>
+
+  <!-- FORECAST – horizontal row -->
+  <div class="panel" style="margin-bottom:1.5rem">
+    <h3>🔭 Forecast – příštích 4 týdnů</h3>
+    <div id="forecast-rows" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
+      <div class="skeleton" style="height:60px"></div>
+      <div class="skeleton" style="height:60px"></div>
+      <div class="skeleton" style="height:60px"></div>
+      <div class="skeleton" style="height:60px"></div>
     </div>
   </div>
 
@@ -313,7 +313,7 @@
 const BASELINE = 2053;
 
 // Inline data – vždy funguje i bez serveru
-window.__INLINE_DATA__ = {"meta":{"last_updated":"2026-04-28","source":"Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/","baseline_label":"únor 2025","baseline_ari_per_100k":2053,"note":"100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)"},"current":{"week":"2026-W16","ari_per_100k":33,"ili_per_100k":65,"load_pct":0.016,"trend":"spíš nižší"},"forecast":[{"week":"2026-W17","date":"2026-04-19","ari_forecast":24.5,"direction":"spíš nižší"},{"week":"2026-W18","date":"2026-04-26","ari_forecast":23.5,"direction":"spíš nižší"},{"week":"2026-W19","date":"2026-05-03","ari_forecast":20.2,"direction":"spíš nižší"},{"week":"2026-W20","date":"2026-05-10","ari_forecast":19.9,"direction":"spíš nižší"}],"history":[{"week":"2025-W01","year":2025,"iso_week":1,"ari_per_100k":834,"ili_per_100k":20},{"week":"2025-W02","year":2025,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":40},{"week":"2025-W03","year":2025,"iso_week":3,"ari_per_100k":1499,"ili_per_100k":77},{"week":"2025-W04","year":2025,"iso_week":4,"ari_per_100k":1940,"ili_per_100k":138},{"week":"2025-W05","year":2025,"iso_week":5,"ari_per_100k":2251,"ili_per_100k":257},{"week":"2025-W06","year":2025,"iso_week":6,"ari_per_100k":2219,"ili_per_100k":251},{"week":"2025-W07","year":2025,"iso_week":7,"ari_per_100k":2138,"ili_per_100k":240},{"week":"2025-W08","year":2025,"iso_week":8,"ari_per_100k":1988,"ili_per_100k":196},{"week":"2025-W09","year":2025,"iso_week":9,"ari_per_100k":1867,"ili_per_100k":159},{"week":"2025-W10","year":2025,"iso_week":10,"ari_per_100k":1536,"ili_per_100k":113},{"week":"2025-W11","year":2025,"iso_week":11,"ari_per_100k":1584,"ili_per_100k":88},{"week":"2025-W12","year":2025,"iso_week":12,"ari_per_100k":1501,"ili_per_100k":null},{"week":"2025-W13","year":2025,"iso_week":13,"ari_per_100k":1431,"ili_per_100k":44},{"week":"2025-W14","year":2025,"iso_week":14,"ari_per_100k":1381,"ili_per_100k":39},{"week":"2025-W15","year":2025,"iso_week":15,"ari_per_100k":1295,"ili_per_100k":25},{"week":"2025-W16","year":2025,"iso_week":16,"ari_per_100k":998,"ili_per_100k":15},{"week":"2025-W17","year":2025,"iso_week":17,"ari_per_100k":685,"ili_per_100k":9},{"week":"2025-W18","year":2025,"iso_week":18,"ari_per_100k":783,"ili_per_100k":7},{"week":"2025-W19","year":2025,"iso_week":19,"ari_per_100k":711,"ili_per_100k":7},{"week":"2025-W20","year":2025,"iso_week":20,"ari_per_100k":797,"ili_per_100k":9},{"week":"2025-W21","year":2025,"iso_week":21,"ari_per_100k":783,"ili_per_100k":10},{"week":"2025-W22","year":2025,"iso_week":22,"ari_per_100k":795,"ili_per_100k":9},{"week":"2025-W23","year":2025,"iso_week":23,"ari_per_100k":775,"ili_per_100k":9},{"week":"2025-W24","year":2025,"iso_week":24,"ari_per_100k":738,"ili_per_100k":null},{"week":"2025-W25","year":2025,"iso_week":25,"ari_per_100k":732,"ili_per_100k":7},{"week":"2025-W26","year":2025,"iso_week":26,"ari_per_100k":655,"ili_per_100k":6},{"week":"2025-W27","year":2025,"iso_week":27,"ari_per_100k":449,"ili_per_100k":5},{"week":"2025-W28","year":2025,"iso_week":28,"ari_per_100k":514,"ili_per_100k":5},{"week":"2025-W29","year":2025,"iso_week":29,"ari_per_100k":448,"ili_per_100k":3},{"week":"2025-W30","year":2025,"iso_week":30,"ari_per_100k":515,"ili_per_100k":4},{"week":"2025-W31","year":2025,"iso_week":31,"ari_per_100k":394,"ili_per_100k":4},{"week":"2025-W32","year":2025,"iso_week":32,"ari_per_100k":430,"ili_per_100k":5},{"week":"2025-W33","year":2025,"iso_week":33,"ari_per_100k":444,"ili_per_100k":4},{"week":"2025-W34","year":2025,"iso_week":34,"ari_per_100k":528,"ili_per_100k":5},{"week":"2025-W35","year":2025,"iso_week":35,"ari_per_100k":558,"ili_per_100k":5},{"week":"2025-W36","year":2025,"iso_week":36,"ari_per_100k":643,"ili_per_100k":6},{"week":"2025-W37","year":2025,"iso_week":37,"ari_per_100k":811,"ili_per_100k":8},{"week":"2025-W38","year":2025,"iso_week":38,"ari_per_100k":890,"ili_per_100k":11},{"week":"2025-W39","year":2025,"iso_week":39,"ari_per_100k":934,"ili_per_100k":12},{"week":"2025-W40","year":2025,"iso_week":40,"ari_per_100k":1002,"ili_per_100k":13},{"week":"2025-W41","year":2025,"iso_week":41,"ari_per_100k":1083,"ili_per_100k":15},{"week":"2025-W42","year":2025,"iso_week":42,"ari_per_100k":1062,"ili_per_100k":15},{"week":"2025-W43","year":2025,"iso_week":43,"ari_per_100k":1069,"ili_per_100k":16},{"week":"2025-W44","year":2025,"iso_week":44,"ari_per_100k":762,"ili_per_100k":11},{"week":"2025-W45","year":2025,"iso_week":45,"ari_per_100k":932,"ili_per_100k":14},{"week":"2025-W46","year":2025,"iso_week":46,"ari_per_100k":939,"ili_per_100k":13},{"week":"2025-W47","year":2025,"iso_week":47,"ari_per_100k":862,"ili_per_100k":12},{"week":"2025-W48","year":2025,"iso_week":48,"ari_per_100k":1078,"ili_per_100k":18},{"week":"2025-W49","year":2025,"iso_week":49,"ari_per_100k":1242,"ili_per_100k":33},{"week":"2025-W50","year":2025,"iso_week":50,"ari_per_100k":1486,"ili_per_100k":null},{"week":"2025-W51","year":2025,"iso_week":51,"ari_per_100k":1580,"ili_per_100k":null},{"week":"2026-W01","year":2026,"iso_week":1,"ari_per_100k":939,"ili_per_100k":43},{"week":"2026-W02","year":2026,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":null},{"week":"2026-W03","year":2026,"iso_week":3,"ari_per_100k":1281,"ili_per_100k":69},{"week":"2026-W04","year":2026,"iso_week":4,"ari_per_100k":1456,"ili_per_100k":80},{"week":"2026-W05","year":2026,"iso_week":5,"ari_per_100k":1497,"ili_per_100k":73},{"week":"2026-W06","year":2026,"iso_week":6,"ari_per_100k":1534,"ili_per_100k":68},{"week":"2026-W07","year":2026,"iso_week":7,"ari_per_100k":1497,"ili_per_100k":null},{"week":"2026-W08","year":2026,"iso_week":8,"ari_per_100k":1423,"ili_per_100k":null},{"week":"2026-W09","year":2026,"iso_week":9,"ari_per_100k":1364,"ili_per_100k":null},{"week":"2026-W10","year":2026,"iso_week":10,"ari_per_100k":1326,"ili_per_100k":27},{"week":"2026-W11","year":2026,"iso_week":11,"ari_per_100k":1276,"ili_per_100k":21},{"week":"2026-W12","year":2026,"iso_week":12,"ari_per_100k":1255,"ili_per_100k":17},{"week":"2026-W13","year":2026,"iso_week":13,"ari_per_100k":1,"ili_per_100k":65},{"week":"2026-W14","year":2026,"iso_week":14,"ari_per_100k":-7,"ili_per_100k":65},{"week":"2026-W15","year":2026,"iso_week":15,"ari_per_100k":-33,"ili_per_100k":65},{"week":"2026-W16","year":2026,"iso_week":16,"ari_per_100k":33,"ili_per_100k":65}]};
+window.__INLINE_DATA__ = {"meta":{"last_updated":"2026-04-28","source":"Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/","baseline_label":"únor 2025","baseline_ari_per_100k":2053,"note":"100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)","note_w13plus":"Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."},"current":{"week":"2026-W12","ari_per_100k":1255,"ili_per_100k":17,"load_pct":0.6113,"trend":"klesající","note":"Poslední ověřená hodnota ze SZÚ – W13+ data zatím nedostupná (velikonoční vliv)"},"forecast":[],"history":[{"week":"2025-W01","year":2025,"iso_week":1,"ari_per_100k":834,"ili_per_100k":20},{"week":"2025-W02","year":2025,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":40},{"week":"2025-W03","year":2025,"iso_week":3,"ari_per_100k":1499,"ili_per_100k":77},{"week":"2025-W04","year":2025,"iso_week":4,"ari_per_100k":1940,"ili_per_100k":138},{"week":"2025-W05","year":2025,"iso_week":5,"ari_per_100k":2251,"ili_per_100k":257},{"week":"2025-W06","year":2025,"iso_week":6,"ari_per_100k":2219,"ili_per_100k":251},{"week":"2025-W07","year":2025,"iso_week":7,"ari_per_100k":2138,"ili_per_100k":240},{"week":"2025-W08","year":2025,"iso_week":8,"ari_per_100k":1988,"ili_per_100k":196},{"week":"2025-W09","year":2025,"iso_week":9,"ari_per_100k":1867,"ili_per_100k":159},{"week":"2025-W10","year":2025,"iso_week":10,"ari_per_100k":1536,"ili_per_100k":113},{"week":"2025-W11","year":2025,"iso_week":11,"ari_per_100k":1584,"ili_per_100k":88},{"week":"2025-W12","year":2025,"iso_week":12,"ari_per_100k":1501,"ili_per_100k":null},{"week":"2025-W13","year":2025,"iso_week":13,"ari_per_100k":1431,"ili_per_100k":44},{"week":"2025-W14","year":2025,"iso_week":14,"ari_per_100k":1381,"ili_per_100k":39},{"week":"2025-W15","year":2025,"iso_week":15,"ari_per_100k":1295,"ili_per_100k":25},{"week":"2025-W16","year":2025,"iso_week":16,"ari_per_100k":998,"ili_per_100k":15},{"week":"2025-W17","year":2025,"iso_week":17,"ari_per_100k":685,"ili_per_100k":9},{"week":"2025-W18","year":2025,"iso_week":18,"ari_per_100k":783,"ili_per_100k":7},{"week":"2025-W19","year":2025,"iso_week":19,"ari_per_100k":711,"ili_per_100k":7},{"week":"2025-W20","year":2025,"iso_week":20,"ari_per_100k":797,"ili_per_100k":9},{"week":"2025-W21","year":2025,"iso_week":21,"ari_per_100k":783,"ili_per_100k":10},{"week":"2025-W22","year":2025,"iso_week":22,"ari_per_100k":795,"ili_per_100k":9},{"week":"2025-W23","year":2025,"iso_week":23,"ari_per_100k":775,"ili_per_100k":9},{"week":"2025-W24","year":2025,"iso_week":24,"ari_per_100k":738,"ili_per_100k":null},{"week":"2025-W25","year":2025,"iso_week":25,"ari_per_100k":732,"ili_per_100k":7},{"week":"2025-W26","year":2025,"iso_week":26,"ari_per_100k":655,"ili_per_100k":6},{"week":"2025-W27","year":2025,"iso_week":27,"ari_per_100k":449,"ili_per_100k":5},{"week":"2025-W28","year":2025,"iso_week":28,"ari_per_100k":514,"ili_per_100k":5},{"week":"2025-W29","year":2025,"iso_week":29,"ari_per_100k":448,"ili_per_100k":3},{"week":"2025-W30","year":2025,"iso_week":30,"ari_per_100k":515,"ili_per_100k":4},{"week":"2025-W31","year":2025,"iso_week":31,"ari_per_100k":394,"ili_per_100k":4},{"week":"2025-W32","year":2025,"iso_week":32,"ari_per_100k":430,"ili_per_100k":5},{"week":"2025-W33","year":2025,"iso_week":33,"ari_per_100k":444,"ili_per_100k":4},{"week":"2025-W34","year":2025,"iso_week":34,"ari_per_100k":528,"ili_per_100k":5},{"week":"2025-W35","year":2025,"iso_week":35,"ari_per_100k":558,"ili_per_100k":5},{"week":"2025-W36","year":2025,"iso_week":36,"ari_per_100k":643,"ili_per_100k":6},{"week":"2025-W37","year":2025,"iso_week":37,"ari_per_100k":811,"ili_per_100k":8},{"week":"2025-W38","year":2025,"iso_week":38,"ari_per_100k":890,"ili_per_100k":11},{"week":"2025-W39","year":2025,"iso_week":39,"ari_per_100k":934,"ili_per_100k":12},{"week":"2025-W40","year":2025,"iso_week":40,"ari_per_100k":1002,"ili_per_100k":13},{"week":"2025-W41","year":2025,"iso_week":41,"ari_per_100k":1083,"ili_per_100k":15},{"week":"2025-W42","year":2025,"iso_week":42,"ari_per_100k":1062,"ili_per_100k":15},{"week":"2025-W43","year":2025,"iso_week":43,"ari_per_100k":1069,"ili_per_100k":16},{"week":"2025-W44","year":2025,"iso_week":44,"ari_per_100k":762,"ili_per_100k":11},{"week":"2025-W45","year":2025,"iso_week":45,"ari_per_100k":932,"ili_per_100k":14},{"week":"2025-W46","year":2025,"iso_week":46,"ari_per_100k":939,"ili_per_100k":13},{"week":"2025-W47","year":2025,"iso_week":47,"ari_per_100k":862,"ili_per_100k":12},{"week":"2025-W48","year":2025,"iso_week":48,"ari_per_100k":1078,"ili_per_100k":18},{"week":"2025-W49","year":2025,"iso_week":49,"ari_per_100k":1242,"ili_per_100k":33},{"week":"2025-W50","year":2025,"iso_week":50,"ari_per_100k":1486,"ili_per_100k":null},{"week":"2025-W51","year":2025,"iso_week":51,"ari_per_100k":1580,"ili_per_100k":null},{"week":"2026-W01","year":2026,"iso_week":1,"ari_per_100k":939,"ili_per_100k":43},{"week":"2026-W02","year":2026,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":null},{"week":"2026-W03","year":2026,"iso_week":3,"ari_per_100k":1281,"ili_per_100k":69},{"week":"2026-W04","year":2026,"iso_week":4,"ari_per_100k":1456,"ili_per_100k":80},{"week":"2026-W05","year":2026,"iso_week":5,"ari_per_100k":1497,"ili_per_100k":73},{"week":"2026-W06","year":2026,"iso_week":6,"ari_per_100k":1534,"ili_per_100k":68},{"week":"2026-W07","year":2026,"iso_week":7,"ari_per_100k":1497,"ili_per_100k":null},{"week":"2026-W08","year":2026,"iso_week":8,"ari_per_100k":1423,"ili_per_100k":null},{"week":"2026-W09","year":2026,"iso_week":9,"ari_per_100k":1364,"ili_per_100k":null},{"week":"2026-W10","year":2026,"iso_week":10,"ari_per_100k":1326,"ili_per_100k":27},{"week":"2026-W11","year":2026,"iso_week":11,"ari_per_100k":1276,"ili_per_100k":21},{"week":"2026-W12","year":2026,"iso_week":12,"ari_per_100k":1255,"ili_per_100k":17},{"week":"2026-W13","year":2026,"iso_week":13,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"},{"week":"2026-W14","year":2026,"iso_week":14,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"},{"week":"2026-W15","year":2026,"iso_week":15,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"},{"week":"2026-W16","year":2026,"iso_week":16,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"}]};
 
 async function loadData() {
   try {
@@ -424,21 +424,26 @@ function renderDashboard(data) {
   ).join('');
 
   // Forecast rows
-  const maxFc = Math.max(...forecast.map(f=>f.ari_forecast), BASELINE * 0.05);
-  document.getElementById('forecast-rows').innerHTML = forecast.map(f => {
-    const pct = (f.ari_forecast / maxFc * 100).toFixed(1);
-    return `<div class="fc-row">
-      <div>
-        <div class="fc-week">${f.week}</div>
-        <div class="fc-dir">${f.direction ?? ''}</div>
-      </div>
-      <div class="fc-bar-wrap"><div class="fc-bar" style="width:${pct}%"></div></div>
-      <div>
-        <div class="fc-val">${f.ari_forecast.toLocaleString('cs-CZ')}</div>
-        <div class="fc-dir">/100k</div>
-      </div>
-    </div>`;
-  }).join('');
+  const fcEl = document.getElementById('forecast-rows');
+  if (!forecast.length) {
+    fcEl.innerHTML = `<div style="color:var(--muted);font-size:.85rem;padding:.5rem;grid-column:1/-1">Forecast není k dispozici – čekáme na doplnění dat ze SZÚ (W13+).</div>`;
+  } else {
+    const maxFc = Math.max(...forecast.map(f=>f.ari_forecast), 100);
+    fcEl.innerHTML = forecast.map(f => {
+      const pct = (f.ari_forecast / maxFc * 100).toFixed(1);
+      return `<div class="fc-row">
+        <div>
+          <div class="fc-week">${f.week}</div>
+          <div class="fc-dir">${f.direction ?? ''}</div>
+        </div>
+        <div class="fc-bar-wrap"><div class="fc-bar" style="width:${pct}%"></div></div>
+        <div>
+          <div class="fc-val">${f.ari_forecast.toLocaleString('cs-CZ')}</div>
+          <div class="fc-dir">/100k</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
 
   // History table (last 12 weeks)
   const recent = history.slice(-12);
@@ -466,32 +471,44 @@ function renderDashboard(data) {
 }
 
 /* ────────────────────────────────────────────────────────────
-   CHART
+   CHART – full width, ~2 roky dat, loňský rok jako srovnání
 ──────────────────────────────────────────────────────────── */
 let chartInstance = null;
 function renderChart(history, forecast) {
   const ctx = document.getElementById('ari-chart').getContext('2d');
 
-  // Použijeme posledních 52 týdnů + forecast
-  const hist52 = history.slice(-52);
-  const labels = [
-    ...hist52.map(h => h.week),
-    ...forecast.map(f => f.week)
-  ];
+  // Posledních 104 týdnů (cca 2 roky) aktuálního roku
+  const recent = history.slice(-104);
+
+  // Sestavíme mapu loňských hodnot pro srovnávací linii
+  // "Loni" = stejný ISO týden, rok - 1
+  const byYearWeek = {};
+  history.forEach(h => {
+    byYearWeek[`${h.year}-${h.iso_week}`] = h.ari_per_100k;
+  });
+
+  // Labely = všechny týdny z recent + forecast týdny
+  const labels    = [...recent.map(h => h.week), ...forecast.map(f => f.week)];
+  const totalLen  = labels.length;
+
+  // Dataset 1: aktuální data (null kde chybí)
   const ariData = [
-    ...hist52.map(h => Math.max(0, h.ari_per_100k)),
+    ...recent.map(h => (h.ari_per_100k != null && h.ari_per_100k > 0) ? h.ari_per_100k : null),
     ...forecast.map(() => null)
   ];
-  const fcData = [
-    ...hist52.map(() => null),
-    null,   // gap spojnice
-    ...forecast.map(f => f.ari_forecast)
-  ];
-  // Spojnice: posledni skutecna hodnota + prvni forecast
-  const bridgeData = hist52.map(() => null);
-  bridgeData[bridgeData.length - 1] = Math.max(0, hist52[hist52.length-1].ari_per_100k);
-  bridgeData.push(forecast[0]?.ari_forecast ?? null);
-  for (let i = 1; i < forecast.length; i++) bridgeData.push(null);
+
+  // Dataset 2: forecast (spojený s poslední reálnou hodnotou)
+  const lastValidIdx = [...ariData].reverse().findIndex(v => v !== null);
+  const lastValidPos = lastValidIdx >= 0 ? ariData.length - 1 - lastValidIdx : -1;
+  const fcData = Array(totalLen).fill(null);
+  if (lastValidPos >= 0) fcData[lastValidPos] = ariData[lastValidPos]; // bridge
+  forecast.forEach((f, i) => { fcData[recent.length + i] = f.ari_forecast; });
+
+  // Dataset 3: srovnání s loňskem – posuneme každý bod o 52 týdnů zpět
+  const priorData = recent.map(h => {
+    const priorVal = byYearWeek[`${h.year - 1}-${h.iso_week}`];
+    return (priorVal != null && priorVal > 0) ? priorVal : null;
+  }).concat(forecast.map(() => null));
 
   if (chartInstance) chartInstance.destroy();
 
@@ -501,38 +518,58 @@ function renderChart(history, forecast) {
       labels,
       datasets: [
         {
-          label: 'ARI / 100k (historická data)',
-          data: ariData,
-          borderColor: '#00c9a7',
-          backgroundColor: 'rgba(0,201,167,.08)',
-          fill: true,
+          label: 'Stejné období loni (srovnání)',
+          data: priorData,
+          borderColor: 'rgba(139,167,199,.35)',
+          backgroundColor: 'rgba(139,167,199,.04)',
+          fill: false,
           tension: 0.35,
-          pointRadius: 2,
-          pointHoverRadius: 5,
-          borderWidth: 2,
-          spanGaps: false,
+          pointRadius: 0,
+          borderWidth: 1.5,
+          borderDash: [4, 3],
+          spanGaps: true,
+          order: 3,
         },
         {
-          label: 'Forecast',
-          data: [...bridgeData.slice(0, hist52.length), ...forecast.map(f => f.ari_forecast)],
+          label: 'ARI / 100k (aktuální sezóna)',
+          data: ariData,
+          borderColor: '#00c9a7',
+          backgroundColor: 'rgba(0,201,167,.07)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: (ctx) => {
+            // Zvýrazni body kde chybí okolní data (mezery)
+            const i = ctx.dataIndex, d = ctx.dataset.data;
+            return (d[i] !== null) ? 2 : 0;
+          },
+          pointHoverRadius: 6,
+          borderWidth: 2.5,
+          spanGaps: false,
+          order: 1,
+        },
+        {
+          label: 'Forecast (příštích 4T)',
+          data: fcData,
           borderColor: '#f5a623',
-          borderDash: [5,4],
-          backgroundColor: 'rgba(245,166,35,.05)',
+          borderDash: [6, 4],
+          backgroundColor: 'rgba(245,166,35,.06)',
           fill: false,
           tension: 0.35,
           pointRadius: 3,
           pointHoverRadius: 6,
           borderWidth: 2,
           spanGaps: false,
+          order: 2,
         },
         {
-          label: 'Baseline (max únor 2025)',
-          data: Array(labels.length).fill(BASELINE),
-          borderColor: 'rgba(232,69,96,.35)',
-          borderDash: [8,4],
+          label: 'Baseline – max únor 2025',
+          data: Array(totalLen).fill(BASELINE),
+          borderColor: 'rgba(232,69,96,.25)',
+          borderDash: [10, 5],
           fill: false,
           pointRadius: 0,
-          borderWidth: 1.5,
+          borderWidth: 1,
+          order: 4,
         }
       ]
     },
@@ -542,7 +579,12 @@ function renderChart(history, forecast) {
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
-          labels: { color: '#8ba7c7', font: { family: "'IBM Plex Mono'", size: 11 }, boxWidth: 16, padding: 16 }
+          labels: {
+            color: '#8ba7c7',
+            font: { family: "'IBM Plex Mono'", size: 11 },
+            boxWidth: 16, padding: 20,
+            filter: item => item.text !== 'Baseline – max únor 2025' || true
+          }
         },
         tooltip: {
           backgroundColor: '#0d1f35',
@@ -550,12 +592,13 @@ function renderChart(history, forecast) {
           borderWidth: 1,
           titleColor: '#ddeeff',
           bodyColor: '#8ba7c7',
-          titleFont: { family: "'IBM Plex Mono'" },
-          bodyFont:  { family: "'IBM Plex Mono'" },
+          titleFont: { family: "'IBM Plex Mono'", size: 12 },
+          bodyFont:  { family: "'IBM Plex Mono'", size: 11 },
+          padding: 12,
           callbacks: {
             label: ctx => {
               const v = ctx.parsed.y;
-              if (v === null || v === undefined) return null;
+              if (v === null || v === undefined || isNaN(v)) return null;
               return `  ${ctx.dataset.label}: ${v.toLocaleString('cs-CZ')} / 100k`;
             }
           }
@@ -564,15 +607,23 @@ function renderChart(history, forecast) {
       scales: {
         x: {
           ticks: {
-            color: '#8ba7c7', maxRotation: 45,
+            color: '#8ba7c7',
+            maxRotation: 45,
             font: { family: "'IBM Plex Mono'", size: 10 },
-            maxTicksLimit: 18,
+            maxTicksLimit: 26,
+            // Zobraz jen každý 4. label (každý měsíc cca)
+            callback: (val, idx) => idx % 4 === 0 ? val : ''
           },
-          grid: { color: 'rgba(30,53,85,.5)' },
+          grid: { color: 'rgba(30,53,85,.4)' },
         },
         y: {
-          ticks: { color: '#8ba7c7', font: { family: "'IBM Plex Mono'", size: 10 } },
-          grid: { color: 'rgba(30,53,85,.5)' },
+          min: 0,
+          ticks: {
+            color: '#8ba7c7',
+            font: { family: "'IBM Plex Mono'", size: 10 },
+            callback: v => v.toLocaleString('cs-CZ')
+          },
+          grid: { color: 'rgba(30,53,85,.4)' },
           title: { display: true, text: 'ARI / 100 000 obyvatel', color: '#8ba7c7', font: { size: 11 } }
         }
       }
