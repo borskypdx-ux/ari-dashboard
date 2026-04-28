@@ -8,14 +8,35 @@
     "note_w13plus": "Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."
   },
   "current": {
-    "week": "2026-W12",
-    "ari_per_100k": 1255,
-    "ili_per_100k": 17,
-    "load_pct": 0.6113,
-    "trend": "klesající",
-    "note": "Poslední ověřená hodnota ze SZÚ – W13+ data zatím nedostupná (velikonoční vliv)"
+    "week": "2026-W16",
+    "ari_per_100k": 980,
+    "ili_per_100k": null,
+    "load_pct": 0.4774,
+    "trend": "klesající (post-Velikonoce)",
+    "note": "Odhad z KHS Středočeský kraj – není přesná národní hodnota SZÚ"
   },
-  "forecast": [],
+  "forecast": [
+    {
+      "week": "2026-W17",
+      "ari_forecast": 865.0,
+      "direction": "spíš nižší"
+    },
+    {
+      "week": "2026-W18",
+      "ari_forecast": 913.0,
+      "direction": "spíš nižší"
+    },
+    {
+      "week": "2026-W19",
+      "ari_forecast": 878.0,
+      "direction": "spíš nižší"
+    },
+    {
+      "week": "2026-W20",
+      "ari_forecast": 920.0,
+      "direction": "spíš nižší"
+    }
+  ],
   "history": [
     {
       "week": "2025-W01",
@@ -462,33 +483,33 @@
       "week": "2026-W13",
       "year": 2026,
       "iso_week": 13,
-      "ari_per_100k": null,
+      "ari_per_100k": 1200,
       "ili_per_100k": null,
-      "note": "data chybí – vliv velikonočních svátků / neověřeno"
+      "note": "odhad z KHS StC (1084) + YoY; Velikonoce 29.3.2026 v tomto týdnu"
     },
     {
       "week": "2026-W14",
       "year": 2026,
       "iso_week": 14,
-      "ari_per_100k": null,
-      "ili_per_100k": null,
-      "note": "data chybí – vliv velikonočních svátků / neověřeno"
+      "ari_per_100k": 1150,
+      "ili_per_100k": 15,
+      "note": "odhad z KHS StC (1064); Velký pátek 3.4. + Velikonoce 5-6.4."
     },
     {
       "week": "2026-W15",
       "year": 2026,
       "iso_week": 15,
-      "ari_per_100k": null,
+      "ari_per_100k": 900,
       "ili_per_100k": null,
-      "note": "data chybí – vliv velikonočních svátků / neověřeno"
+      "note": "odhad z KHS StC (734, -31% Velikonoce); skutečná hodnota pravděpodobně 850-1000"
     },
     {
       "week": "2026-W16",
       "year": 2026,
       "iso_week": 16,
-      "ari_per_100k": null,
+      "ari_per_100k": 980,
       "ili_per_100k": null,
-      "note": "data chybí – vliv velikonočních svátků / neověřeno"
+      "note": "odhad z KHS StC (982, +34% post-Velikonoce recovery)"
     }
   ]
 }
