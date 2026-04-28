@@ -272,7 +272,9 @@ def main():
                 "load_pct": round(last["ari_per_100k"]/data["meta"]["baseline_ari_per_100k"],4),
                 "trend": "klesající", "source_note": last.get("note","")
             }
-        data["forecast"] = compute_forecast(data["history"])
+        new_fc = compute_forecast(data["history"])
+        if new_fc:   # jen přepiš pokud máme reálný výsledek
+            data["forecast"] = new_fc
         print(f"Pridano/aktualizovano {len(new_data)} zaznamu.")
 
     data["meta"]["last_updated"] = date.today().isoformat()
