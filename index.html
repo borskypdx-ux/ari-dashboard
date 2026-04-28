@@ -81,7 +81,8 @@
   }
   #alert-banner.green  { background: rgba(46,204,113,.08); border-color: var(--green);  }
   #alert-banner.amber  { background: rgba(245,166,35,.08);  border-color: var(--amber);  }
-  #alert-banner.red    { background: rgba(232,69,96,.1);   border-color: var(--red);    }
+  #alert-banner.yellow { background: rgba(232,197,58,.08);  border-color: #e8c53a;       }
+  #alert-banner.red    { background: rgba(232,69,96,.1);    border-color: var(--red);    }
   .alert-icon { font-size: 2rem; }
   .alert-body h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: .2rem; }
   .alert-body p  { font-size: .875rem; color: var(--muted); line-height: 1.5; }
@@ -90,9 +91,10 @@
     padding: .3rem .8rem; border-radius: 20px; font-weight: 600;
     white-space: nowrap;
   }
-  #alert-banner.green .alert-badge  { background: rgba(46,204,113,.2); color: var(--green); }
-  #alert-banner.amber .alert-badge  { background: rgba(245,166,35,.2);  color: var(--amber); }
-  #alert-banner.red   .alert-badge  { background: rgba(232,69,96,.2);   color: var(--red); }
+  #alert-banner.green  .alert-badge { background: rgba(46,204,113,.2);  color: var(--green); }
+  #alert-banner.amber  .alert-badge { background: rgba(245,166,35,.2);  color: var(--amber); }
+  #alert-banner.yellow .alert-badge { background: rgba(232,197,58,.2);  color: #e8c53a; }
+  #alert-banner.red    .alert-badge { background: rgba(232,69,96,.2);   color: var(--red); }
 
   /* ── KPI GRID ─────────────────────────────────────── */
   .kpi-grid {
@@ -111,8 +113,9 @@
     background: var(--teal);
     border-radius: 12px 12px 0 0;
   }
-  .kpi-card.amber::before { background: var(--amber); }
-  .kpi-card.red::before   { background: var(--red); }
+  .kpi-card.amber::before  { background: var(--amber); }
+  .kpi-card.yellow::before { background: #e8c53a; }
+  .kpi-card.red::before    { background: var(--red); }
   .kpi-card.green::before { background: var(--green); }
   .kpi-label {
     font-family: var(--mono); font-size: .7rem; text-transform: uppercase;
@@ -278,6 +281,33 @@
     </div>
   </div>
 
+
+  <!-- LEGENDA SEMAFORU -->
+  <div class="panel" style="margin-bottom:1.5rem">
+    <h3>🚦 Legenda semaforu – plánování akutního času v ordinaci</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem;margin-top:.25rem">
+      <div style="background:rgba(232,69,96,.07);border:1px solid rgba(232,69,96,.3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--red);font-family:var(--mono);margin-bottom:.4rem">🔴 Epidemie &nbsp;<span style="font-size:.75rem;font-weight:400">≥ 1 500 / 100k</span></div>
+        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Je akutní čas dostatečný? Zvažte navýšení kapacity. Telefonická triáž, priorita rizikových skupin.</div>
+      </div>
+      <div style="background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--amber);font-family:var(--mono);margin-bottom:.4rem">🟠 Zvýšená zátěž &nbsp;<span style="font-size:.75rem;font-weight:400">1 000–1 499</span></div>
+        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Udržujte akutní čas beze změn. Sledujte trend – roste-li ARI, připravte se na červené pásmo.</div>
+      </div>
+      <div style="background:rgba(232,197,58,.07);border:1px solid rgba(232,197,58,.3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.1rem;font-weight:700;color:#e8c53a;font-family:var(--mono);margin-bottom:.4rem">🟡 Mírně zvýšená &nbsp;<span style="font-size:.75rem;font-weight:400">750–999</span></div>
+        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Ke zvážení redukce akutního času (při klesajícím trendu). Obsazujte uvolněné sloty kontrolami.</div>
+      </div>
+      <div style="background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.1rem;font-weight:700;color:var(--green);font-family:var(--mono);margin-bottom:.4rem">🟢 Klidná sezóna &nbsp;<span style="font-size:.75rem;font-weight:400">&lt; 750</span></div>
+        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Obsazujte akutní čas kontrolami a preventivními prohlídkami. Připravte kapacitu na podzim (W40).</div>
+      </div>
+    </div>
+    <div style="margin-top:.75rem;font-size:.72rem;color:var(--muted);font-family:var(--mono)">
+      Kalibrace: červená = sezóna 2025/26 (peak 2 251/100k) · oranžová = přechodné období · žlutá = přechod jaro/podzim · zelená = letní minimum (394–732/100k)
+    </div>
+  </div>
+
   <!-- RECENT DATA TABLE -->
   <div class="panel">
     <h3>📋 Posledních 12 týdnů – detail</h3>
@@ -313,7 +343,7 @@
 const BASELINE = 2053;
 
 // Inline data – vždy funguje i bez serveru
-window.__INLINE_DATA__ = {"meta":{"last_updated":"2026-04-28","source":"Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/","baseline_label":"únor 2025","baseline_ari_per_100k":2053,"note":"100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)","note_w13plus":"Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."},"current":{"week":"2026-W12","ari_per_100k":1255,"ili_per_100k":17,"load_pct":0.6113,"trend":"klesající","note":"Poslední ověřená hodnota ze SZÚ – W13+ data zatím nedostupná (velikonoční vliv)"},"forecast":[],"history":[{"week":"2025-W01","year":2025,"iso_week":1,"ari_per_100k":834,"ili_per_100k":20},{"week":"2025-W02","year":2025,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":40},{"week":"2025-W03","year":2025,"iso_week":3,"ari_per_100k":1499,"ili_per_100k":77},{"week":"2025-W04","year":2025,"iso_week":4,"ari_per_100k":1940,"ili_per_100k":138},{"week":"2025-W05","year":2025,"iso_week":5,"ari_per_100k":2251,"ili_per_100k":257},{"week":"2025-W06","year":2025,"iso_week":6,"ari_per_100k":2219,"ili_per_100k":251},{"week":"2025-W07","year":2025,"iso_week":7,"ari_per_100k":2138,"ili_per_100k":240},{"week":"2025-W08","year":2025,"iso_week":8,"ari_per_100k":1988,"ili_per_100k":196},{"week":"2025-W09","year":2025,"iso_week":9,"ari_per_100k":1867,"ili_per_100k":159},{"week":"2025-W10","year":2025,"iso_week":10,"ari_per_100k":1536,"ili_per_100k":113},{"week":"2025-W11","year":2025,"iso_week":11,"ari_per_100k":1584,"ili_per_100k":88},{"week":"2025-W12","year":2025,"iso_week":12,"ari_per_100k":1501,"ili_per_100k":null},{"week":"2025-W13","year":2025,"iso_week":13,"ari_per_100k":1431,"ili_per_100k":44},{"week":"2025-W14","year":2025,"iso_week":14,"ari_per_100k":1381,"ili_per_100k":39},{"week":"2025-W15","year":2025,"iso_week":15,"ari_per_100k":1295,"ili_per_100k":25},{"week":"2025-W16","year":2025,"iso_week":16,"ari_per_100k":998,"ili_per_100k":15},{"week":"2025-W17","year":2025,"iso_week":17,"ari_per_100k":685,"ili_per_100k":9},{"week":"2025-W18","year":2025,"iso_week":18,"ari_per_100k":783,"ili_per_100k":7},{"week":"2025-W19","year":2025,"iso_week":19,"ari_per_100k":711,"ili_per_100k":7},{"week":"2025-W20","year":2025,"iso_week":20,"ari_per_100k":797,"ili_per_100k":9},{"week":"2025-W21","year":2025,"iso_week":21,"ari_per_100k":783,"ili_per_100k":10},{"week":"2025-W22","year":2025,"iso_week":22,"ari_per_100k":795,"ili_per_100k":9},{"week":"2025-W23","year":2025,"iso_week":23,"ari_per_100k":775,"ili_per_100k":9},{"week":"2025-W24","year":2025,"iso_week":24,"ari_per_100k":738,"ili_per_100k":null},{"week":"2025-W25","year":2025,"iso_week":25,"ari_per_100k":732,"ili_per_100k":7},{"week":"2025-W26","year":2025,"iso_week":26,"ari_per_100k":655,"ili_per_100k":6},{"week":"2025-W27","year":2025,"iso_week":27,"ari_per_100k":449,"ili_per_100k":5},{"week":"2025-W28","year":2025,"iso_week":28,"ari_per_100k":514,"ili_per_100k":5},{"week":"2025-W29","year":2025,"iso_week":29,"ari_per_100k":448,"ili_per_100k":3},{"week":"2025-W30","year":2025,"iso_week":30,"ari_per_100k":515,"ili_per_100k":4},{"week":"2025-W31","year":2025,"iso_week":31,"ari_per_100k":394,"ili_per_100k":4},{"week":"2025-W32","year":2025,"iso_week":32,"ari_per_100k":430,"ili_per_100k":5},{"week":"2025-W33","year":2025,"iso_week":33,"ari_per_100k":444,"ili_per_100k":4},{"week":"2025-W34","year":2025,"iso_week":34,"ari_per_100k":528,"ili_per_100k":5},{"week":"2025-W35","year":2025,"iso_week":35,"ari_per_100k":558,"ili_per_100k":5},{"week":"2025-W36","year":2025,"iso_week":36,"ari_per_100k":643,"ili_per_100k":6},{"week":"2025-W37","year":2025,"iso_week":37,"ari_per_100k":811,"ili_per_100k":8},{"week":"2025-W38","year":2025,"iso_week":38,"ari_per_100k":890,"ili_per_100k":11},{"week":"2025-W39","year":2025,"iso_week":39,"ari_per_100k":934,"ili_per_100k":12},{"week":"2025-W40","year":2025,"iso_week":40,"ari_per_100k":1002,"ili_per_100k":13},{"week":"2025-W41","year":2025,"iso_week":41,"ari_per_100k":1083,"ili_per_100k":15},{"week":"2025-W42","year":2025,"iso_week":42,"ari_per_100k":1062,"ili_per_100k":15},{"week":"2025-W43","year":2025,"iso_week":43,"ari_per_100k":1069,"ili_per_100k":16},{"week":"2025-W44","year":2025,"iso_week":44,"ari_per_100k":762,"ili_per_100k":11},{"week":"2025-W45","year":2025,"iso_week":45,"ari_per_100k":932,"ili_per_100k":14},{"week":"2025-W46","year":2025,"iso_week":46,"ari_per_100k":939,"ili_per_100k":13},{"week":"2025-W47","year":2025,"iso_week":47,"ari_per_100k":862,"ili_per_100k":12},{"week":"2025-W48","year":2025,"iso_week":48,"ari_per_100k":1078,"ili_per_100k":18},{"week":"2025-W49","year":2025,"iso_week":49,"ari_per_100k":1242,"ili_per_100k":33},{"week":"2025-W50","year":2025,"iso_week":50,"ari_per_100k":1486,"ili_per_100k":null},{"week":"2025-W51","year":2025,"iso_week":51,"ari_per_100k":1580,"ili_per_100k":null},{"week":"2026-W01","year":2026,"iso_week":1,"ari_per_100k":939,"ili_per_100k":43},{"week":"2026-W02","year":2026,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":null},{"week":"2026-W03","year":2026,"iso_week":3,"ari_per_100k":1281,"ili_per_100k":69},{"week":"2026-W04","year":2026,"iso_week":4,"ari_per_100k":1456,"ili_per_100k":80},{"week":"2026-W05","year":2026,"iso_week":5,"ari_per_100k":1497,"ili_per_100k":73},{"week":"2026-W06","year":2026,"iso_week":6,"ari_per_100k":1534,"ili_per_100k":68},{"week":"2026-W07","year":2026,"iso_week":7,"ari_per_100k":1497,"ili_per_100k":null},{"week":"2026-W08","year":2026,"iso_week":8,"ari_per_100k":1423,"ili_per_100k":null},{"week":"2026-W09","year":2026,"iso_week":9,"ari_per_100k":1364,"ili_per_100k":null},{"week":"2026-W10","year":2026,"iso_week":10,"ari_per_100k":1326,"ili_per_100k":27},{"week":"2026-W11","year":2026,"iso_week":11,"ari_per_100k":1276,"ili_per_100k":21},{"week":"2026-W12","year":2026,"iso_week":12,"ari_per_100k":1255,"ili_per_100k":17},{"week":"2026-W13","year":2026,"iso_week":13,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"},{"week":"2026-W14","year":2026,"iso_week":14,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"},{"week":"2026-W15","year":2026,"iso_week":15,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"},{"week":"2026-W16","year":2026,"iso_week":16,"ari_per_100k":null,"ili_per_100k":null,"note":"data chybí – vliv velikonočních svátků / neověřeno"}]};
+window.__INLINE_DATA__ = {"meta":{"last_updated":"2026-04-28","source":"Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/","baseline_label":"únor 2025","baseline_ari_per_100k":2053,"note":"100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)","note_w13plus":"Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."},"current":{"week":"2026-W16","ari_per_100k":980,"ili_per_100k":null,"load_pct":0.4774,"trend":"klesající (post-Velikonoce)","note":"Odhad z KHS Středočeský kraj – není přesná národní hodnota SZÚ"},"forecast":[{"week":"2026-W17","ari_forecast":865.0,"direction":"spíš nižší"},{"week":"2026-W18","ari_forecast":913.0,"direction":"spíš nižší"},{"week":"2026-W19","ari_forecast":878.0,"direction":"spíš nižší"},{"week":"2026-W20","ari_forecast":920.0,"direction":"spíš nižší"}],"history":[{"week":"2025-W01","year":2025,"iso_week":1,"ari_per_100k":834,"ili_per_100k":20},{"week":"2025-W02","year":2025,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":40},{"week":"2025-W03","year":2025,"iso_week":3,"ari_per_100k":1499,"ili_per_100k":77},{"week":"2025-W04","year":2025,"iso_week":4,"ari_per_100k":1940,"ili_per_100k":138},{"week":"2025-W05","year":2025,"iso_week":5,"ari_per_100k":2251,"ili_per_100k":257},{"week":"2025-W06","year":2025,"iso_week":6,"ari_per_100k":2219,"ili_per_100k":251},{"week":"2025-W07","year":2025,"iso_week":7,"ari_per_100k":2138,"ili_per_100k":240},{"week":"2025-W08","year":2025,"iso_week":8,"ari_per_100k":1988,"ili_per_100k":196},{"week":"2025-W09","year":2025,"iso_week":9,"ari_per_100k":1867,"ili_per_100k":159},{"week":"2025-W10","year":2025,"iso_week":10,"ari_per_100k":1536,"ili_per_100k":113},{"week":"2025-W11","year":2025,"iso_week":11,"ari_per_100k":1584,"ili_per_100k":88},{"week":"2025-W12","year":2025,"iso_week":12,"ari_per_100k":1501,"ili_per_100k":null},{"week":"2025-W13","year":2025,"iso_week":13,"ari_per_100k":1431,"ili_per_100k":44},{"week":"2025-W14","year":2025,"iso_week":14,"ari_per_100k":1381,"ili_per_100k":39},{"week":"2025-W15","year":2025,"iso_week":15,"ari_per_100k":1295,"ili_per_100k":25},{"week":"2025-W16","year":2025,"iso_week":16,"ari_per_100k":998,"ili_per_100k":15},{"week":"2025-W17","year":2025,"iso_week":17,"ari_per_100k":685,"ili_per_100k":9},{"week":"2025-W18","year":2025,"iso_week":18,"ari_per_100k":783,"ili_per_100k":7},{"week":"2025-W19","year":2025,"iso_week":19,"ari_per_100k":711,"ili_per_100k":7},{"week":"2025-W20","year":2025,"iso_week":20,"ari_per_100k":797,"ili_per_100k":9},{"week":"2025-W21","year":2025,"iso_week":21,"ari_per_100k":783,"ili_per_100k":10},{"week":"2025-W22","year":2025,"iso_week":22,"ari_per_100k":795,"ili_per_100k":9},{"week":"2025-W23","year":2025,"iso_week":23,"ari_per_100k":775,"ili_per_100k":9},{"week":"2025-W24","year":2025,"iso_week":24,"ari_per_100k":738,"ili_per_100k":null},{"week":"2025-W25","year":2025,"iso_week":25,"ari_per_100k":732,"ili_per_100k":7},{"week":"2025-W26","year":2025,"iso_week":26,"ari_per_100k":655,"ili_per_100k":6},{"week":"2025-W27","year":2025,"iso_week":27,"ari_per_100k":449,"ili_per_100k":5},{"week":"2025-W28","year":2025,"iso_week":28,"ari_per_100k":514,"ili_per_100k":5},{"week":"2025-W29","year":2025,"iso_week":29,"ari_per_100k":448,"ili_per_100k":3},{"week":"2025-W30","year":2025,"iso_week":30,"ari_per_100k":515,"ili_per_100k":4},{"week":"2025-W31","year":2025,"iso_week":31,"ari_per_100k":394,"ili_per_100k":4},{"week":"2025-W32","year":2025,"iso_week":32,"ari_per_100k":430,"ili_per_100k":5},{"week":"2025-W33","year":2025,"iso_week":33,"ari_per_100k":444,"ili_per_100k":4},{"week":"2025-W34","year":2025,"iso_week":34,"ari_per_100k":528,"ili_per_100k":5},{"week":"2025-W35","year":2025,"iso_week":35,"ari_per_100k":558,"ili_per_100k":5},{"week":"2025-W36","year":2025,"iso_week":36,"ari_per_100k":643,"ili_per_100k":6},{"week":"2025-W37","year":2025,"iso_week":37,"ari_per_100k":811,"ili_per_100k":8},{"week":"2025-W38","year":2025,"iso_week":38,"ari_per_100k":890,"ili_per_100k":11},{"week":"2025-W39","year":2025,"iso_week":39,"ari_per_100k":934,"ili_per_100k":12},{"week":"2025-W40","year":2025,"iso_week":40,"ari_per_100k":1002,"ili_per_100k":13},{"week":"2025-W41","year":2025,"iso_week":41,"ari_per_100k":1083,"ili_per_100k":15},{"week":"2025-W42","year":2025,"iso_week":42,"ari_per_100k":1062,"ili_per_100k":15},{"week":"2025-W43","year":2025,"iso_week":43,"ari_per_100k":1069,"ili_per_100k":16},{"week":"2025-W44","year":2025,"iso_week":44,"ari_per_100k":762,"ili_per_100k":11},{"week":"2025-W45","year":2025,"iso_week":45,"ari_per_100k":932,"ili_per_100k":14},{"week":"2025-W46","year":2025,"iso_week":46,"ari_per_100k":939,"ili_per_100k":13},{"week":"2025-W47","year":2025,"iso_week":47,"ari_per_100k":862,"ili_per_100k":12},{"week":"2025-W48","year":2025,"iso_week":48,"ari_per_100k":1078,"ili_per_100k":18},{"week":"2025-W49","year":2025,"iso_week":49,"ari_per_100k":1242,"ili_per_100k":33},{"week":"2025-W50","year":2025,"iso_week":50,"ari_per_100k":1486,"ili_per_100k":null},{"week":"2025-W51","year":2025,"iso_week":51,"ari_per_100k":1580,"ili_per_100k":null},{"week":"2026-W01","year":2026,"iso_week":1,"ari_per_100k":939,"ili_per_100k":43},{"week":"2026-W02","year":2026,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":null},{"week":"2026-W03","year":2026,"iso_week":3,"ari_per_100k":1281,"ili_per_100k":69},{"week":"2026-W04","year":2026,"iso_week":4,"ari_per_100k":1456,"ili_per_100k":80},{"week":"2026-W05","year":2026,"iso_week":5,"ari_per_100k":1497,"ili_per_100k":73},{"week":"2026-W06","year":2026,"iso_week":6,"ari_per_100k":1534,"ili_per_100k":68},{"week":"2026-W07","year":2026,"iso_week":7,"ari_per_100k":1497,"ili_per_100k":null},{"week":"2026-W08","year":2026,"iso_week":8,"ari_per_100k":1423,"ili_per_100k":null},{"week":"2026-W09","year":2026,"iso_week":9,"ari_per_100k":1364,"ili_per_100k":null},{"week":"2026-W10","year":2026,"iso_week":10,"ari_per_100k":1326,"ili_per_100k":27},{"week":"2026-W11","year":2026,"iso_week":11,"ari_per_100k":1276,"ili_per_100k":21},{"week":"2026-W12","year":2026,"iso_week":12,"ari_per_100k":1255,"ili_per_100k":17},{"week":"2026-W13","year":2026,"iso_week":13,"ari_per_100k":1200,"ili_per_100k":null,"note":"odhad z KHS StC (1084) + YoY; Velikonoce 29.3.2026 v tomto týdnu"},{"week":"2026-W14","year":2026,"iso_week":14,"ari_per_100k":1150,"ili_per_100k":15,"note":"odhad z KHS StC (1064); Velký pátek 3.4. + Velikonoce 5-6.4."},{"week":"2026-W15","year":2026,"iso_week":15,"ari_per_100k":900,"ili_per_100k":null,"note":"odhad z KHS StC (734, -31% Velikonoce); skutečná hodnota pravděpodobně 850-1000"},{"week":"2026-W16","year":2026,"iso_week":16,"ari_per_100k":980,"ili_per_100k":null,"note":"odhad z KHS StC (982, +34% post-Velikonoce recovery)"}]};
 
 async function loadData() {
   try {
@@ -326,53 +356,71 @@ async function loadData() {
 }
 
 /* ────────────────────────────────────────────────────────────
-   ALERT / DOPORUČENÍ  logic
+   ALERT / DOPORUČENÍ  logic – 4 úrovně dle reálných dat 2025/2026
+   Kalibrace z dat:
+     Zelená (klid):   <  750 – hodnoty červen-srpen 2025 (394–732)
+     Žlutá (mírná):  750–999 – předzimní nástup, jarní ústup  
+     Oranžová:      1000–1499 – zvýšená zátěž, mimo vrchol epidemie
+     Červená:       ≥ 1500 – epidemická sezóna (únor 2025 peak=2251)
 ──────────────────────────────────────────────────────────── */
 function getStatus(ari) {
-  // Červená: > 33 % maxima  (>~680)
-  // Oranžová: 10–33 %       (>~205)
-  // Zelená: < 10 %
-  const pct = ari / BASELINE;
-  if (pct >= 0.33) return 'red';
-  if (pct >= 0.10) return 'amber';
+  if (ari >= 1500) return 'red';
+  if (ari >= 1000) return 'amber';
+  if (ari >= 750)  return 'yellow';
   return 'green';
 }
 
 const STATUS_CONFIG = {
   red: {
     icon: '🔴',
-    title: 'ZVÝŠENÁ ZÁTĚŽ – epidemická sezóna',
-    desc: 'ARI výrazně nad normu. Očekávejte výrazně více akutních pacientů s respiračními infekty.',
-    badge: 'Vysoká zátěž',
+    title: 'EPIDEMICKÁ SEZÓNA (≥ 1 500 / 100k)',
+    desc: 'ARI na epidemické úrovni. Příliv akutních respiračních pacientů je výrazně nadprůměrný.',
+    badge: 'Epidemie',
+    color: 'var(--red)',
     recs: [
-      { e:'📅', h:'Navyšte akutní sloty', p:'Přidejte 20–40 % kapacity pro neobjednaná vyšetření resp. infektů.' },
-      { e:'🤧', h:'Prioritizujte rizikové skupiny', p:'Senioři, imunosuprimovaní – zkraťte čekací dobu.' },
-      { e:'💊', h:'Zásoby léčiv', p:'Zkontrolujte zásoby antivirálních léčiv a antibiotik.' },
-      { e:'📞', h:'Telefonické triáže', p:'Zvažte telefonickou triáž před objednáním k redukci zbytečných návštěv.' },
+      { e:'⏱️', h:'Je akutní čas dostatečný?', p:'Zkontrolujte, zda aktuální počet vyhrazených akutních slotů kapacitně stačí. Pokud ne, navyšte je – jinak hrozí přetížení ordinace.' },
+      { e:'📈', h:'Sledujte týdenní vývoj', p:'Roste-li ARI >10 % t/t, přidejte akutní sloty preventivně ještě před vrcholem vlny.' },
+      { e:'📞', h:'Zvažte telefonickou triáž', p:'Předtřídění přes telefon odfiltruje pacienty, kteří nepotřebují osobní vyšetření – uvolní kapacitu pro těžší případy.' },
+      { e:'🤧', h:'Rizikové skupiny bez čekání', p:'Senioři 65+, imunosuprimovaní a chroničtí pacienti – přednostní přístup, kratší čekací doba.' },
     ]
   },
   amber: {
-    icon: '🟡',
-    title: 'MÍRNĚ ZVÝŠENÁ ZÁTĚŽ – zvýšený výskyt ARI',
-    desc: 'ARI nad průměr. Počítejte s vyšším počtem resp. infekcí než mimo sezónu.',
+    icon: '🟠',
+    title: 'ZVÝŠENÁ ZÁTĚŽ (1 000–1 499 / 100k)',
+    desc: 'ARI nad standardní úrovní – přechodné období (předzimní nástup nebo jarní ústup). Akutní poptávka je zvýšená, ale zvladatelná.',
     badge: 'Zvýšená zátěž',
+    color: 'var(--amber)',
     recs: [
-      { e:'📅', h:'Rezervujte akutní sloty', p:'Ponechte 10–20 % kapacity pro neobjednané pacienty s respiračními příznaky.' },
-      { e:'📊', h:'Sledujte trend', p:'Trend bude patrný příští týden – připravte se na případný nárůst.' },
-      { e:'💉', h:'Upomínky na očkování', p:'Vhodná chvíle pro aktivní nabídku chřipkové vakcíny.' },
-      { e:'📋', h:'Standardizovaná dokumentace', p:'Připravte šablony pro rychlejší záznam respiračních konzultací.' },
+      { e:'⏱️', h:'Udržujte akutní čas beze změn', p:'Současný objem vyhrazených akutních slotů je správný – nezkracujte ho, dokud ARI neklesne pod 1 000.' },
+      { e:'📊', h:'Monitorujte trend každý týden', p:'Roste-li ARI, připravte se na přechod do červeného pásma a případné navýšení kapacity.' },
+      { e:'📋', h:'Efektivnější dokumentace', p:'Používejte šablony pro rychlé záznamy respiračních konzultací – ušetříte čas při vyšším počtu pacientů.' },
+      { e:'💉', h:'Aktivní nabídka očkování', p:'Vhodný čas pro nabídku chřipkové vakcíny rizikovým skupinám, které ještě nejsou očkované.' },
+    ]
+  },
+  yellow: {
+    icon: '🟡',
+    title: 'MÍRNĚ ZVÝŠENÁ ZÁTĚŽ (750–999 / 100k)',
+    desc: 'ARI na přechodné úrovni – podzimní nástup nebo jarní doznívání. Akutní čas lze začít pozvolna upravovat.',
+    badge: 'Mírně zvýšená',
+    color: '#e8c53a',
+    recs: [
+      { e:'⏱️', h:'Ke zvážení: mírná redukce akutního času', p:'Pokud ARI klesá (jarní ústup), zvažte postupné snižování vyhrazeného akutního času a nahrazení kontrolami. Pokud roste (podzim), zatím udržujte.' },
+      { e:'📊', h:'Sledujte směr trendu', p:'Klíčové je, zda ARI roste nebo klesá. Rostoucí trend = udržet kapacitu. Klesající trend = můžete pomalu redukovat.' },
+      { e:'📆', h:'Plánujte předem', p:'Podzimní sezóna nastupuje kolem W40–42. Začněte nyní domlouvat rozvrh pro zimní provoz ordinace.' },
+      { e:'💉', h:'Preventivní konzultace', p:'Ideální čas pro diskuzi o prevenci, očkování a úpravě léčby u chronicky nemocných pacientů.' },
     ]
   },
   green: {
     icon: '🟢',
-    title: 'KLIDNÁ SEZÓNA – nízký výskyt ARI',
-    desc: 'ARI na mezisezónní úrovni. Ordinace pracuje v normálním režimu.',
-    badge: 'Nízká zátěž',
+    title: 'KLIDNÁ SEZÓNA – letní minimum (< 750 / 100k)',
+    desc: 'ARI na mezisezónním minimu. Respirační akutní poptávka je minimální.',
+    badge: 'Klid',
+    color: 'var(--green)',
     recs: [
-      { e:'📆', h:'Normální provoz', p:'Standardní rozvrh bez potřeby rozšíření akutní kapacity.' },
-      { e:'🏥', h:'Preventivní péče', p:'Vhodná chvíle pro plánování preventivních prohlídek a chronických pacientů.' },
-      { e:'📚', h:'Vzdělávání', p:'Ideální čas pro vzdělávací aktivity a administrativu.' },
-      { e:'🔭', h:'Sledujte forecast', p:'Podzimní sezóna začíná kolem 40.–42. týdne – monitorujte trend.' },
+      { e:'⏱️', h:'Obsazujte akutní čas kontrolami', p:'Vyhrazené akutní sloty, které nejsou obsazeny akutními pacienty, využijte pro plánované kontroly, preventivní prohlídky nebo dispenzární vyšetření.' },
+      { e:'🏥', h:'Preventivní prohlídky a dispenzarizace', p:'Nejlepší čas pro objednání pacientů na preventivní prohlídky, mamografie, kolonoskopie, bilance chronicky nemocných.' },
+      { e:'📚', h:'Administrativa a vzdělávání', p:'Vhodný čas pro CME aktivity, audit dokumentace, příprava zimního provozu ordinace.' },
+      { e:'🔭', h:'Připravte kapacitu na podzim', p:'Sezóna typicky nastoupí W40–42 (říjen). Dohodněte rozvrh a zásoby léčiv předem.' },
     ]
   }
 };
@@ -455,8 +503,8 @@ function renderDashboard(data) {
     const chText = change === null ? '–' : (change > 0 ? '+' : '') + change.toFixed(1) + ' %';
     const ariSafe  = Math.max(0, ari ?? 0);
     const barPct   = ariSafe / BASELINE * 100;
-    const barColor = getStatus(ariSafe) === 'red' ? 'var(--red)' :
-                     getStatus(ariSafe) === 'amber' ? 'var(--amber)' : 'var(--teal)';
+    const st = getStatus(ariSafe);
+    const barColor = st === 'red' ? 'var(--red)' : st === 'amber' ? 'var(--amber)' : st === 'yellow' ? '#e8c53a' : 'var(--teal)';
     const isLatest = i === recent.length - 1;
     return `<tr class="${isLatest ? 'latest' : ''}">
       <td>${h.week}</td>
