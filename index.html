@@ -382,7 +382,7 @@ const STATUS_CONFIG = {
 ──────────────────────────────────────────────────────────── */
 function renderDashboard(data) {
   const { meta, current, forecast, history } = data;
-  const ari    = current.ari_per_100k;
+  const ari    = current.ari_per_100k ?? 0;
   const status = getStatus(Math.max(0, ari));
   const cfg    = STATUS_CONFIG[status];
 
@@ -399,7 +399,7 @@ function renderDashboard(data) {
   document.getElementById('alert-badge').textContent = cfg.badge;
 
   // KPI
-  document.getElementById('kpi-ari').textContent  = ari.toLocaleString('cs-CZ');
+  document.getElementById('kpi-ari').textContent  = (ari ?? 0).toLocaleString('cs-CZ');
   document.getElementById('kpi-week').textContent = current.week;
 
   const loadPct = Math.max(0, ari) / BASELINE * 100;
@@ -445,24 +445,26 @@ function renderDashboard(data) {
     }).join('');
   }
 
-  // History table (last 12 weeks)
-  const recent = history.slice(-12);
+  // History table (last 12 weeks) – filtrujeme pouze záznamy s reálnými hodnotami
+  const recent = history.filter(h => h.ari_per_100k != null).slice(-12);
   document.getElementById('history-body').innerHTML = recent.map((h, i) => {
+    const ari    = h.ari_per_100k;                      // guaranteed non-null here
     const prev   = i > 0 ? recent[i-1].ari_per_100k : null;
-    const change = prev !== null ? ((h.ari_per_100k - prev) / Math.abs(prev||1) * 100) : null;
+    const change = (prev != null && ari != null) ? ((ari - prev) / Math.abs(prev || 1) * 100) : null;
     const chClass= change === null ? 'change-flat' : change > 2 ? 'change-up' : change < -2 ? 'change-down' : 'change-flat';
     const chText = change === null ? '–' : (change > 0 ? '+' : '') + change.toFixed(1) + ' %';
-    const barPct = Math.max(0, h.ari_per_100k) / BASELINE * 100;
-    const barColor = getStatus(h.ari_per_100k) === 'red' ? 'var(--red)' :
-                     getStatus(h.ari_per_100k) === 'amber' ? 'var(--amber)' : 'var(--teal)';
+    const ariSafe  = Math.max(0, ari ?? 0);
+    const barPct   = ariSafe / BASELINE * 100;
+    const barColor = getStatus(ariSafe) === 'red' ? 'var(--red)' :
+                     getStatus(ariSafe) === 'amber' ? 'var(--amber)' : 'var(--teal)';
     const isLatest = i === recent.length - 1;
     return `<tr class="${isLatest ? 'latest' : ''}">
       <td>${h.week}</td>
-      <td>${h.ari_per_100k.toLocaleString('cs-CZ')}</td>
+      <td>${ariSafe.toLocaleString('cs-CZ')}</td>
       <td><div class="bar-cell"><div class="inline-bar"><div class="inline-bar-fill" style="width:${barPct.toFixed(1)}%;background:${barColor}"></div></div></div></td>
-      <td>${h.ili_per_100k !== null && h.ili_per_100k !== undefined ? h.ili_per_100k : '–'}</td>
+      <td>${h.ili_per_100k != null ? h.ili_per_100k : '–'}</td>
       <td class="${chClass}">${chText}</td>
-      <td>${(Math.max(0,h.ari_per_100k)/BASELINE*100).toFixed(1)} %</td>
+      <td>${barPct.toFixed(1)} %</td>
     </tr>`;
   }).join('');
 
@@ -599,7 +601,7 @@ function renderChart(history, forecast) {
             label: ctx => {
               const v = ctx.parsed.y;
               if (v === null || v === undefined || isNaN(v)) return null;
-              return `  ${ctx.dataset.label}: ${v.toLocaleString('cs-CZ')} / 100k`;
+              return `  ${ctx.dataset.label}: ${(v ?? 0).toLocaleString('cs-CZ')} / 100k`;
             }
           }
         }
