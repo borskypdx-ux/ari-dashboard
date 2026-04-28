@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARI Dashboard – Plánování ordinace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy:     #07111f;
+    --navy2:    #0d1f35;
+    --navy3:    #142740;
+    --border:   #1e3555;
+    --teal:     #00c9a7;
+    --teal2:    #00a689;
+    --amber:    #f5a623;
+    --red:      #e84560;
+    --green:    #2ecc71;
+    --muted:    #8ba7c7;
+    --text:     #ddeeff;
+    --white:    #ffffff;
+    --mono:     'IBM Plex Mono', monospace;
+    --sans:     'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── HEADER ───────────────────────────────────────── */
+  header {
+    background: var(--navy2);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--teal), var(--teal2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .logo-text h1 {
+    font-size: 1.1rem; font-weight: 700; letter-spacing: -.02em; color: var(--white);
+  }
+  .logo-text p {
+    font-size: 0.72rem; color: var(--muted); font-family: var(--mono);
+  }
+  #last-updated {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+    background: var(--navy3); padding: .35rem .75rem; border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── MAIN ─────────────────────────────────────────── */
+  main { max-width: 1280px; margin: 0 auto; padding: 2rem; }
+
+  /* ── ALERT BANNER ─────────────────────────────────── */
+  #alert-banner {
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    border: 1.5px solid;
+    transition: all .4s ease;
+  }
+  #alert-banner.green  { background: rgba(46,204,113,.08); border-color: var(--green);  }
+  #alert-banner.amber  { background: rgba(245,166,35,.08);  border-color: var(--amber);  }
+  #alert-banner.red    { background: rgba(232,69,96,.1);   border-color: var(--red);    }
+  .alert-icon { font-size: 2rem; }
+  .alert-body h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: .2rem; }
+  .alert-body p  { font-size: .875rem; color: var(--muted); line-height: 1.5; }
+  .alert-badge {
+    margin-left: auto; font-family: var(--mono); font-size: .75rem;
+    padding: .3rem .8rem; border-radius: 20px; font-weight: 600;
+    white-space: nowrap;
+  }
+  #alert-banner.green .alert-badge  { background: rgba(46,204,113,.2); color: var(--green); }
+  #alert-banner.amber .alert-badge  { background: rgba(245,166,35,.2);  color: var(--amber); }
+  #alert-banner.red   .alert-badge  { background: rgba(232,69,96,.2);   color: var(--red); }
+
+  /* ── KPI GRID ─────────────────────────────────────── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .kpi-card {
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.25rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .kpi-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--teal);
+    border-radius: 12px 12px 0 0;
+  }
+  .kpi-card.amber::before { background: var(--amber); }
+  .kpi-card.red::before   { background: var(--red); }
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-label {
+    font-family: var(--mono); font-size: .7rem; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); margin-bottom: .5rem;
+  }
+  .kpi-value {
+    font-family: var(--mono); font-size: 2.4rem; font-weight: 600;
+    color: var(--white); line-height: 1;
+    margin-bottom: .3rem;
+  }
+  .kpi-unit {
+    font-family: var(--mono); font-size: .72rem; color: var(--muted);
+  }
+  .kpi-sub {
+    font-size: .8rem; color: var(--muted); margin-top: .4rem;
+    display: flex; align-items: center; gap: .3rem;
+  }
+  .kpi-sub .arrow { font-size: 1rem; }
+
+  /* ── COLUMNS ──────────────────────────────────────── */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 900px) { .columns { grid-template-columns: 1fr; } }
+
+  /* ── PANEL ────────────────────────────────────────── */
+  .panel {
+    background: var(--navy2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.5rem;
+  }
+  .panel h3 {
+    font-size: .8rem; font-family: var(--mono); text-transform: uppercase;
+    letter-spacing: .1em; color: var(--teal); margin-bottom: 1.25rem;
+  }
+
+  /* ── CHART ────────────────────────────────────────── */
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* ── FORECAST TABLE ───────────────────────────────── */
+  .forecast-rows { display: flex; flex-direction: column; gap: .6rem; }
+  .fc-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .75rem 1rem;
+    background: var(--navy3); border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .fc-week { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+  .fc-bar-wrap { flex: 1; margin: 0 1rem; background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
+  .fc-bar { height: 100%; background: var(--teal); border-radius: 4px; transition: width .5s ease; }
+  .fc-val { font-family: var(--mono); font-size: .95rem; font-weight: 600; color: var(--white); min-width: 3.5rem; text-align: right; }
+  .fc-dir { font-size: .7rem; color: var(--muted); margin-top: .15rem; text-align: right; }
+
+  /* ── RECOMMENDATION ───────────────────────────────── */
+  .rec-panel { margin-bottom: 1.5rem; }
+  .rec-title { font-size: .8rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--teal); margin-bottom: 1rem; }
+  .rec-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; }
+  .rec-item {
+    background: var(--navy3); border: 1px solid var(--border); border-radius: 10px;
+    padding: 1rem; display: flex; gap: .75rem; align-items: flex-start;
+  }
+  .rec-emoji { font-size: 1.4rem; }
+  .rec-item h4 { font-size: .85rem; font-weight: 600; color: var(--white); margin-bottom: .25rem; }
+  .rec-item p  { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── HISTORY TABLE ────────────────────────────────── */
+  .data-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .8rem; }
+  .data-table th { text-align: left; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; padding: .5rem .75rem; border-bottom: 1px solid var(--border); }
+  .data-table td { padding: .55rem .75rem; border-bottom: 1px solid rgba(30,53,85,.5); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr.latest td { color: var(--teal); }
+  .bar-cell { display: flex; align-items: center; gap: .6rem; }
+  .inline-bar { flex: 1; background: var(--border); border-radius: 3px; height: 5px; overflow: hidden; }
+  .inline-bar-fill { height: 100%; border-radius: 3px; background: var(--teal); }
+  .change-up   { color: var(--red); }
+  .change-down { color: var(--green); }
+  .change-flat { color: var(--muted); }
+
+  /* ── SOURCE ───────────────────────────────────────── */
+  footer {
+    text-align: center; padding: 1.5rem; color: var(--muted);
+    font-size: .75rem; font-family: var(--mono);
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--teal); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── SKELETON/LOADING ─────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(90deg, var(--navy3) 25%, var(--border) 50%, var(--navy3) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 6px; height: 1.5rem;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* ── RESPONSIVE ───────────────────────────────────── */
+  @media (max-width: 600px) {
+    main { padding: 1rem; }
+    .kpi-value { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🫁</div>
+    <div class="logo-text">
+      <h1>ARI Dashboard</h1>
+      <p>Plánování ordinace – akutní pacienti ČR</p>
+    </div>
+  </div>
+  <div id="last-updated">⟳ načítám …</div>
+</header>
+
+<main>
+
+  <!-- ALERT BANNER -->
+  <div id="alert-banner" class="green">
+    <div class="alert-icon" id="alert-icon">⏳</div>
+    <div class="alert-body">
+      <h2 id="alert-title">Načítám data…</h2>
+      <p id="alert-desc">Prosím čekejte</p>
+    </div>
+    <div class="alert-badge" id="alert-badge">–</div>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid" id="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">ARI / 100 000 obyvatel</div><div class="kpi-value" id="kpi-ari">–</div><div class="kpi-unit" id="kpi-week">aktuální týden</div></div>
+    <div class="kpi-card" id="kpi-load-card"><div class="kpi-label">Vytížení vs. maximum</div><div class="kpi-value" id="kpi-load">–</div><div class="kpi-unit">% vrcholu (únor 2025)</div></div>
+    <div class="kpi-card"><div class="kpi-label">Forecast průměr (4T)</div><div class="kpi-value" id="kpi-fc">–</div><div class="kpi-unit">ARI / 100 000</div></div>
+    <div class="kpi-card"><div class="kpi-label">Trend příštích 4 týdnů</div><div class="kpi-value" id="kpi-trend" style="font-size:1.3rem;padding-top:.5rem">–</div><div class="kpi-sub" id="kpi-trend-sub"></div></div>
+  </div>
+
+  <!-- DOPORUČENÍ -->
+  <div class="panel rec-panel">
+    <div class="rec-title">🩺 Doporučení pro ordinaci tento týden</div>
+    <div class="rec-items" id="rec-items">
+      <div class="rec-item"><div class="rec-emoji">⏳</div><div><h4>Načítám…</h4><p> </p></div></div>
+    </div>
+  </div>
+
+  <!-- CHART + FORECAST -->
+  <div class="columns">
+    <div class="panel">
+      <h3>📈 Trend ARI – historická data + forecast</h3>
+      <div class="chart-wrap">
+        <canvas id="ari-chart"></canvas>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>🔭 Forecast – příštích 4 týdnů</h3>
+      <div class="forecast-rows" id="forecast-rows">
+        <div class="skeleton" style="height:60px"></div>
+        <div class="skeleton" style="height:60px"></div>
+        <div class="skeleton" style="height:60px"></div>
+        <div class="skeleton" style="height:60px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT DATA TABLE -->
+  <div class="panel">
+    <h3>📋 Posledních 12 týdnů – detail</h3>
+    <div style="overflow-x:auto">
+      <table class="data-table" id="history-table">
+        <thead><tr>
+          <th>Týden</th>
+          <th>ARI / 100k</th>
+          <th>Vizualizace</th>
+          <th>ILI / 100k</th>
+          <th>Změna t/t</th>
+          <th>Vytížení</th>
+        </tr></thead>
+        <tbody id="history-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Zdroj dat: <a href="https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/" target="_blank">Státní zdravotní ústav – zprávy ARI/ILI</a>
+  &nbsp;·&nbsp; 100 % = nejhorší měsíční průměr ARI v ČR (únor 2025 = 2 053 / 100k)
+  &nbsp;·&nbsp; Forecast: 50 % krátkodobý trend + 50 % sezónní srovnání s loňskem
+</footer>
+
+<script>
+/* ────────────────────────────────────────────────────────────
+   DATA LOADING
+   Pokud běžíme na GitHub Pages, stáhne data/ari_data.json.
+   Jinak (lokálně bez serveru) použijeme inline záložní data.
+──────────────────────────────────────────────────────────── */
+const BASELINE = 2053;
+
+// Inline data – vždy funguje i bez serveru
+window.__INLINE_DATA__ = {"meta":{"last_updated":"2026-04-28","source":"Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/","baseline_label":"únor 2025","baseline_ari_per_100k":2053,"note":"100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)"},"current":{"week":"2026-W16","ari_per_100k":33,"ili_per_100k":65,"load_pct":0.016,"trend":"spíš nižší"},"forecast":[{"week":"2026-W17","date":"2026-04-19","ari_forecast":24.5,"direction":"spíš nižší"},{"week":"2026-W18","date":"2026-04-26","ari_forecast":23.5,"direction":"spíš nižší"},{"week":"2026-W19","date":"2026-05-03","ari_forecast":20.2,"direction":"spíš nižší"},{"week":"2026-W20","date":"2026-05-10","ari_forecast":19.9,"direction":"spíš nižší"}],"history":[{"week":"2025-W01","year":2025,"iso_week":1,"ari_per_100k":834,"ili_per_100k":20},{"week":"2025-W02","year":2025,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":40},{"week":"2025-W03","year":2025,"iso_week":3,"ari_per_100k":1499,"ili_per_100k":77},{"week":"2025-W04","year":2025,"iso_week":4,"ari_per_100k":1940,"ili_per_100k":138},{"week":"2025-W05","year":2025,"iso_week":5,"ari_per_100k":2251,"ili_per_100k":257},{"week":"2025-W06","year":2025,"iso_week":6,"ari_per_100k":2219,"ili_per_100k":251},{"week":"2025-W07","year":2025,"iso_week":7,"ari_per_100k":2138,"ili_per_100k":240},{"week":"2025-W08","year":2025,"iso_week":8,"ari_per_100k":1988,"ili_per_100k":196},{"week":"2025-W09","year":2025,"iso_week":9,"ari_per_100k":1867,"ili_per_100k":159},{"week":"2025-W10","year":2025,"iso_week":10,"ari_per_100k":1536,"ili_per_100k":113},{"week":"2025-W11","year":2025,"iso_week":11,"ari_per_100k":1584,"ili_per_100k":88},{"week":"2025-W12","year":2025,"iso_week":12,"ari_per_100k":1501,"ili_per_100k":null},{"week":"2025-W13","year":2025,"iso_week":13,"ari_per_100k":1431,"ili_per_100k":44},{"week":"2025-W14","year":2025,"iso_week":14,"ari_per_100k":1381,"ili_per_100k":39},{"week":"2025-W15","year":2025,"iso_week":15,"ari_per_100k":1295,"ili_per_100k":25},{"week":"2025-W16","year":2025,"iso_week":16,"ari_per_100k":998,"ili_per_100k":15},{"week":"2025-W17","year":2025,"iso_week":17,"ari_per_100k":685,"ili_per_100k":9},{"week":"2025-W18","year":2025,"iso_week":18,"ari_per_100k":783,"ili_per_100k":7},{"week":"2025-W19","year":2025,"iso_week":19,"ari_per_100k":711,"ili_per_100k":7},{"week":"2025-W20","year":2025,"iso_week":20,"ari_per_100k":797,"ili_per_100k":9},{"week":"2025-W21","year":2025,"iso_week":21,"ari_per_100k":783,"ili_per_100k":10},{"week":"2025-W22","year":2025,"iso_week":22,"ari_per_100k":795,"ili_per_100k":9},{"week":"2025-W23","year":2025,"iso_week":23,"ari_per_100k":775,"ili_per_100k":9},{"week":"2025-W24","year":2025,"iso_week":24,"ari_per_100k":738,"ili_per_100k":null},{"week":"2025-W25","year":2025,"iso_week":25,"ari_per_100k":732,"ili_per_100k":7},{"week":"2025-W26","year":2025,"iso_week":26,"ari_per_100k":655,"ili_per_100k":6},{"week":"2025-W27","year":2025,"iso_week":27,"ari_per_100k":449,"ili_per_100k":5},{"week":"2025-W28","year":2025,"iso_week":28,"ari_per_100k":514,"ili_per_100k":5},{"week":"2025-W29","year":2025,"iso_week":29,"ari_per_100k":448,"ili_per_100k":3},{"week":"2025-W30","year":2025,"iso_week":30,"ari_per_100k":515,"ili_per_100k":4},{"week":"2025-W31","year":2025,"iso_week":31,"ari_per_100k":394,"ili_per_100k":4},{"week":"2025-W32","year":2025,"iso_week":32,"ari_per_100k":430,"ili_per_100k":5},{"week":"2025-W33","year":2025,"iso_week":33,"ari_per_100k":444,"ili_per_100k":4},{"week":"2025-W34","year":2025,"iso_week":34,"ari_per_100k":528,"ili_per_100k":5},{"week":"2025-W35","year":2025,"iso_week":35,"ari_per_100k":558,"ili_per_100k":5},{"week":"2025-W36","year":2025,"iso_week":36,"ari_per_100k":643,"ili_per_100k":6},{"week":"2025-W37","year":2025,"iso_week":37,"ari_per_100k":811,"ili_per_100k":8},{"week":"2025-W38","year":2025,"iso_week":38,"ari_per_100k":890,"ili_per_100k":11},{"week":"2025-W39","year":2025,"iso_week":39,"ari_per_100k":934,"ili_per_100k":12},{"week":"2025-W40","year":2025,"iso_week":40,"ari_per_100k":1002,"ili_per_100k":13},{"week":"2025-W41","year":2025,"iso_week":41,"ari_per_100k":1083,"ili_per_100k":15},{"week":"2025-W42","year":2025,"iso_week":42,"ari_per_100k":1062,"ili_per_100k":15},{"week":"2025-W43","year":2025,"iso_week":43,"ari_per_100k":1069,"ili_per_100k":16},{"week":"2025-W44","year":2025,"iso_week":44,"ari_per_100k":762,"ili_per_100k":11},{"week":"2025-W45","year":2025,"iso_week":45,"ari_per_100k":932,"ili_per_100k":14},{"week":"2025-W46","year":2025,"iso_week":46,"ari_per_100k":939,"ili_per_100k":13},{"week":"2025-W47","year":2025,"iso_week":47,"ari_per_100k":862,"ili_per_100k":12},{"week":"2025-W48","year":2025,"iso_week":48,"ari_per_100k":1078,"ili_per_100k":18},{"week":"2025-W49","year":2025,"iso_week":49,"ari_per_100k":1242,"ili_per_100k":33},{"week":"2025-W50","year":2025,"iso_week":50,"ari_per_100k":1486,"ili_per_100k":null},{"week":"2025-W51","year":2025,"iso_week":51,"ari_per_100k":1580,"ili_per_100k":null},{"week":"2026-W01","year":2026,"iso_week":1,"ari_per_100k":939,"ili_per_100k":43},{"week":"2026-W02","year":2026,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":null},{"week":"2026-W03","year":2026,"iso_week":3,"ari_per_100k":1281,"ili_per_100k":69},{"week":"2026-W04","year":2026,"iso_week":4,"ari_per_100k":1456,"ili_per_100k":80},{"week":"2026-W05","year":2026,"iso_week":5,"ari_per_100k":1497,"ili_per_100k":73},{"week":"2026-W06","year":2026,"iso_week":6,"ari_per_100k":1534,"ili_per_100k":68},{"week":"2026-W07","year":2026,"iso_week":7,"ari_per_100k":1497,"ili_per_100k":null},{"week":"2026-W08","year":2026,"iso_week":8,"ari_per_100k":1423,"ili_per_100k":null},{"week":"2026-W09","year":2026,"iso_week":9,"ari_per_100k":1364,"ili_per_100k":null},{"week":"2026-W10","year":2026,"iso_week":10,"ari_per_100k":1326,"ili_per_100k":27},{"week":"2026-W11","year":2026,"iso_week":11,"ari_per_100k":1276,"ili_per_100k":21},{"week":"2026-W12","year":2026,"iso_week":12,"ari_per_100k":1255,"ili_per_100k":17},{"week":"2026-W13","year":2026,"iso_week":13,"ari_per_100k":1,"ili_per_100k":65},{"week":"2026-W14","year":2026,"iso_week":14,"ari_per_100k":-7,"ili_per_100k":65},{"week":"2026-W15","year":2026,"iso_week":15,"ari_per_100k":-33,"ili_per_100k":65},{"week":"2026-W16","year":2026,"iso_week":16,"ari_per_100k":33,"ili_per_100k":65}]};
+
+async function loadData() {
+  try {
+    const r = await fetch('data/ari_data.json');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } catch(e) {
+    return window.__INLINE_DATA__;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────
+   ALERT / DOPORUČENÍ  logic
+──────────────────────────────────────────────────────────── */
+function getStatus(ari) {
+  // Červená: > 33 % maxima  (>~680)
+  // Oranžová: 10–33 %       (>~205)
+  // Zelená: < 10 %
+  const pct = ari / BASELINE;
+  if (pct >= 0.33) return 'red';
+  if (pct >= 0.10) return 'amber';
+  return 'green';
+}
+
+const STATUS_CONFIG = {
+  red: {
+    icon: '🔴',
+    title: 'ZVÝŠENÁ ZÁTĚŽ – epidemická sezóna',
+    desc: 'ARI výrazně nad normu. Očekávejte výrazně více akutních pacientů s respiračními infekty.',
+    badge: 'Vysoká zátěž',
+    recs: [
+      { e:'📅', h:'Navyšte akutní sloty', p:'Přidejte 20–40 % kapacity pro neobjednaná vyšetření resp. infektů.' },
+      { e:'🤧', h:'Prioritizujte rizikové skupiny', p:'Senioři, imunosuprimovaní – zkraťte čekací dobu.' },
+      { e:'💊', h:'Zásoby léčiv', p:'Zkontrolujte zásoby antivirálních léčiv a antibiotik.' },
+      { e:'📞', h:'Telefonické triáže', p:'Zvažte telefonickou triáž před objednáním k redukci zbytečných návštěv.' },
+    ]
+  },
+  amber: {
+    icon: '🟡',
+    title: 'MÍRNĚ ZVÝŠENÁ ZÁTĚŽ – zvýšený výskyt ARI',
+    desc: 'ARI nad průměr. Počítejte s vyšším počtem resp. infekcí než mimo sezónu.',
+    badge: 'Zvýšená zátěž',
+    recs: [
+      { e:'📅', h:'Rezervujte akutní sloty', p:'Ponechte 10–20 % kapacity pro neobjednané pacienty s respiračními příznaky.' },
+      { e:'📊', h:'Sledujte trend', p:'Trend bude patrný příští týden – připravte se na případný nárůst.' },
+      { e:'💉', h:'Upomínky na očkování', p:'Vhodná chvíle pro aktivní nabídku chřipkové vakcíny.' },
+      { e:'📋', h:'Standardizovaná dokumentace', p:'Připravte šablony pro rychlejší záznam respiračních konzultací.' },
+    ]
+  },
+  green: {
+    icon: '🟢',
+    title: 'KLIDNÁ SEZÓNA – nízký výskyt ARI',
+    desc: 'ARI na mezisezónní úrovni. Ordinace pracuje v normálním režimu.',
+    badge: 'Nízká zátěž',
+    recs: [
+      { e:'📆', h:'Normální provoz', p:'Standardní rozvrh bez potřeby rozšíření akutní kapacity.' },
+      { e:'🏥', h:'Preventivní péče', p:'Vhodná chvíle pro plánování preventivních prohlídek a chronických pacientů.' },
+      { e:'📚', h:'Vzdělávání', p:'Ideální čas pro vzdělávací aktivity a administrativu.' },
+      { e:'🔭', h:'Sledujte forecast', p:'Podzimní sezóna začíná kolem 40.–42. týdne – monitorujte trend.' },
+    ]
+  }
+};
+
+/* ────────────────────────────────────────────────────────────
+   RENDER
+──────────────────────────────────────────────────────────── */
+function renderDashboard(data) {
+  const { meta, current, forecast, history } = data;
+  const ari    = current.ari_per_100k;
+  const status = getStatus(Math.max(0, ari));
+  const cfg    = STATUS_CONFIG[status];
+
+  // Last updated
+  document.getElementById('last-updated').textContent =
+    `Aktualizováno: ${meta.last_updated}`;
+
+  // Alert banner
+  const banner = document.getElementById('alert-banner');
+  banner.className = status;
+  document.getElementById('alert-icon').textContent  = cfg.icon;
+  document.getElementById('alert-title').textContent = cfg.title;
+  document.getElementById('alert-desc').textContent  = cfg.desc;
+  document.getElementById('alert-badge').textContent = cfg.badge;
+
+  // KPI
+  document.getElementById('kpi-ari').textContent  = ari.toLocaleString('cs-CZ');
+  document.getElementById('kpi-week').textContent = current.week;
+
+  const loadPct = Math.max(0, ari) / BASELINE * 100;
+  document.getElementById('kpi-load').textContent = loadPct.toFixed(1) + ' %';
+  const lc = document.getElementById('kpi-load-card');
+  lc.classList.remove('green','amber','red');
+  lc.classList.add(status);
+
+  const fcAvg = forecast.length
+    ? (forecast.reduce((s,f)=>s+f.ari_forecast,0) / forecast.length).toFixed(1)
+    : '–';
+  document.getElementById('kpi-fc').textContent = fcAvg;
+
+  const trendDir = forecast.length ? forecast[0].direction : '–';
+  document.getElementById('kpi-trend').textContent = trendDir === 'spíš nižší' ? '↘ Klesající' :
+                                                      trendDir === 'spíš vyšší' ? '↗ Rostoucí'  : '→ Stagnace';
+
+  // Doporučení
+  const recEl = document.getElementById('rec-items');
+  recEl.innerHTML = cfg.recs.map(r =>
+    `<div class="rec-item"><div class="rec-emoji">${r.e}</div><div><h4>${r.h}</h4><p>${r.p}</p></div></div>`
+  ).join('');
+
+  // Forecast rows
+  const maxFc = Math.max(...forecast.map(f=>f.ari_forecast), BASELINE * 0.05);
+  document.getElementById('forecast-rows').innerHTML = forecast.map(f => {
+    const pct = (f.ari_forecast / maxFc * 100).toFixed(1);
+    return `<div class="fc-row">
+      <div>
+        <div class="fc-week">${f.week}</div>
+        <div class="fc-dir">${f.direction ?? ''}</div>
+      </div>
+      <div class="fc-bar-wrap"><div class="fc-bar" style="width:${pct}%"></div></div>
+      <div>
+        <div class="fc-val">${f.ari_forecast.toLocaleString('cs-CZ')}</div>
+        <div class="fc-dir">/100k</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // History table (last 12 weeks)
+  const recent = history.slice(-12);
+  document.getElementById('history-body').innerHTML = recent.map((h, i) => {
+    const prev   = i > 0 ? recent[i-1].ari_per_100k : null;
+    const change = prev !== null ? ((h.ari_per_100k - prev) / Math.abs(prev||1) * 100) : null;
+    const chClass= change === null ? 'change-flat' : change > 2 ? 'change-up' : change < -2 ? 'change-down' : 'change-flat';
+    const chText = change === null ? '–' : (change > 0 ? '+' : '') + change.toFixed(1) + ' %';
+    const barPct = Math.max(0, h.ari_per_100k) / BASELINE * 100;
+    const barColor = getStatus(h.ari_per_100k) === 'red' ? 'var(--red)' :
+                     getStatus(h.ari_per_100k) === 'amber' ? 'var(--amber)' : 'var(--teal)';
+    const isLatest = i === recent.length - 1;
+    return `<tr class="${isLatest ? 'latest' : ''}">
+      <td>${h.week}</td>
+      <td>${h.ari_per_100k.toLocaleString('cs-CZ')}</td>
+      <td><div class="bar-cell"><div class="inline-bar"><div class="inline-bar-fill" style="width:${barPct.toFixed(1)}%;background:${barColor}"></div></div></div></td>
+      <td>${h.ili_per_100k !== null && h.ili_per_100k !== undefined ? h.ili_per_100k : '–'}</td>
+      <td class="${chClass}">${chText}</td>
+      <td>${(Math.max(0,h.ari_per_100k)/BASELINE*100).toFixed(1)} %</td>
+    </tr>`;
+  }).join('');
+
+  // Chart
+  renderChart(history, forecast);
+}
+
+/* ────────────────────────────────────────────────────────────
+   CHART
+──────────────────────────────────────────────────────────── */
+let chartInstance = null;
+function renderChart(history, forecast) {
+  const ctx = document.getElementById('ari-chart').getContext('2d');
+
+  // Použijeme posledních 52 týdnů + forecast
+  const hist52 = history.slice(-52);
+  const labels = [
+    ...hist52.map(h => h.week),
+    ...forecast.map(f => f.week)
+  ];
+  const ariData = [
+    ...hist52.map(h => Math.max(0, h.ari_per_100k)),
+    ...forecast.map(() => null)
+  ];
+  const fcData = [
+    ...hist52.map(() => null),
+    null,   // gap spojnice
+    ...forecast.map(f => f.ari_forecast)
+  ];
+  // Spojnice: posledni skutecna hodnota + prvni forecast
+  const bridgeData = hist52.map(() => null);
+  bridgeData[bridgeData.length - 1] = Math.max(0, hist52[hist52.length-1].ari_per_100k);
+  bridgeData.push(forecast[0]?.ari_forecast ?? null);
+  for (let i = 1; i < forecast.length; i++) bridgeData.push(null);
+
+  if (chartInstance) chartInstance.destroy();
+
+  chartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'ARI / 100k (historická data)',
+          data: ariData,
+          borderColor: '#00c9a7',
+          backgroundColor: 'rgba(0,201,167,.08)',
+          fill: true,
+          tension: 0.35,
+          pointRadius: 2,
+          pointHoverRadius: 5,
+          borderWidth: 2,
+          spanGaps: false,
+        },
+        {
+          label: 'Forecast',
+          data: [...bridgeData.slice(0, hist52.length), ...forecast.map(f => f.ari_forecast)],
+          borderColor: '#f5a623',
+          borderDash: [5,4],
+          backgroundColor: 'rgba(245,166,35,.05)',
+          fill: false,
+          tension: 0.35,
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          borderWidth: 2,
+          spanGaps: false,
+        },
+        {
+          label: 'Baseline (max únor 2025)',
+          data: Array(labels.length).fill(BASELINE),
+          borderColor: 'rgba(232,69,96,.35)',
+          borderDash: [8,4],
+          fill: false,
+          pointRadius: 0,
+          borderWidth: 1.5,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          labels: { color: '#8ba7c7', font: { family: "'IBM Plex Mono'", size: 11 }, boxWidth: 16, padding: 16 }
+        },
+        tooltip: {
+          backgroundColor: '#0d1f35',
+          borderColor: '#1e3555',
+          borderWidth: 1,
+          titleColor: '#ddeeff',
+          bodyColor: '#8ba7c7',
+          titleFont: { family: "'IBM Plex Mono'" },
+          bodyFont:  { family: "'IBM Plex Mono'" },
+          callbacks: {
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (v === null || v === undefined) return null;
+              return `  ${ctx.dataset.label}: ${v.toLocaleString('cs-CZ')} / 100k`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#8ba7c7', maxRotation: 45,
+            font: { family: "'IBM Plex Mono'", size: 10 },
+            maxTicksLimit: 18,
+          },
+          grid: { color: 'rgba(30,53,85,.5)' },
+        },
+        y: {
+          ticks: { color: '#8ba7c7', font: { family: "'IBM Plex Mono'", size: 10 } },
+          grid: { color: 'rgba(30,53,85,.5)' },
+          title: { display: true, text: 'ARI / 100 000 obyvatel', color: '#8ba7c7', font: { size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+/* ────────────────────────────────────────────────────────────
+   BOOTSTRAP
+──────────────────────────────────────────────────────────── */
+loadData().then(data => {
+  if (!data) {
+    document.getElementById('alert-title').textContent = 'Chyba při načítání dat';
+    document.getElementById('alert-desc').textContent  = 'Nepodařilo se načíst data/ari_data.json';
+    return;
+  }
+  renderDashboard(data);
+}).catch(e => {
+  console.error(e);
+  document.getElementById('alert-title').textContent = 'Chyba: ' + e.message;
+});
+</script>
+
+</body>
+</html>
