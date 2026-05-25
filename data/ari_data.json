@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-04-28",
+    "last_updated": "2026-05-25",
     "source": "Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/",
     "baseline_label": "únor 2025",
     "baseline_ari_per_100k": 2053,
@@ -8,33 +8,33 @@
     "note_w13plus": "Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."
   },
   "current": {
-    "week": "2026-W16",
-    "ari_per_100k": 980,
+    "week": "2026-W19",
+    "ari_per_100k": 831,
     "ili_per_100k": null,
-    "load_pct": 0.4774,
-    "trend": "klesající (post-Velikonoce)",
-    "note": "Odhad z KHS Středočeský kraj – není přesná národní hodnota SZÚ"
+    "load_pct": 0.4048,
+    "trend": "klesající",
+    "source_note": "Odhad: KHS StC=710.0 × 1.17"
   },
   "forecast": [
     {
-      "week": "2026-W17",
-      "ari_forecast": 865.0,
-      "direction": "spíš nižší"
-    },
-    {
-      "week": "2026-W18",
-      "ari_forecast": 913.0,
-      "direction": "spíš nižší"
-    },
-    {
-      "week": "2026-W19",
-      "ari_forecast": 878.0,
-      "direction": "spíš nižší"
-    },
-    {
       "week": "2026-W20",
-      "ari_forecast": 920.0,
-      "direction": "spíš nižší"
+      "ari_forecast": 952.1,
+      "direction": "spíš vyšší"
+    },
+    {
+      "week": "2026-W21",
+      "ari_forecast": 944.0,
+      "direction": "spíš vyšší"
+    },
+    {
+      "week": "2026-W22",
+      "ari_forecast": 951.0,
+      "direction": "spíš vyšší"
+    },
+    {
+      "week": "2026-W23",
+      "ari_forecast": 939.3,
+      "direction": "spíš vyšší"
     }
   ],
   "history": [
@@ -510,6 +510,33 @@
       "ari_per_100k": 980,
       "ili_per_100k": null,
       "note": "odhad z KHS StC (982, +34% post-Velikonoce recovery)"
+    },
+    {
+      "week": "2026-W17",
+      "year": 2026,
+      "iso_week": 17,
+      "ari_per_100k": 1041,
+      "ili_per_100k": null,
+      "source_url": "https://khsstc.cz/informace-o-epidemiologicke-situaci-ve-vyskytu-akutnich-respiracnich-infekci-a-chripky-v-17-kalendarnim-tydnu-2026/",
+      "note": "Odhad: KHS StC=890.0 × 1.17"
+    },
+    {
+      "week": "2026-W18",
+      "year": 2026,
+      "iso_week": 18,
+      "ari_per_100k": 1039,
+      "ili_per_100k": null,
+      "source_url": "https://khsstc.cz/informace-o-epidemiologicke-situaci-ve-vyskytu-akutnich-respiracnich-infekci-a-chripky-v-18-kalendarnim-tydnu-2026/",
+      "note": "Odhad: KHS StC=888.0 × 1.17"
+    },
+    {
+      "week": "2026-W19",
+      "year": 2026,
+      "iso_week": 19,
+      "ari_per_100k": 831,
+      "ili_per_100k": null,
+      "source_url": "https://khsstc.cz/informace-o-epidemiologicke-situaci-ve-vyskytu-akutnich-respiracnich-infekci-a-chripky-v-19-kalendarnim-tydnu-2026/",
+      "note": "Odhad: KHS StC=710.0 × 1.17"
     }
   ]
 }
