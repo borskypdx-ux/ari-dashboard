@@ -1,11 +1,11 @@
 {
   "meta": {
     "last_updated": "2026-06-28",
-    "source": "Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/",
+    "source": "Státní zdravotní ústav (SZÚ) – týdenní reporty ARI/ILI: https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
     "baseline_label": "únor 2025",
     "baseline_ari_per_100k": 2053,
     "note": "100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)",
-    "note_w13plus": "Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."
+    "note_w13plus": "Týdenní data se od W20/2026 automaticky stahují z týdenních PDF reportů SZÚ (datová stránka). Pondělní tiskové zprávy SZÚ byly pro tuto sezónu ukončeny (10. KT), PDF reporty ale pokračují. W13–W19 jsou odhady z KHS Středočeského kraje."
   },
   "current": {
     "week": "2026-W25",
