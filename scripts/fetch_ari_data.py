@@ -187,16 +187,9 @@ def fetch_szu_pdf_indexed(year, week, index):
     if ari is None:
         print(f"  [SZU PDF] W{week}/{year}: hodnota ARI nenalezena ({url}); "
               f"délka textu={len(text)}")
-        # Ladění: ukaž okolí klíčových frází, ať víme, jak PDF formuluje číslo.
-        low = text.lower()
-        shown = False
-        for kw in ["na 100 000", "na 100", "nemocnost", "\u00farovni", "100 000"]:
-            i = low.find(kw)
-            if i >= 0:
-                print(("      [" + kw + "] " + text[max(0,i-110):i+70]).replace(chr(10), " ").strip())
-                shown = True
-        if not shown:
-            print("      [zacatek] " + repr(text[:400]).replace(chr(10), " "))
+        # Ladění: vypiš celý text PDF (newliny → ' | '), ať vidíme strukturu tabulky.
+        flat = " | ".join(line.strip() for line in text.splitlines() if line.strip())
+        print(f"      [FULLTEXT W{week}] {flat[:2200]}")
         return None
     ili_m = RE_ILI.search(text)
     e = make_entry(year, week, ari, float(ili_m.group(1)) if ili_m else None,
