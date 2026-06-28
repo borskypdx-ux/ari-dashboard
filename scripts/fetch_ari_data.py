@@ -136,6 +136,64 @@ def fetch_pdf(year, week):
     return None
 
 
+# ── ZDROJ 1b: SZÚ datová stránka → index týdenních PDF ────────────────────────
+# Týdenní reporty SZÚ jsou vystaveny na datové stránce a soubor je uložen
+# podle MĚSÍCE VYDÁNÍ (např. W22 leží v /2026/06/, ne /2026/05/). Proto je
+# spolehlivější vzít odkazy přímo z indexu než hádat měsíc z čísla týdne.
+RE_SZU_PDF = re.compile(r"/wp-content/uploads/(\d{4})/(\d{2})/(\d{1,2})_tyden\.pdf", re.IGNORECASE)
+SZU_DATA_PAGE = "https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/"
+
+def fetch_szu_data_index():
+    """Vrátí mapu {(rok, týden): url_pdf} týdenních ARI reportů z datové stránky SZÚ."""
+    html = get(SZU_DATA_PAGE)
+    if not html:
+        return {}
+    index = {}
+    for m in RE_SZU_PDF.finditer(html):
+        year, _month, week = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        # Klíčujeme dvojicí (rok-v-cestě, týden). Pro letní týdny ISO rok == rok v cestě.
+        index.setdefault((year, week), "https://szu.gov.cz" + m.group(0))
+    return index
+
+def _ari_from_pdf_text(text):
+    """Z textu PDF vytáhne národní hodnotu ARI/100k – zkusí národní i obecné vzory."""
+    m = RE_ARI_NATIONAL.search(text)
+    if m:
+        try:
+            v = parse_num(m.group(1))
+            if 50 <= v <= 20000:
+                return v
+        except ValueError:
+            pass
+    return match_regional_ari(text)
+
+def fetch_szu_pdf_indexed(year, week, index):
+    """Stáhne týdenní PDF SZÚ podle indexu a vytáhne národní ARI hodnotu."""
+    if not HAS_PDF:
+        return None
+    url = index.get((year, week))
+    if not url:
+        return None
+    c = get(url, binary=True)
+    if not c:
+        return None
+    try:
+        with pdfplumber.open(io.BytesIO(c)) as pdf:
+            text = "\n".join(p.extract_text() or "" for p in pdf.pages)
+    except Exception as ex:
+        print(f"  PDF chyba {url}: {ex}")
+        return None
+    ari = _ari_from_pdf_text(text)
+    if ari is None:
+        print(f"  [SZU PDF] W{week}/{year}: hodnota ARI nenalezena ({url})")
+        return None
+    ili_m = RE_ILI.search(text)
+    e = make_entry(year, week, ari, float(ili_m.group(1)) if ili_m else None,
+                   source=url, note="SZÚ týdenní PDF (datová stránka)")
+    print(f"  [SZU PDF] W{week}/{year}: ARI={e['ari_per_100k']} ({url})")
+    return e
+
+
 # ── ZDROJ 2: SZÚ tiskové zprávy ───────────────────────────────────────────────
 def fetch_press_releases(target_weeks):
     """Prochází aktuality SZÚ, vrací dict {iso_key: entry}."""
@@ -345,10 +403,17 @@ def main():
     print(f"Chybejici: {[iso_key(y,w) for y,w in missing] or 'zadne'}")
     new_data = {}
 
+    # Index týdenních PDF z datové stránky SZÚ (primární, nejspolehlivější zdroj).
+    szu_index = fetch_szu_data_index() if missing else {}
+    print(f"SZU index: {len(szu_index)} týdenních PDF nalezeno"
+          + (f" (např. {sorted(szu_index)[-3:]})" if szu_index else ""))
+
     for year, week in missing:
         key = iso_key(year, week)
-        # Kaskáda zdrojů: PDF → tisková zpráva → KHS StC → KHS Praha
-        e = fetch_pdf(year, week)
+        # Kaskáda zdrojů: SZÚ PDF (index) → SZÚ PDF (odhad měsíce) → tisková zpráva → KHS
+        e = fetch_szu_pdf_indexed(year, week, szu_index)
+        if not e:
+            e = fetch_pdf(year, week)
         if not e:
             time.sleep(0.5)
         if not e:
