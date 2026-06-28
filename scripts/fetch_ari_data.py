@@ -189,11 +189,14 @@ def fetch_szu_pdf_indexed(year, week, index):
               f"délka textu={len(text)}")
         # Ladění: ukaž okolí klíčových frází, ať víme, jak PDF formuluje číslo.
         low = text.lower()
-        for kw in ["100 000", "100 000", "na 100", "nemocnost", "úrovni", "ari"]:
-            i = low.find(kw.lower())
+        shown = False
+        for kw in ["na 100 000", "na 100", "nemocnost", "\u00farovni", "100 000"]:
+            i = low.find(kw)
             if i >= 0:
-                snippet = text[max(0, i-90):i+60].replace("\n", " ")
-                print(f"      …{snippet}…")
+                print(("      [" + kw + "] " + text[max(0,i-110):i+70]).replace(chr(10), " ").strip())
+                shown = True
+        if not shown:
+            print("      [zacatek] " + repr(text[:400]).replace(chr(10), " "))
         return None
     ili_m = RE_ILI.search(text)
     e = make_entry(year, week, ari, float(ili_m.group(1)) if ili_m else None,
@@ -430,12 +433,8 @@ def main():
         else:
             print(f"  [MISS] W{week}/{year}: žádný zdroj nenalezl data")
 
-    # Když se nic nenašlo, vypiš strukturu zdrojů (ladění – zdroje mění URL).
-    if missing and not new_data:
-        try:
-            diagnose_sources()
-        except Exception as ex:
-            print(f"  DIAG selhal: {ex}")
+    # (diagnose_sources() je k dispozici ručně; v běžném běhu ho nevoláme,
+    #  ať logy zůstanou čitelné a případné PDF snippety jsou na konci.)
 
     # Ulož do history
     existing = {h["week"]: i for i, h in enumerate(data["history"])}
