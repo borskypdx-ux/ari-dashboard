@@ -305,6 +305,39 @@ def compute_forecast(history, n=4):
                         "direction": "spíš nižší" if fc < last["ari_per_100k"] else "spíš vyšší"})
     return fc_list
 
+def diagnose_sources():
+    """Vypíše aktuální strukturu odkazů na klíčových stránkách zdrojů.
+    Slouží k ladění, když scraper nic nenajde – z logu pak vidíme,
+    jak vypadají reálné URL/odkazy teď (mění se v čase)."""
+    print("=== DIAG: aktuální struktura zdrojů ===")
+    pages = {
+        "SZU-zpravy":   "https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/",
+        "SZU-data-ARI": "https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
+        "SZU-aktuality":"https://szu.gov.cz/aktuality/",
+        "KHS-StC-akt":  "https://khsstc.cz/category/aktuality/",
+        "KHS-StC-home": "https://khsstc.cz/",
+        "HygPraha-akt": "https://www.hygpraha.cz/aktuality/",
+    }
+    keys = ["tydn", "týdn", "respira", "ari", "chřip", "chrip", "nemocnost",
+            ".xlsx", ".csv", ".pdf", "influenza"]
+    for name, url in pages.items():
+        html = get(url)
+        if not html:
+            print(f"  [{name}] NELZE NAČÍST {url}")
+            continue
+        soup = BeautifulSoup(html, "html.parser")
+        rel = []
+        for a in soup.find_all("a", href=True):
+            txt  = a.get_text(" ", strip=True)
+            href = a["href"]
+            if any(k in (txt + " " + href).lower() for k in keys):
+                rel.append(f"      {txt[:80]!r} -> {href}")
+        print(f"  [{name}] {url} : {len(rel)} relevantních odkazů (zobrazuji max 30)")
+        for line in rel[:30]:
+            print(line)
+    print("=== /DIAG ===")
+
+
 def main():
     print("ARI Dashboard – update dat")
     data    = load_data()
@@ -331,6 +364,13 @@ def main():
             new_data[key] = e
         else:
             print(f"  [MISS] W{week}/{year}: žádný zdroj nenalezl data")
+
+    # Když se nic nenašlo, vypiš strukturu zdrojů (ladění – zdroje mění URL).
+    if missing and not new_data:
+        try:
+            diagnose_sources()
+        except Exception as ex:
+            print(f"  DIAG selhal: {ex}")
 
     # Ulož do history
     existing = {h["week"]: i for i, h in enumerate(data["history"])}
