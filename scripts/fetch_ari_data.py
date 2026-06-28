@@ -185,7 +185,15 @@ def fetch_szu_pdf_indexed(year, week, index):
         return None
     ari = _ari_from_pdf_text(text)
     if ari is None:
-        print(f"  [SZU PDF] W{week}/{year}: hodnota ARI nenalezena ({url})")
+        print(f"  [SZU PDF] W{week}/{year}: hodnota ARI nenalezena ({url}); "
+              f"délka textu={len(text)}")
+        # Ladění: ukaž okolí klíčových frází, ať víme, jak PDF formuluje číslo.
+        low = text.lower()
+        for kw in ["100 000", "100 000", "na 100", "nemocnost", "úrovni", "ari"]:
+            i = low.find(kw.lower())
+            if i >= 0:
+                snippet = text[max(0, i-90):i+60].replace("\n", " ")
+                print(f"      …{snippet}…")
         return None
     ili_m = RE_ILI.search(text)
     e = make_entry(year, week, ari, float(ili_m.group(1)) if ili_m else None,
@@ -410,21 +418,13 @@ def main():
 
     for year, week in missing:
         key = iso_key(year, week)
-        # Kaskáda zdrojů: SZÚ PDF (index) → SZÚ PDF (odhad měsíce) → tisková zpráva → KHS
+        # Primární zdroj: týdenní PDF SZÚ z datové stránky (národní data, rok ulato).
+        # Záloha: odhad měsíce v URL. KHS/tiskové zprávy se pro daný týden už
+        # nevydávají (potvrzeno 404), proto je v hlavní smyčce nepoužíváme –
+        # jen by běh zpomalovaly. Zůstávají k dispozici jako funkce pro zimní sezónu.
         e = fetch_szu_pdf_indexed(year, week, szu_index)
         if not e:
             e = fetch_pdf(year, week)
-        if not e:
-            time.sleep(0.5)
-        if not e:
-            press = fetch_press_releases([(year, week)])
-            e = press.get(key)
-        if not e:
-            time.sleep(0.5)
-            e = fetch_khs_stc(year, week)
-        if not e:
-            time.sleep(0.5)
-            e = fetch_khs_praha(year, week)
         if e:
             new_data[key] = e
         else:
