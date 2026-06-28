@@ -8,33 +8,33 @@
     "note_w13plus": "Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."
   },
   "current": {
-    "week": "2026-W19",
-    "ari_per_100k": 831,
-    "ili_per_100k": null,
-    "load_pct": 0.4048,
+    "week": "2026-W25",
+    "ari_per_100k": 738,
+    "ili_per_100k": 7,
+    "load_pct": 0.3595,
     "trend": "klesající",
-    "source_note": "Odhad: KHS StC=710.0 × 1.17"
+    "source_note": "SZÚ týdenní PDF (datová stránka)"
   },
   "forecast": [
     {
-      "week": "2026-W20",
-      "ari_forecast": 952.1,
-      "direction": "spíš vyšší"
+      "week": "2026-W26",
+      "ari_forecast": 713.1,
+      "direction": "spíš nižší"
     },
     {
-      "week": "2026-W21",
-      "ari_forecast": 944.0,
-      "direction": "spíš vyšší"
+      "week": "2026-W27",
+      "ari_forecast": 609.2,
+      "direction": "spíš nižší"
     },
     {
-      "week": "2026-W22",
-      "ari_forecast": 951.0,
-      "direction": "spíš vyšší"
+      "week": "2026-W28",
+      "ari_forecast": 642.0,
+      "direction": "spíš nižší"
     },
     {
-      "week": "2026-W23",
-      "ari_forecast": 939.3,
-      "direction": "spíš vyšší"
+      "week": "2026-W29",
+      "ari_forecast": 608.7,
+      "direction": "spíš nižší"
     }
   ],
   "history": [
@@ -537,6 +537,60 @@
       "ili_per_100k": null,
       "source_url": "https://khsstc.cz/informace-o-epidemiologicke-situaci-ve-vyskytu-akutnich-respiracnich-infekci-a-chripky-v-19-kalendarnim-tydnu-2026/",
       "note": "Odhad: KHS StC=710.0 × 1.17"
+    },
+    {
+      "week": "2026-W20",
+      "year": 2026,
+      "iso_week": 20,
+      "ari_per_100k": 756,
+      "ili_per_100k": 8,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/05/20_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
+    },
+    {
+      "week": "2026-W21",
+      "year": 2026,
+      "iso_week": 21,
+      "ari_per_100k": 824,
+      "ili_per_100k": 9,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/05/21_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
+    },
+    {
+      "week": "2026-W22",
+      "year": 2026,
+      "iso_week": 22,
+      "ari_per_100k": 790,
+      "ili_per_100k": 8,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/06/22_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
+    },
+    {
+      "week": "2026-W23",
+      "year": 2026,
+      "iso_week": 23,
+      "ari_per_100k": 791,
+      "ili_per_100k": 8,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/06/23_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
+    },
+    {
+      "week": "2026-W24",
+      "year": 2026,
+      "iso_week": 24,
+      "ari_per_100k": 744,
+      "ili_per_100k": 9,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/06/24_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
+    },
+    {
+      "week": "2026-W25",
+      "year": 2026,
+      "iso_week": 25,
+      "ari_per_100k": 738,
+      "ili_per_100k": 7,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/06/25_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
     }
   ]
 }
