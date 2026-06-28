@@ -35,11 +35,38 @@ RE_ARI_NATIONAL = re.compile(
     r".*?[úu]rovn[ěe]\s*([\d\s\u00a0]+(?:[,\.]\d+)?)\s*na\s*100[\s\u00a0]000",
     re.DOTALL | re.IGNORECASE
 )
-RE_ARI_REGIONAL = re.compile(
-    r"[Cc]elkov[aá]\s+nemocnost\s+(?:ARI\s+)?(?:čin[íi]la|dosáhla|byla)\s+([\d\s\u00a0]+(?:[,\.]\d+)?)\s*onemocn[ěe]n[íi]\s+na\s+100[\s\u00a0]000",
-    re.IGNORECASE
-)
-RE_ILI = re.compile(r"ILI.*?([\d]+)\s*(?:případů|onemocnění)?\s+na\s+100[\s\u00a0]000", re.IGNORECASE)
+# Regionální (KHS) – zkoušíme více formulací, weby je často mění.
+RE_ARI_REGIONAL_LIST = [
+    re.compile(
+        r"[Cc]elkov[aá]\s+nemocnost\s+(?:ARI\s+)?(?:čin[íi]la|dosáhla|byla|je|byl[ao]\s+na\s+[úu]rovni)\s+"
+        r"([\d\s ]+(?:[,\.]\d+)?)\s*(?:případů\s+)?(?:onemocn[ěe]n[íi]\s+)?na\s+100[\s ]000",
+        re.IGNORECASE),
+    re.compile(
+        r"nemocnost\s+(?:ARI|akutn[íi]mi\s+respira[čc]n[íi]mi\s+infekcemi)[^.]{0,60}?"
+        r"([\d\s ]{2,}(?:[,\.]\d+)?)\s*(?:případů\s+)?(?:onemocn[ěe]n[íi]\s+)?na\s+100[\s ]000",
+        re.IGNORECASE),
+    re.compile(
+        r"([\d\s ]{2,}(?:[,\.]\d+)?)\s*(?:případů\s+)?(?:onemocn[ěe]n[íi]\s+)?na\s+100[\s ]000"
+        r"[^.]{0,40}?(?:ARI|akutn[íi]ch?\s+respira[čc]n[íi]ch?\s+infekc[íi])",
+        re.IGNORECASE),
+]
+RE_ILI = re.compile(r"ILI.*?([\d]+)\s*(?:případů|onemocnění)?\s+na\s+100[\s ]000", re.IGNORECASE)
+
+
+def match_regional_ari(text):
+    """Vrátí první rozumnou regionální hodnotu ARI/100k, nebo None."""
+    for rx in RE_ARI_REGIONAL_LIST:
+        m = rx.search(text)
+        if not m:
+            continue
+        try:
+            val = parse_num(m.group(1))
+        except ValueError:
+            continue
+        # Sanity check – ARI/100k se reálně pohybuje řádově ve stovkách až tisících
+        if 50 <= val <= 20000:
+            return val
+    return None
 
 
 def load_data():
@@ -53,6 +80,18 @@ def save_data(data):
 
 def iso_key(year, week):
     return f"{year}-W{week:02d}"
+
+def weeks_in_isoyear(year):
+    """Počet ISO týdnů v daném roce – 52 nebo 53 (např. 2026 a 2020 mají 53)."""
+    return date(year, 12, 28).isocalendar()[1]
+
+def next_iso_week(year, week):
+    """Následující ISO týden, korektně přes přelom roku (i 53týdenní roky)."""
+    return (year + 1, 1) if week >= weeks_in_isoyear(year) else (year, week + 1)
+
+def prev_iso_week(year, week):
+    """Předchozí ISO týden, korektně přes přelom roku."""
+    return (year - 1, weeks_in_isoyear(year - 1)) if week <= 1 else (year, week - 1)
 
 def get(url, binary=False):
     try:
@@ -97,6 +136,94 @@ def fetch_pdf(year, week):
     return None
 
 
+# ── ZDROJ 1b: SZÚ datová stránka → index týdenních PDF ────────────────────────
+# Týdenní reporty SZÚ jsou vystaveny na datové stránce a soubor je uložen
+# podle MĚSÍCE VYDÁNÍ (např. W22 leží v /2026/06/, ne /2026/05/). Proto je
+# spolehlivější vzít odkazy přímo z indexu než hádat měsíc z čísla týdne.
+RE_SZU_PDF = re.compile(r"/wp-content/uploads/(\d{4})/(\d{2})/(\d{1,2})_tyden\.pdf", re.IGNORECASE)
+SZU_DATA_PAGE = "https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/"
+
+def fetch_szu_data_index():
+    """Vrátí mapu {(rok, týden): url_pdf} týdenních ARI reportů z datové stránky SZÚ."""
+    html = get(SZU_DATA_PAGE)
+    if not html:
+        return {}
+    index = {}
+    for m in RE_SZU_PDF.finditer(html):
+        year, _month, week = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        # Klíčujeme dvojicí (rok-v-cestě, týden). Pro letní týdny ISO rok == rok v cestě.
+        index.setdefault((year, week), "https://szu.gov.cz" + m.group(0))
+    return index
+
+# Týdenní PDF SZÚ (od W10/2026 jen tabulka, bez prózy) má národní řádek:
+#   "Česká republika - the Czech Republic <0-5> <6-14> <15-24> <25-64> <65+> <Celkem>"
+# poslední číslo (Celkem/Total) = národní relativní nemocnost na 100 000.
+# První takový řádek je ARI, druhý ILI.
+RE_CR_ROW = re.compile(
+    r"[ČC]esk[áa]\s+republika\s*-\s*the\s+Czech\s+Republic\s+([\d][\d\s,\.]*)")
+
+def _row_total(s):
+    """Z řetězce čísel řádku vrať poslední (sloupec Celkem)."""
+    nums = [n for n in s.split() if re.match(r"^[\d.,]+$", n)]
+    if not nums:
+        return None
+    try:
+        v = parse_num(nums[-1])
+    except ValueError:
+        return None
+    return v if 0 <= v <= 20000 else None
+
+def parse_szu_table(text):
+    """Z tabulkového PDF SZÚ vrať (ari, ili) národní Celkem, nebo (None, None)."""
+    rows = RE_CR_ROW.findall(text)
+    ari = _row_total(rows[0]) if len(rows) >= 1 else None
+    ili = _row_total(rows[1]) if len(rows) >= 2 else None
+    return ari, ili
+
+def _ari_from_pdf_text(text):
+    """Záloha pro starší prozaický formát: národní/obecné vzory."""
+    m = RE_ARI_NATIONAL.search(text)
+    if m:
+        try:
+            v = parse_num(m.group(1))
+            if 50 <= v <= 20000:
+                return v
+        except ValueError:
+            pass
+    return match_regional_ari(text)
+
+def fetch_szu_pdf_indexed(year, week, index):
+    """Stáhne týdenní PDF SZÚ podle indexu a vytáhne národní ARI (a ILI) hodnotu."""
+    if not HAS_PDF:
+        return None
+    url = index.get((year, week))
+    if not url:
+        return None
+    c = get(url, binary=True)
+    if not c:
+        return None
+    try:
+        with pdfplumber.open(io.BytesIO(c)) as pdf:
+            text = "\n".join(p.extract_text() or "" for p in pdf.pages)
+    except Exception as ex:
+        print(f"  PDF chyba {url}: {ex}")
+        return None
+    # Nový tabulkový formát má přednost; próza je záloha pro starší PDF.
+    ari, ili = parse_szu_table(text)
+    if ari is None:
+        ari = _ari_from_pdf_text(text)
+    if ari is None:
+        print(f"  [SZU PDF] W{week}/{year}: hodnota ARI nenalezena ({url}); "
+              f"délka textu={len(text)}")
+        return None
+    if ili is None:
+        ili_m = RE_ILI.search(text)
+        ili = float(ili_m.group(1)) if ili_m else None
+    e = make_entry(year, week, ari, ili, source=url, note="SZÚ týdenní PDF (datová stránka)")
+    print(f"  [SZU PDF] W{week}/{year}: ARI={e['ari_per_100k']} ILI={e['ili_per_100k']} ({url})")
+    return e
+
+
 # ── ZDROJ 2: SZÚ tiskové zprávy ───────────────────────────────────────────────
 def fetch_press_releases(target_weeks):
     """Prochází aktuality SZÚ, vrací dict {iso_key: entry}."""
@@ -132,32 +259,56 @@ def fetch_press_releases(target_weeks):
     return found
 
 
+def discover_week_link(index_urls, year, week):
+    """Projde indexové stránky KHS a najde odkaz na článek pro daný týden.
+    Vrací absolutní URL nebo None. Robustní vůči změnám URL slugů."""
+    needles = [f"-{week}-kalendarnim-tydnu", f"v-{week}-kalendarnim",
+               f"{week}-tydnu-roku-{year}", f"{week}-tydnu-{year}"]
+    for index_url in index_urls:
+        html = get(index_url)
+        if not html:
+            continue
+        soup = BeautifulSoup(html, "html.parser")
+        host = "/".join(index_url.split("/")[:3])
+        for a in soup.find_all("a", href=True):
+            href = a["href"]
+            low  = href.lower()
+            if str(year) not in low:
+                continue
+            if not any(n in low for n in needles):
+                continue
+            if not href.startswith("http"):
+                href = host + ("" if href.startswith("/") else "/") + href
+            return href
+    return None
+
+
 # ── ZDROJ 3: KHS Středočeský kraj ─────────────────────────────────────────────
 def fetch_khs_stc(year, week):
     """Stáhne regionální data KHS StC a přepočítá na národní odhad."""
-    ordinal_map = {1:"1.",2:"2.",3:"3.",4:"4.",5:"5.",6:"6.",7:"7.",8:"8.",9:"9.",
-                   10:"10.",11:"11.",12:"12.",13:"13.",14:"14.",15:"15.",16:"16.",
-                   17:"17.",18:"18.",19:"19.",20:"20.",21:"21.",22:"22.",23:"23.",
-                   24:"24.",25:"25.",26:"26.",27:"27.",28:"28.",29:"29.",30:"30.",
-                   31:"31.",32:"32.",33:"33.",34:"34.",35:"35.",36:"36.",37:"37.",
-                   38:"38.",39:"39.",40:"40.",41:"41.",42:"42.",43:"43.",44:"44.",
-                   45:"45.",46:"46.",47:"47.",48:"48.",49:"49.",50:"50.",51:"51.",52:"52."}
-    ord_word = ordinal_map.get(week, f"{week}.")
-
-    # URL vzor pro StC
-    # "ve-13-kalendarnim-tydnu" nebo "v-13-kalendarnim-tydnu"
-    slug_v  = f"v-{week}-kalendarnim-tydnu-{year}"
-    slug_ve = f"ve-{week}-kalendarnim-tydnu-{year}"
     base = "https://khsstc.cz/informace-o-epidemiologicke-situaci-ve-vyskytu-akutnich-respiracnich-infekci-a-chripky-"
-    for slug in [slug_ve, slug_v]:
-        url = base + slug + "/"
+    # Více variant slugů – web mění předložku (v/ve) i koncovku.
+    candidates = [
+        base + f"ve-{week}-kalendarnim-tydnu-{year}/",
+        base + f"v-{week}-kalendarnim-tydnu-{year}/",
+        base + f"ve-{week}-kalendarnim-tydnu-roku-{year}/",
+        base + f"v-{week}-kalendarnim-tydnu-roku-{year}/",
+    ]
+    # Pokud přímé URL nevyjdou, zkus najít odkaz na indexových stránkách.
+    discovered = discover_week_link(
+        ["https://khsstc.cz/category/aktuality/", "https://khsstc.cz/"],
+        year, week)
+    if discovered:
+        candidates.append(discovered)
+
+    for url in candidates:
         html = get(url)
-        if not html: continue
-        soup = BeautifulSoup(html,"html.parser")
-        text = soup.get_text(" ")
-        m = RE_ARI_REGIONAL.search(text)
-        if not m: continue
-        regional_ari = parse_num(m.group(1))
+        if not html:
+            continue
+        text = BeautifulSoup(html, "html.parser").get_text(" ")
+        regional_ari = match_regional_ari(text)
+        if regional_ari is None:
+            continue
         national_est = round(regional_ari * KHS_SCALE["stc"])
         e = make_entry(year, week, national_est, source=url,
                        note=f"Odhad: KHS StC={regional_ari} × {KHS_SCALE['stc']}")
@@ -170,39 +321,57 @@ def fetch_khs_stc(year, week):
 def fetch_khs_praha(year, week):
     """Stáhne data Hyg. stanice Praha a přepočítá na národní odhad."""
     base = "https://www.hygpraha.cz/informace-k-aktualni-epidemiologicke-situaci-ve-vyskytu-akutnich-respiracnich-infekci-vcetne-chripky-na-uzemi-hl-m-prahy-v-"
-    slug = f"{week}-tydnu-roku-{year}"
-    url = base + slug + "/"
-    html = get(url)
-    if not html: return None
-    soup = BeautifulSoup(html,"html.parser")
-    text = soup.get_text(" ")
-    m = RE_ARI_REGIONAL.search(text)
-    if not m: return None
-    regional_ari = parse_num(m.group(1))
-    national_est = round(regional_ari * KHS_SCALE["praha"])
-    e = make_entry(year, week, national_est, source=url,
-                   note=f"Odhad: KHS Praha={regional_ari} × {KHS_SCALE['praha']}")
-    print(f"  [KHS Praha] W{week}/{year}: regional={regional_ari} → national≈{national_est}")
-    return e
+    candidates = [
+        base + f"{week}-tydnu-roku-{year}/",
+        base + f"{week}-kalendarnim-tydnu-roku-{year}/",
+        base + f"{week}-tydnu-{year}/",
+    ]
+    discovered = discover_week_link(
+        ["https://www.hygpraha.cz/aktuality/", "https://www.hygpraha.cz/"],
+        year, week)
+    if discovered:
+        candidates.append(discovered)
+
+    for url in candidates:
+        html = get(url)
+        if not html:
+            continue
+        text = BeautifulSoup(html, "html.parser").get_text(" ")
+        regional_ari = match_regional_ari(text)
+        if regional_ari is None:
+            continue
+        national_est = round(regional_ari * KHS_SCALE["praha"])
+        e = make_entry(year, week, national_est, source=url,
+                       note=f"Odhad: KHS Praha={regional_ari} × {KHS_SCALE['praha']}")
+        print(f"  [KHS Praha] W{week}/{year}: regional={regional_ari} → national≈{national_est}")
+        return e
+    return None
 
 
 # ── HLAVNÍ LOGIKA ─────────────────────────────────────────────────────────────
-def weeks_to_check(data):
-    today  = date.today()
-    cy, cw = today.isocalendar()[0], today.isocalendar()[1]
+def weeks_to_check(data, max_back=12, today=None):
+    today  = today or date.today()
+    cy, cw = today.isocalendar()[:2]
+    # Poslední UZAVŘENÝ ISO týden (aktuální týden ještě nemá kompletní data)
+    target = prev_iso_week(cy, cw)
     valid  = [h for h in data["history"] if h.get("ari_per_100k") is not None]
-    if not valid: return [(cy, cw-1)]
+    if not valid:
+        return [target]
     last = valid[-1]
-    y, w = last["year"], last["iso_week"] + 1
+    by_key = {h["week"]: h for h in data["history"]}
+    y, w = next_iso_week(last["year"], last["iso_week"])
     missing = []
-    while (y, w) <= (cy, cw-1):
-        key = iso_key(y, w)
-        ex = next((h for h in data["history"] if h["week"] == key), None)
+    # Pojistka proti zacyklení (poškozená data) – nikdy nejdeme dál než ~3 roky
+    for _ in range(160):
+        if (y, w) > target:
+            break
+        ex = by_key.get(iso_key(y, w))
         if ex is None or ex.get("ari_per_100k") is None:
             missing.append((y, w))
-        w += 1
-        if w > 52: w = 1; y += 1
-    return missing
+        y, w = next_iso_week(y, w)
+    # Když je dashboard dlouho pozadu, doplň jen posledních max_back týdnů,
+    # ať jeden běh nemusí stahovat desítky stránek.
+    return missing[-max_back:]
 
 def compute_forecast(history, n=4):
     valid = [h for h in history if h.get("ari_per_100k") is not None]
@@ -211,9 +380,9 @@ def compute_forecast(history, n=4):
     ma4  = sum(h["ari_per_100k"] for h in valid[-4:]) / 4
     prior= {h["iso_week"]: h["ari_per_100k"] for h in valid if h["year"] == last["year"]-1}
     fc_list = []
+    fy, fw = last["year"], last["iso_week"]
     for i in range(1, n+1):
-        fw, fy = last["iso_week"]+i, last["year"]
-        if fw > 52: fw -= 52; fy += 1
+        fy, fw = next_iso_week(fy, fw)
         p = prior.get(fw)
         if p and p > 0:
             yoy = last["ari_per_100k"] / (prior.get(last["iso_week"]) or p)
@@ -224,6 +393,39 @@ def compute_forecast(history, n=4):
                         "direction": "spíš nižší" if fc < last["ari_per_100k"] else "spíš vyšší"})
     return fc_list
 
+def diagnose_sources():
+    """Vypíše aktuální strukturu odkazů na klíčových stránkách zdrojů.
+    Slouží k ladění, když scraper nic nenajde – z logu pak vidíme,
+    jak vypadají reálné URL/odkazy teď (mění se v čase)."""
+    print("=== DIAG: aktuální struktura zdrojů ===")
+    pages = {
+        "SZU-zpravy":   "https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/",
+        "SZU-data-ARI": "https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
+        "SZU-aktuality":"https://szu.gov.cz/aktuality/",
+        "KHS-StC-akt":  "https://khsstc.cz/category/aktuality/",
+        "KHS-StC-home": "https://khsstc.cz/",
+        "HygPraha-akt": "https://www.hygpraha.cz/aktuality/",
+    }
+    keys = ["tydn", "týdn", "respira", "ari", "chřip", "chrip", "nemocnost",
+            ".xlsx", ".csv", ".pdf", "influenza"]
+    for name, url in pages.items():
+        html = get(url)
+        if not html:
+            print(f"  [{name}] NELZE NAČÍST {url}")
+            continue
+        soup = BeautifulSoup(html, "html.parser")
+        rel = []
+        for a in soup.find_all("a", href=True):
+            txt  = a.get_text(" ", strip=True)
+            href = a["href"]
+            if any(k in (txt + " " + href).lower() for k in keys):
+                rel.append(f"      {txt[:80]!r} -> {href}")
+        print(f"  [{name}] {url} : {len(rel)} relevantních odkazů (zobrazuji max 30)")
+        for line in rel[:30]:
+            print(line)
+    print("=== /DIAG ===")
+
+
 def main():
     print("ARI Dashboard – update dat")
     data    = load_data()
@@ -231,25 +433,27 @@ def main():
     print(f"Chybejici: {[iso_key(y,w) for y,w in missing] or 'zadne'}")
     new_data = {}
 
+    # Index týdenních PDF z datové stránky SZÚ (primární, nejspolehlivější zdroj).
+    szu_index = fetch_szu_data_index() if missing else {}
+    print(f"SZU index: {len(szu_index)} týdenních PDF nalezeno"
+          + (f" (např. {sorted(szu_index)[-3:]})" if szu_index else ""))
+
     for year, week in missing:
         key = iso_key(year, week)
-        # Kaskáda zdrojů: PDF → tisková zpráva → KHS StC → KHS Praha
-        e = fetch_pdf(year, week)
+        # Primární zdroj: týdenní PDF SZÚ z datové stránky (národní data, rok ulato).
+        # Záloha: odhad měsíce v URL. KHS/tiskové zprávy se pro daný týden už
+        # nevydávají (potvrzeno 404), proto je v hlavní smyčce nepoužíváme –
+        # jen by běh zpomalovaly. Zůstávají k dispozici jako funkce pro zimní sezónu.
+        e = fetch_szu_pdf_indexed(year, week, szu_index)
         if not e:
-            time.sleep(0.5)
-        if not e:
-            press = fetch_press_releases([(year, week)])
-            e = press.get(key)
-        if not e:
-            time.sleep(0.5)
-            e = fetch_khs_stc(year, week)
-        if not e:
-            time.sleep(0.5)
-            e = fetch_khs_praha(year, week)
+            e = fetch_pdf(year, week)
         if e:
             new_data[key] = e
         else:
             print(f"  [MISS] W{week}/{year}: žádný zdroj nenalezl data")
+
+    # (diagnose_sources() je k dispozici ručně; v běžném běhu ho nevoláme,
+    #  ať logy zůstanou čitelné a případné PDF snippety jsou na konci.)
 
     # Ulož do history
     existing = {h["week"]: i for i, h in enumerate(data["history"])}
