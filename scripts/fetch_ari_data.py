@@ -155,8 +155,33 @@ def fetch_szu_data_index():
         index.setdefault((year, week), "https://szu.gov.cz" + m.group(0))
     return index
 
+# Týdenní PDF SZÚ (od W10/2026 jen tabulka, bez prózy) má národní řádek:
+#   "Česká republika - the Czech Republic <0-5> <6-14> <15-24> <25-64> <65+> <Celkem>"
+# poslední číslo (Celkem/Total) = národní relativní nemocnost na 100 000.
+# První takový řádek je ARI, druhý ILI.
+RE_CR_ROW = re.compile(
+    r"[ČC]esk[áa]\s+republika\s*-\s*the\s+Czech\s+Republic\s+([\d][\d\s,\.]*)")
+
+def _row_total(s):
+    """Z řetězce čísel řádku vrať poslední (sloupec Celkem)."""
+    nums = [n for n in s.split() if re.match(r"^[\d.,]+$", n)]
+    if not nums:
+        return None
+    try:
+        v = parse_num(nums[-1])
+    except ValueError:
+        return None
+    return v if 0 <= v <= 20000 else None
+
+def parse_szu_table(text):
+    """Z tabulkového PDF SZÚ vrať (ari, ili) národní Celkem, nebo (None, None)."""
+    rows = RE_CR_ROW.findall(text)
+    ari = _row_total(rows[0]) if len(rows) >= 1 else None
+    ili = _row_total(rows[1]) if len(rows) >= 2 else None
+    return ari, ili
+
 def _ari_from_pdf_text(text):
-    """Z textu PDF vytáhne národní hodnotu ARI/100k – zkusí národní i obecné vzory."""
+    """Záloha pro starší prozaický formát: národní/obecné vzory."""
     m = RE_ARI_NATIONAL.search(text)
     if m:
         try:
@@ -168,7 +193,7 @@ def _ari_from_pdf_text(text):
     return match_regional_ari(text)
 
 def fetch_szu_pdf_indexed(year, week, index):
-    """Stáhne týdenní PDF SZÚ podle indexu a vytáhne národní ARI hodnotu."""
+    """Stáhne týdenní PDF SZÚ podle indexu a vytáhne národní ARI (a ILI) hodnotu."""
     if not HAS_PDF:
         return None
     url = index.get((year, week))
@@ -183,18 +208,19 @@ def fetch_szu_pdf_indexed(year, week, index):
     except Exception as ex:
         print(f"  PDF chyba {url}: {ex}")
         return None
-    ari = _ari_from_pdf_text(text)
+    # Nový tabulkový formát má přednost; próza je záloha pro starší PDF.
+    ari, ili = parse_szu_table(text)
+    if ari is None:
+        ari = _ari_from_pdf_text(text)
     if ari is None:
         print(f"  [SZU PDF] W{week}/{year}: hodnota ARI nenalezena ({url}); "
               f"délka textu={len(text)}")
-        # Ladění: vypiš celý text PDF (newliny → ' | '), ať vidíme strukturu tabulky.
-        flat = " | ".join(line.strip() for line in text.splitlines() if line.strip())
-        print(f"      [FULLTEXT W{week}] {flat[:2200]}")
         return None
-    ili_m = RE_ILI.search(text)
-    e = make_entry(year, week, ari, float(ili_m.group(1)) if ili_m else None,
-                   source=url, note="SZÚ týdenní PDF (datová stránka)")
-    print(f"  [SZU PDF] W{week}/{year}: ARI={e['ari_per_100k']} ({url})")
+    if ili is None:
+        ili_m = RE_ILI.search(text)
+        ili = float(ili_m.group(1)) if ili_m else None
+    e = make_entry(year, week, ari, ili, source=url, note="SZÚ týdenní PDF (datová stránka)")
+    print(f"  [SZU PDF] W{week}/{year}: ARI={e['ari_per_100k']} ILI={e['ili_per_100k']} ({url})")
     return e
 
 
