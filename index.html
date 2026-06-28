@@ -364,10 +364,12 @@ async function loadData() {
   if (!fetched.forecast || fetched.forecast.length === 0) {
     merged.forecast = inline.forecast || [];
   }
-  // Current: pokud inline je novější týden, zachováme
-  if (inline.current && fetched.current &&
-      (inline.current.week||'') > (fetched.current.week||'')) {
-    merged.current = inline.current;
+  // Current: pokud inline je novější ISO týden, zachováme ho
+  if (inline.current && fetched.current) {
+    const a = parseWeekKey(inline.current.week), b = parseWeekKey(fetched.current.week);
+    if (a && b && (a[0] > b[0] || (a[0] === b[0] && a[1] > b[1]))) {
+      merged.current = inline.current;
+    }
   }
   return merged;
 }
@@ -443,6 +445,40 @@ const STATUS_CONFIG = {
 };
 
 /* ────────────────────────────────────────────────────────────
+   ISO-TÝDEN HELPERY – aby dashboard věděl, kolik je "teď"
+──────────────────────────────────────────────────────────── */
+function isoWeekOf(d) {                       // Date -> [isoRok, isoTýden]
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;             // Po=1 … Ne=7
+  t.setUTCDate(t.getUTCDate() + 4 - day);     // posun na čtvrtek téhož týdne
+  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
+  return [t.getUTCFullYear(), week];
+}
+function isoWeeksInYear(year) { return isoWeekOf(new Date(year, 11, 28))[1]; } // 52 nebo 53
+function isoWeekMonday(year, week) {          // pondělí daného ISO týdne (UTC)
+  const jan4 = new Date(Date.UTC(year, 0, 4));
+  const day = jan4.getUTCDay() || 7;
+  const mon = new Date(jan4);
+  mon.setUTCDate(jan4.getUTCDate() - day + 1 + (week - 1) * 7);
+  return mon;
+}
+function weeksBetween(y1, w1, y2, w2) {        // celé týdny z (y1,w1) do (y2,w2)
+  return Math.round((isoWeekMonday(y2, w2) - isoWeekMonday(y1, w1)) / (7 * 86400000));
+}
+function nextWk(y, w) { return w >= isoWeeksInYear(y) ? [y + 1, 1] : [y, w + 1]; }
+function wkKey(y, w) { return `${y}-W${String(w).padStart(2, '0')}`; }
+function parseWeekKey(wk) {
+  const mm = /(\d{4})-W(\d{1,2})/.exec(wk || '');
+  return mm ? [parseInt(mm[1], 10), parseInt(mm[2], 10)] : null;
+}
+function lastCompletedWeek() {                 // poslední UZAVŘENÝ ISO týden
+  const [cy, cw] = isoWeekOf(new Date());
+  return cw > 1 ? [cy, cw - 1] : [cy - 1, isoWeeksInYear(cy - 1)];
+}
+function plTydny(n) { return n === 1 ? 'týden' : (n >= 2 && n <= 4) ? 'týdny' : 'týdnů'; }
+
+/* ────────────────────────────────────────────────────────────
    RENDER
 ──────────────────────────────────────────────────────────── */
 function renderDashboard(data) {
@@ -451,21 +487,38 @@ function renderDashboard(data) {
   const status = getStatus(Math.max(0, ari));
   const cfg    = STATUS_CONFIG[status];
 
-  // Last updated
-  document.getElementById('last-updated').textContent =
-    `Aktualizováno: ${meta.last_updated}`;
+  // ── Jak stará jsou data? ──
+  const realHist = (history || []).filter(h => h.ari_per_100k != null);
+  const lastReal = realHist.length ? realHist[realHist.length - 1] : null;
+  const lastKey  = lastReal ? lastReal.week : current.week;
+  const lrk      = parseWeekKey(lastKey) || (lastReal ? [lastReal.year, lastReal.iso_week] : null);
+  const [tY, tW] = lastCompletedWeek();
+  const behind   = lrk ? Math.max(0, weeksBetween(lrk[0], lrk[1], tY, tW)) : 0;
+  const stale    = behind >= 2;
+
+  // Last updated – ukaž týden DAT, ne jen datum zápisu souboru
+  const luEl = document.getElementById('last-updated');
+  luEl.textContent = `Data: ${lastKey} · zdroj ${meta.last_updated}`
+    + (behind >= 1 ? `  ·  ⚠ ${behind} ${plTydny(behind)} pozadu` : '');
+  luEl.style.color = stale ? 'var(--amber)' : '';
+  luEl.style.borderColor = stale ? 'var(--amber)' : '';
 
   // Alert banner
   const banner = document.getElementById('alert-banner');
   banner.className = status;
-  document.getElementById('alert-icon').textContent  = cfg.icon;
+  document.getElementById('alert-icon').textContent  = stale ? '⚠️' : cfg.icon;
   document.getElementById('alert-title').textContent = cfg.title;
-  document.getElementById('alert-desc').textContent  = cfg.desc;
-  document.getElementById('alert-badge').textContent = cfg.badge;
+  document.getElementById('alert-desc').textContent  = stale
+    ? `Poslední dostupná data jsou z týdne ${lastKey} (před ${behind} ${plTydny(behind)}). `
+      + `Novější týdny zatím nebyly ze SZÚ/KHS staženy – níže uvedená čísla popisují stav k ${lastKey}, `
+      + `ne nutně aktuální týden. ${cfg.desc}`
+    : cfg.desc;
+  document.getElementById('alert-badge').textContent = stale ? `Data ${behind} ${plTydny(behind)} pozadu` : cfg.badge;
 
   // KPI
   document.getElementById('kpi-ari').textContent  = (ari ?? 0).toLocaleString('cs-CZ');
-  document.getElementById('kpi-week').textContent = current.week;
+  document.getElementById('kpi-week').textContent = lastKey + (behind >= 1
+    ? ` · před ${behind} ${plTydny(behind)}` : ' · poslední týden');
 
   const loadPct = Math.max(0, ari) / BASELINE * 100;
   document.getElementById('kpi-load').textContent = loadPct.toFixed(1) + ' %';
@@ -473,14 +526,24 @@ function renderDashboard(data) {
   lc.classList.remove('green','amber','red');
   lc.classList.add(status);
 
-  const fcAvg = forecast.length
-    ? (forecast.reduce((s,f)=>s+f.ari_forecast,0) / forecast.length).toFixed(1)
+  // Forecast: ukazuj jen týdny, které ještě nenastaly (jinak by se "předpověď"
+  // týkala už proběhlých týdnů a vypadala by jako chyba).
+  const [cy, cw] = isoWeekOf(new Date());
+  const futureForecast = (forecast || []).filter(f => {
+    const k = parseWeekKey(f.week);
+    return k && weeksBetween(k[0], k[1], cy, cw) <= 0;   // týden >= aktuální
+  });
+
+  const fcAvg = futureForecast.length
+    ? (futureForecast.reduce((s,f)=>s+f.ari_forecast,0) / futureForecast.length).toFixed(1)
     : '–';
   document.getElementById('kpi-fc').textContent = fcAvg;
 
-  const trendDir = forecast.length ? forecast[0].direction : '–';
-  document.getElementById('kpi-trend').textContent = trendDir === 'spíš nižší' ? '↘ Klesající' :
-                                                      trendDir === 'spíš vyšší' ? '↗ Rostoucí'  : '→ Stagnace';
+  const trendDir = futureForecast.length ? futureForecast[0].direction : '–';
+  document.getElementById('kpi-trend').textContent =
+      trendDir === 'spíš nižší' ? '↘ Klesající' :
+      trendDir === 'spíš vyšší' ? '↗ Rostoucí'  :
+      trendDir === '–'          ? '→ –'          : '→ Stagnace';
 
   // Doporučení
   const recEl = document.getElementById('rec-items');
@@ -490,11 +553,14 @@ function renderDashboard(data) {
 
   // Forecast rows
   const fcEl = document.getElementById('forecast-rows');
-  if (!forecast.length) {
-    fcEl.innerHTML = `<div style="color:var(--muted);font-size:.85rem;padding:.5rem;grid-column:1/-1">Forecast není k dispozici – čekáme na doplnění dat ze SZÚ (W13+).</div>`;
+  if (!futureForecast.length) {
+    const msg = stale
+      ? `Forecast bude k dispozici po doplnění aktuálních dat (poslední data: ${lastKey}). Předpověď z minulých týdnů se nezobrazuje.`
+      : `Forecast není k dispozici – čekáme na doplnění dat ze SZÚ.`;
+    fcEl.innerHTML = `<div style="color:var(--muted);font-size:.85rem;padding:.5rem;grid-column:1/-1">${msg}</div>`;
   } else {
-    const maxFc = Math.max(...forecast.map(f=>f.ari_forecast), 100);
-    fcEl.innerHTML = forecast.map(f => {
+    const maxFc = Math.max(...futureForecast.map(f=>f.ari_forecast), 100);
+    fcEl.innerHTML = futureForecast.map(f => {
       const pct = (f.ari_forecast / maxFc * 100).toFixed(1);
       return `<div class="fc-row">
         <div>
@@ -534,7 +600,7 @@ function renderDashboard(data) {
   }).join('');
 
   // Chart
-  renderChart(history, forecast);
+  renderChart(history, futureForecast);
 }
 
 /* ────────────────────────────────────────────────────────────
@@ -542,7 +608,19 @@ function renderDashboard(data) {
 ──────────────────────────────────────────────────────────── */
 let chartInstance = null;
 function renderChart(history, forecast) {
-  const ctx = document.getElementById('ari-chart').getContext('2d');
+  const canvas = document.getElementById('ari-chart');
+  // Graf je „nice to have“ – když se knihovna Chart.js nenačte (výpadek CDN),
+  // nesmí to shodit zbytek dashboardu (KPI, doporučení, tabulka).
+  if (typeof Chart === 'undefined') {
+    const wrap = canvas && canvas.parentElement;
+    if (wrap) wrap.innerHTML =
+      `<div style="display:flex;align-items:center;justify-content:center;height:100%;`
+      + `color:var(--muted);font-size:.85rem;text-align:center;padding:1rem">`
+      + `Graf se nepodařilo načíst (knihovna Chart.js není dostupná). `
+      + `Data níže v tabulce jsou v pořádku.</div>`;
+    return;
+  }
+  const ctx = canvas.getContext('2d');
 
   // Posledních 104 týdnů (cca 2 roky) aktuálního roku
   const recent = history.slice(-104);
@@ -554,28 +632,46 @@ function renderChart(history, forecast) {
     byYearWeek[`${h.year}-${h.iso_week}`] = h.ari_per_100k;
   });
 
-  // Labely = všechny týdny z recent + forecast týdny
-  const labels    = [...recent.map(h => h.week), ...forecast.map(f => f.week)];
+  // "Gap" týdny: od posledního týdne s daty až po aktuální (uzavřený) týden.
+  // Díky tomu graf dosáhne až do "teď" a šedá loňská linie ukáže referenci
+  // i tam, kde aktuální data zatím chybí (= viditelná mezera místo zaseknutí).
+  const gap = [];
+  const lastH = recent[recent.length - 1];
+  if (lastH) {
+    const [tgY, tgW] = lastCompletedWeek();
+    let [gy, gw] = nextWk(lastH.year, lastH.iso_week);
+    let guard = 0;
+    while (weeksBetween(gy, gw, tgY, tgW) >= 0 && guard++ < 60) {
+      gap.push({ week: wkKey(gy, gw), year: gy, iso_week: gw });
+      [gy, gw] = nextWk(gy, gw);
+    }
+  }
+
+  // Osa X = reálná data + chybějící (gap) týdny + forecast
+  const tail      = [...gap, ...forecast];
+  const labels    = [...recent.map(h => h.week), ...tail.map(t => t.week)];
   const totalLen  = labels.length;
 
-  // Dataset 1: aktuální data (null kde chybí)
+  // Dataset 1: aktuální data (null kde chybí, včetně celého gapu)
   const ariData = [
     ...recent.map(h => (h.ari_per_100k != null && h.ari_per_100k > 0) ? h.ari_per_100k : null),
-    ...forecast.map(() => null)
+    ...tail.map(() => null)
   ];
 
-  // Dataset 2: forecast (spojený s poslední reálnou hodnotou)
+  // Dataset 2: forecast – bridge na poslední reálnou hodnotu jen když na ni
+  // přímo navazuje (tj. žádný gap). Při existující mezeře se nekreslí přes prázdno.
   const lastValidIdx = [...ariData].reverse().findIndex(v => v !== null);
   const lastValidPos = lastValidIdx >= 0 ? ariData.length - 1 - lastValidIdx : -1;
   const fcData = Array(totalLen).fill(null);
-  if (lastValidPos >= 0) fcData[lastValidPos] = ariData[lastValidPos]; // bridge
-  forecast.forEach((f, i) => { fcData[recent.length + i] = f.ari_forecast; });
+  if (lastValidPos >= 0 && gap.length === 0) fcData[lastValidPos] = ariData[lastValidPos];
+  forecast.forEach((f, i) => { fcData[recent.length + gap.length + i] = f.ari_forecast; });
 
-  // Dataset 3: srovnání s loňskem – posuneme každý bod o 52 týdnů zpět
-  const priorData = recent.map(h => {
-    const priorVal = byYearWeek[`${h.year - 1}-${h.iso_week}`];
-    return (priorVal != null && priorVal > 0) ? priorVal : null;
-  }).concat(forecast.map(() => null));
+  // Dataset 3: srovnání s loňskem – pro reálná data i pro gap týdny
+  const priorData = [
+    ...recent.map(h => byYearWeek[`${h.year - 1}-${h.iso_week}`]),
+    ...gap.map(g => byYearWeek[`${g.year - 1}-${g.iso_week}`]),
+    ...forecast.map(() => null)
+  ].map(v => (v != null && v > 0) ? v : null);
 
   if (chartInstance) chartInstance.destroy();
 
