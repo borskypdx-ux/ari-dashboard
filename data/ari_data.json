@@ -1,6 +1,6 @@
 {
   "meta": {
-    "last_updated": "2026-08-17",
+    "last_updated": "2026-08-24",
     "source": "Státní zdravotní ústav (SZÚ) – týdenní reporty ARI/ILI: https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
     "baseline_label": "únor 2025",
     "baseline_ari_per_100k": 2053,
@@ -8,32 +8,32 @@
     "note_w13plus": "Týdenní data se od W20/2026 automaticky stahují z týdenních PDF reportů SZÚ (datová stránka). Pondělní tiskové zprávy SZÚ byly pro tuto sezónu ukončeny (10. KT), PDF reporty ale pokračují. W13–W19 jsou odhady z KHS Středočeského kraje."
   },
   "current": {
-    "week": "2026-W33",
-    "ari_per_100k": 425,
+    "week": "2026-W34",
+    "ari_per_100k": 427,
     "ili_per_100k": 5,
-    "load_pct": 0.207,
+    "load_pct": 0.208,
     "trend": "klesající",
     "source_note": "SZÚ týdenní PDF (datová stránka)"
   },
   "forecast": [
     {
-      "week": "2026-W34",
-      "ari_forecast": 484.8,
-      "direction": "spíš vyšší"
-    },
-    {
       "week": "2026-W35",
-      "ari_forecast": 499.2,
+      "ari_forecast": 450.3,
       "direction": "spíš vyšší"
     },
     {
       "week": "2026-W36",
-      "ari_forecast": 539.9,
+      "ari_forecast": 484.6,
       "direction": "spíš vyšší"
     },
     {
       "week": "2026-W37",
-      "ari_forecast": 620.3,
+      "ari_forecast": 552.6,
+      "direction": "spíš vyšší"
+    },
+    {
+      "week": "2026-W38",
+      "ari_forecast": 584.5,
       "direction": "spíš vyšší"
     }
   ],
@@ -653,6 +653,15 @@
       "ari_per_100k": 425,
       "ili_per_100k": 5,
       "source_url": "https://szu.gov.cz/wp-content/uploads/2026/08/33_tyden.pdf",
+      "note": "SZÚ týdenní PDF (datová stránka)"
+    },
+    {
+      "week": "2026-W34",
+      "year": 2026,
+      "iso_week": 34,
+      "ari_per_100k": 427,
+      "ili_per_100k": 5,
+      "source_url": "https://szu.gov.cz/wp-content/uploads/2026/08/34_tyden.pdf",
       "note": "SZÚ týdenní PDF (datová stránka)"
     }
   ]
