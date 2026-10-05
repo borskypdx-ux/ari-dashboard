@@ -208,6 +208,7 @@
     .panel { padding: 1rem; }
     .alert-badge { display: none; }
     .data-table .bar-col { display: none; }
+    .data-table td:first-child { white-space: normal; }
     .data-table th, .data-table td { padding: .45rem .45rem; }
   }
 </style>
@@ -450,7 +451,7 @@ const SITUATIONS = {
     { e: '💊', h: 'Včasná antivirotika', p: 'Rizikovým pacientům (65+, chronická onemocnění, imunosuprese, těhotné) zvažte oseltamivir nejpozději do 48 h od začátku příznaků; zajistěte jim rychlý kontakt s ordinací.' },
     { e: '💉', h: 'Stále očkujte', p: 'Neočkované rizikové pacienty ještě očkujte – ochrana nastupuje asi za 2 týdny.' },
     { e: '📅', h: 'Personál', p: 'Omezte dovolené na příštích 6–8 týdnů a domluvte zástup pro případ nemoci.' } ] },
-  S7: { icon: '🟠', badge: 'Blíží se epidemie', title: 'BLÍŽÍ SE EPIDEMICKÁ ÚROVEŇ – aktivujte zimní režim', recs: [
+  S7: { icon: '🟠', badge: 'Blíží se epid. úroveň', title: 'BLÍŽÍ SE EPIDEMICKÁ ÚROVEŇ – aktivujte zimní režim', recs: [
     { e: '📞', h: 'Telefon ve špičce', p: 'Posilte obsazení telefonu ráno; pro neakutní požadavky nabídněte online formulář nebo e-mail.' },
     { e: '🏠', h: 'Návštěvní služba', p: 'Naplánujte návštěvy u imobilních seniorů s respirační infekcí.' },
     { e: '👥', h: 'Ochrana personálu', p: 'Očkování, respirátor při kontaktu s infekčními pacienty a záložní plán pro případ nemoci.' } ] },
@@ -462,16 +463,16 @@ const SITUATIONS = {
     { e: '📉', h: 'Snižujte až po potvrzení', p: 'Kapacitu ubírejte teprve po poklesu dva týdny po sobě a při klesající předpovědi.' },
     { e: '🔁', h: 'Druhá vlna', p: 'Počítejte s chřipkou B nebo RSV po první vlně; při novém nárůstu se vraťte o stupeň výš.' },
     { e: '📋', h: 'Odložená péče', p: 'Začněte obnovovat odložené kontroly chronicky nemocných.' } ] },
-  S9: { icon: '🔴', badge: 'Epidemie', title: 'EPIDEMIE RESPIRAČNÍCH INFEKCÍ – ordinace v zimním krizovém režimu', recs: [
+  S9: { icon: '🔴', badge: 'Epidemická úroveň', title: 'EPIDEMICKÁ ÚROVEŇ RESPIRAČNÍCH INFEKCÍ – ordinace v zimním krizovém režimu', recs: [
     { e: '🚑', h: 'Osobně jen s varovnými příznaky', p: 'Dušnost, pokles saturace, bolest na hrudi, zmatenost, dehydratace, zhoršení po přechodném zlepšení, vysoký věk s komorbiditami, imunosuprese. Ostatní řešte na dálku.' },
     { e: '🧪', h: 'Testy a antivirotika', p: 'Rychlotesty a CRP cíleně; antivirotika včas u rizikových pacientů.' },
     { e: '👥', h: 'Provoz', p: 'Výpadky personálu vyhodnocujte denně; změnu režimu oznamte pacientům na webu a záznamníku.' } ] },
-  S9a: { icon: '🔴', badge: 'Očekává se epidemie', title: 'OČEKÁVÁ SE EPIDEMICKÁ ÚROVEŇ – připravte zimní krizový režim', recs: [
-    { e: '📅', h: 'Rozpis na příští 2 týdny', p: 'Horní odhad předpovědi přesahuje 1 500/100k: posilte akutní bloky a telefon a domluvte zástup pro případ nemoci personálu.' },
+  S9a: { icon: '🔴', badge: 'Očekává se epid. úroveň', title: 'OČEKÁVÁ SE EPIDEMICKÁ ÚROVEŇ – připravte zimní krizový režim', recs: [
+    { e: '📅', h: 'Rozpis na příští 2 týdny', p: 'Horní odhad předpovědi přesahuje 1\u00a0500/100k: posilte akutní bloky a telefon a domluvte zástup pro případ nemoci personálu.' },
     { e: '🧪', h: 'Testy a antivirotika', p: 'Připravte rychlotesty (chřipka/COVID-19) a postup pro včasná antivirotika u rizikových pacientů.' },
     { e: '💉', h: 'Dočkování', p: 'Neočkované rizikové pacienty ještě očkujte – ochrana nastupuje asi za 2 týdny.' } ] },
-  S10: { icon: '🔴', badge: 'Za vrcholem', title: 'EPIDEMIE JE ZA VRCHOLEM – kapacitu snižujte postupně', recs: [
-    { e: '📉', h: 'Po jednom stupni', p: 'Snižujte nejvýše o jeden stupeň (~10–20 %) za týden a jen při poklesu dva týdny po sobě.' },
+  S10: { icon: '🔴', badge: 'Za vrcholem', title: 'VLNA JE ZA VRCHOLEM – kapacitu snižujte postupně', recs: [
+    { e: '📉', h: 'Po jednom stupni', p: 'Snižujte nejvýše o jeden stupeň za týden a jen při poklesu dva týdny po sobě.' },
     { e: '📋', h: 'Obnovte prevenci', p: 'Jako první obnovte odložené preventivní prohlídky a kontroly chronicky nemocných.' },
     { e: '🔁', h: 'Druhá vlna', p: 'Chřipka B, RSV nebo jarní prázdniny mohou přinést nový nárůst – pak se vraťte o stupeň výš.' } ] },
   S11: { icon: '🟡', badge: 'Ústup', title: 'RESPIRAČNÍ INFEKCE USTUPUJÍ – akutní kapacitu postupně vracejte k běžné úrovni', recs: [
@@ -504,7 +505,7 @@ function decide(c) {
     : c.phase === 'zima_pred' ? ((up || c.pRed4 >= 0.3) ? 'S7' : 'S8')
     : down ? (c.phase === 'zima_po' ? 'S10' : 'S11') : 'S8j';
   else if (b === 'yellow') key = (autumnLike || c.phase === 'zima_pred') ? ((up || c.pUp4 >= 0.5) ? 'S3' : 'S5')
-    : c.phase === 'leto' ? ((down || c.fcFalling) ? 'S11' : 'S1')
+    : c.phase === 'leto' ? (down ? 'S11' : 'S1')
     : down ? 'S11' : 'S8j';
   else key = (autumnLike && (up || c.pUp4 >= 0.3)) ? 'S2' : (down && c.phase === 'jaro') ? 'S11' : 'S1';
 

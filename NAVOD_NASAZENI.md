@@ -28,7 +28,7 @@
 
 ### Krok 3 – Nahrajte soubory
 1. Na stránce repozitáře klikněte **"uploading an existing file"**
-2. Přetáhněte všechny soubory z tohoto repozitáře (nebo z přiloženého `ari-dashboard.zip`), včetně složek `data/`, `scripts/` a `.github/`
+2. Přetáhněte všechny soubory z tohoto repozitáře (na GitHubu **Code → Download ZIP** stáhne vždy aktuální verzi), včetně složek `data/`, `scripts/` a `.github/`. Jednodušší alternativa: na stránce repozitáře klikněte **Fork** – zkopíruje se vše najednou.
 3. Commit: "Přidání ARI dashboardu"
 4. Klikněte **"Commit changes"**
 

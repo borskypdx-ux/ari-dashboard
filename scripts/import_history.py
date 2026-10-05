@@ -3,7 +3,8 @@
 
 Zdroje:
   * SZÚ týdenní PDF (od 2023-W40) – oficiální „Relativní nemocnost ARI na 100 000"
-    (zpětně stažené skriptem research_backfill / průběžně fetch_ari_data.py)
+    (jednorázově zpětně stažené tabulky z PDF jako JSON [{year, week, ari, ili,
+    ari_groups, url}], průběžně je doplňuje fetch_ari_data.py)
   * WHO FluID (xmart API, VIW_FID_EPI, země CZE) – týdenní ARI_CASE / ARI_POP_COV
     za věkové skupiny 0–4, 5–14, 15–64, 65+ (sečteno). Měřítko se liší od SZÚ
     (jiná pokrytá populace), proto se násobí kalibračním poměrem SZÚ/WHO:
@@ -15,7 +16,9 @@ Zdroje:
 
 Použití:
   python3 scripts/import_history.py <szu_tables.json> <who_weekly.json|who_fluid.csv>
-Výsledek se zapíše do data/ari_data.json (history + current + forecast + model).
+  (WHO CSV: https://xmart-api-public.who.int/FLUMART/VIW_FID_EPI?$format=csv&$filter=COUNTRY_CODE%20eq%20%27CZE%27)
+Výsledek se zapíše do data/ari_data.json (history + current + forecast + model);
+oficiální týdny SZÚ, které už v souboru jsou, se zachovají.
 """
 import csv, json, math, sys
 from datetime import date

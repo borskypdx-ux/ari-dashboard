@@ -118,19 +118,19 @@ Doporučení vychází ze čtyř vstupů:
 
 | Situace | Kdy (pásmo = pásmo plánované hodnoty) |
 |---|---|
-| S1 Klid | 🟢, nic neroste; 🟡 v létě bez růstu i bez poklesu |
+| S1 Klid | 🟢, nic neroste; 🟡 v létě bez růstu a bez potvrzeného poklesu |
 | S2 Nástup podzimu | 🟢 na podzim (nebo od W33), roste nebo P(🟡 do 4 týdnů) ≥ 30 % |
 | S3 Rychle přibývá | 🟡 na podzim (od W33) / v zimě před vrcholem, roste nebo P(🟠 do 4 týdnů) ≥ 50 % |
 | S4 Vysoká a roste | 🟠 na podzim (od W33), roste |
 | S5 Plató | 🟠 na podzim bez růstu; 🟡 na podzim / v zimě před vrcholem bez růstu |
 | S6 Nástup chřipky | signál ILI pod epidemickou úrovní (mimo jaro a zimu po vrcholu) – má přednost |
-| S7 Blíží se epidemie | 🟠 v zimě před vrcholem, roste nebo P(🔴 do 4 týdnů) ≥ 30 % |
+| S7 Blíží se epidemická úroveň | 🟠 v zimě před vrcholem, roste nebo P(🔴 do 4 týdnů) ≥ 30 % |
 | S8 Zvýšená, stabilní | 🟠 v zimě před vrcholem bez růstu |
 | S8j Po vrcholu | 🟠/🟡 po vrcholu nebo na jaře bez potvrzeného poklesu |
-| S9 Epidemie | 🔴 a poslední hodnota ≥ 1 500 |
-| S9a Očekává se epidemie | 🔴 jen podle horního odhadu předpovědi (poslední hodnota < 1 500) |
+| S9 Epidemická úroveň | 🔴 a poslední (nesvátková) hodnota ≥ 1 500 |
+| S9a Očekává se epidemická úroveň | 🔴 jen podle horního odhadu předpovědi (poslední hodnota < 1 500) |
 | S10 Za vrcholem | 🔴 po vrcholu bez růstu; 🟠 v zimě po vrcholu s potvrzeným poklesem |
-| S11 Ústup | potvrzený pokles mimo podzim a zimu před vrcholem; 🟡 v létě s klesající předpovědí |
+| S11 Ústup | potvrzený pokles mimo podzim a zimu před vrcholem |
 | S12 Svátky | poslední týden je svátkový a nic neroste ani potvrzeně neklesá |
 | S14 Mimo sezónu | léto do W32: pozorovaný rychlý růst, nebo růst nad zeleným pásmem |
 
