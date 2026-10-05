@@ -142,6 +142,14 @@ if (2026, 39) in real:
     check("svátkové propady: W40 < W41, W44 < W43 i W45", med[40] < med[41] and med[44] < med[43] and med[44] < med[45], med)
     # od automatizovaného hlášení (2024/25) je propad o podzimních prázdninách −25 až −30 %
     check("propad W44 aspoň 15 % pod W43", med[44] / med[43] < 0.85, round(med[44] / med[43], 3))
+    # obě složky modelu musí svátek promítnout (analogy na řadě očištěné o svátky)
+    import model_analog as MA, model_profile_holiday as MP
+    h39 = F.history_upto(real, (2026, 39))
+    rat = lambda lp: math.exp(lp[4] - lp[3])          # W44 / W43 z origin W39
+    ra, rp = rat(MA.predict(h39, (2026, 39), 6)), rat(MP.predict(h39, (2026, 39), 6))
+    d_aut = math.exp(MP.holiday_effects(MP.log_series(h39))["autumn"])
+    check("W44/W43 u obou složek < 0,82", ra < 0.82 and rp < 0.82, (round(ra, 3), round(rp, 3)))
+    check("W44/W43 blízko svátkového efektu", abs(med[44] / med[43] - d_aut) < 0.06, (round(med[44] / med[43], 3), round(d_aut, 3)))
     hol = {x["iso_week"]: x.get("holiday") for x in f39}
     check("svátky v předpovědi popsané", bool(hol[40]) and bool(hol[44]) and bool(hol[47]) and not hol[41], hol)
 
