@@ -62,8 +62,10 @@ Předpověď je **vážený průměr dvou modelů v logaritmu**; oba se při ka�
 
 **1. Analogové sezóny** (`scripts/model_analog.py`) – „jak to pokračovalo v minulých letech, které vypadaly podobně":
 - letošních posledních 6 týdnů se porovná se stejnými kalendářními týdny všech minulých sezón (2009/10–2025/26 bez covidu). Týdny se párují **podle data** (týden obsahující stejné datum jako letošní čtvrtek), takže Vánoce, podzimní prázdniny i týden 53 sedí na sebe;
-- každá minulá sezóna pak „promítne" letošní úroveň dopředu svou vlastní křivkou. Sezóny s podobnějším tvarem posledních týdnů (novější týdny váží víc) mají větší váhu;
-- rozdíl úrovní letos vs. minulá sezóna se z aktuální hodnoty postupně (×0,8 za týden) vrací k průměrnému rozdílu za poslední 2 roky – to zachytí vyšší úroveň po covidu i střídání silnějších a slabších sezón.
+- každá minulá sezóna pak „promítne" letošní úroveň dopředu svou vlastní křivkou. Sezóny s podobnějším tvarem posledních týdnů mají mírně větší váhu (v praxi jsou váhy téměř stejné – model je hlavně kalendářně zarovnaný průměr minulých sezón);
+- rozdíl úrovní letos vs. minulá sezóna se z aktuální hodnoty postupně (×0,8 za týden) vrací k průměrnému rozdílu za poslední 2 roky – to zachytí vyšší úroveň po covidu i střídání silnějších a slabších sezón;
+- sezóny se porovnávají na řadě **očištěné o svátky** (stejné svátkové efekty jako v modelu 2) a do cílových svátkových týdnů se propad vrátí – svátek tak sedí na svátek bez ohledu na to, na jaký den v týdnu připadne;
+- chybí-li několik posledních týdnů dat, model pokračuje s průměrným posunem úrovní (nespadne do „ploché" předpovědi).
 
 **2. Sezónní profil se svátky** (`scripts/model_profile_holiday.py`) – „navázat na aktuální úroveň a pokračovat typickým týdenním tempem":
 - z historie se odhadne, o kolik % hlášená nemocnost klesá ve svátkových týdnech (podle **data**, ne čísla týdne): 28. září, 28. října + podzimní prázdniny, 17. listopadu, Vánoce, Nový rok, Velký pátek, Velikonoční pondělí, 1. a 8. května, 5.–6. července. U podzimních prázdnin, Vánoc a Velikonoc se od sezóny 2024/25 berou jen novější roky – propady jsou od zavedení automatizovaného hlášení hlubší (W44 −25 až −30 % místo −10 až −15 %);
@@ -82,15 +84,17 @@ Předpověď je **vážený průměr dvou modelů v logaritmu**; oba se při ka�
 | sezónní profil (bez svátků) | 11,4 | 9,5 | | |
 | klimatologie + odchylka | 8,9 | 10,6 | | |
 | sezónní profil se svátky | 8,5 | 8,8 | 10,8 | 89–93 % |
-| analogové sezóny | 6,5 | 8,5 | | 90–93 % |
-| **použitý vážený průměr** | **6,3** | **8,1** | **9,6** | **90–95 %** |
+| analogové sezóny (očištěné o svátky) | 6,5 | 8,0 | 9,4 | 91–94 % |
+| **použitý vážený průměr** | **6,4** | **7,9** | **9,0** | **91–95 %** |
 
-Kontrolní sezóny podle horizontu (použitý model vs. původní): 1 týden 4,3 % vs. 7,0 %, 2 týdny 6,1 vs. 11,1, 4 týdny 7,6 vs. 15,8, 8 týdnů 10,9 vs. 28,2, 10 týdnů 11,3 vs. 31,9. Nejtěžší je zima (nástup a vrchol chřipky): 9,5 % vs. 21,2 %.
+Kontrolní sezóny podle horizontu (použitý model vs. původní): 1 týden 4,3 % vs. 7,0 %, 2 týdny 6,2 vs. 11,1, 4 týdny 7,4 vs. 15,8, 8 týdnů 10,7 vs. 28,2, 10 týdnů 11,5 vs. 31,9. Zima (nástup a vrchol chřipky) 9,1 % vs. 21,2 %.
+
+**Známé slabiny:** model nepozná předem netypicky časný vrchol (2022/23 s vrcholem v prosinci model z W51 nadhodnotil o desítky %) a velké chřipkové vrcholy spíš podhodnocuje (o 15–20 % na 2–4 týdny). Proto se doporučení plánují na horní odhad (75. percentil) a sledují se i ILI.
 
 Testy (`scripts/test_forecast.py`) navíc hlídají, že předpověď z W39/2026 roste do W41–W43 (v žádné sezóně 2009–2025 mimo covid nebyla hodnota ve W41–W43 nižší než ve W38/W39, s výjimkou svátkových týdnů), že W40 a W44 mají svátkový propad a že skutečná hodnota W39 leží v 80% intervalu předpovědi z W38.
 
 ### Intervaly a pravděpodobnosti
-Intervaly nejsou „od oka": při každé aktualizaci se model zpětně otestuje na všech historických sezónách a použijí se jeho skutečné chyby z týdnů **ve stejné fázi sezóny** (±6 týdnů od aktuálního týdne). Proto je nejistota v klidném podzimu menší než při nástupu chřipkové vlny. Z rozdělení chyb se počítá:
+Intervaly nejsou „od oka": při každé aktualizaci se model zpětně otestuje na všech historických sezónách a použijí se jeho skutečné chyby z týdnů **ve stejné fázi sezóny** (±6 týdnů od aktuálního týdne). Proto je nejistota v klidném podzimu menší než při nástupu chřipkové vlny. Chyby z pocovidových sezón (od 2022/23) mají trojnásobnou váhu a rozptyl se rozšiřuje ×1,15: samotné předcovidové chyby byly na dnešní dobu příliš „optimistické“ (80% interval v sezónách 2022–2025 pokryl jen 72 % případů, po úpravě 77 %, v sezónách 2024–2025 81 %; ověřeno v reálném čase, tj. jen z chyb známých k danému týdnu). Z rozdělení chyb se počítá:
 - **50% a 80% interval** pro každý týden,
 - **pravděpodobnost**, že nemocnost bude ≥ 750, ≥ 1 000 a ≥ 1 500/100k.
 

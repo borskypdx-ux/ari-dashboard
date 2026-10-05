@@ -11,6 +11,10 @@ Intervaly NEJSOU odhadnuté „od oka": při každém běhu se model zpětně ot
 na všech historických sezónách (rolling origin, mimo COVID 2019–2021) a
 použijí se skutečné chyby z týdnů ve stejné fázi sezóny (±6 týdnů od
 aktuálního týdne). Tím je nejistota na podzim jiná než při nástupu chřipky.
+Chyby z pocovidových sezón (od 2022/23) mají trojnásobnou váhu a rozptyl je
+rozšířen ×1,15 – ověřeno v reálném čase (jen z chyb známých k danému týdnu):
+pokrytí intervalů 50 % / 80 % vychází v sezónách 2024–2025 na 55 % / 81 %,
+v 2022–2025 na 48 % / 77 % (bez úprav jen 43 % / 72 %).
 """
 import math
 from pathlib import Path
@@ -26,6 +30,8 @@ EVAL_EXCLUDE = (2019, 2020, 2021)
 PHASE_WINDOW = 6          # ± týdnů pro výběr historických chyb
 MIN_PHASE_SAMPLES = 60    # jinak se použijí chyby z celého roku
 THRESHOLDS = (750, 1000, 1500)
+RECENT_FROM, RECENT_WEIGHT = 2022, 3.0   # váha chyb z pocovidových sezón
+WIDEN = 1.15                             # rozšíření rozptylu chyb kolem mediánu
 
 MODEL_NAME = "blend_analog_profile_holiday"
 MODEL_LABEL = "Analogové sezóny + sezónní profil se svátkovými efekty (vážený průměr v logaritmu)"
@@ -76,6 +82,22 @@ def _quantile(xs, q):
     return xs[lo] + (xs[hi] - xs[lo]) * (pos - lo)
 
 
+def _wquantile(pairs, q):
+    """Vážený kvantil z [(hodnota, váha)] (lineárně mezi středy vah)."""
+    pairs = sorted(pairs)
+    tot = sum(w for _, w in pairs)
+    acc, pts = 0.0, []
+    for x, w in pairs:
+        pts.append(((acc + w / 2) / tot, x))
+        acc += w
+    if q <= pts[0][0]:
+        return pts[0][1]
+    for (p0, x0), (p1, x1) in zip(pts, pts[1:]):
+        if q <= p1:
+            return x0 + (x1 - x0) * (q - p0) / (p1 - p0) if p1 > p0 else x1
+    return pts[-1][1]
+
+
 def skill_summary(residuals, legacy_residuals=None):
     """Souhrn přesnosti pro zobrazení na dashboardu."""
     def mdae(rs, h):
@@ -98,12 +120,16 @@ def make_forecast(series, origin=None):
     res = backtest_residuals(series)
     out = []
     for h in range(1, H + 1):
-        near = [e for (o, hh, e) in res if hh == h and _week_dist(o[1], origin[1]) <= PHASE_WINDOW]
-        errs = near if len(near) >= MIN_PHASE_SAMPLES else [e for (_, hh, e) in res if hh == h]
+        wt = lambda o: RECENT_WEIGHT if F.season_of(*o) >= RECENT_FROM else 1.0
+        near = [(e, wt(o)) for (o, hh, e) in res if hh == h and _week_dist(o[1], origin[1]) <= PHASE_WINDOW]
+        pool = near if len(near) >= MIN_PHASE_SAMPLES else [(e, wt(o)) for (o, hh, e) in res if hh == h]
+        med = _wquantile(pool, 0.5)
+        pool = [(med + WIDEN * (e - med), w) for e, w in pool]
         y, w = F.week_add(*origin, h)
         # log(skutečnost) = pred − chyba  →  kvantil p skutečnosti = pred − kvantil (1−p) chyby
-        q = {p: math.exp(lp[h - 1] - _quantile(errs, 1 - p)) for p in (0.1, 0.25, 0.5, 0.75, 0.9)}
-        probs = {f"p_{t}": round(sum(1 for e in errs if lp[h - 1] - e >= math.log(t)) / len(errs), 3)
+        q = {p: math.exp(lp[h - 1] - _wquantile(pool, 1 - p)) for p in (0.1, 0.25, 0.5, 0.75, 0.9)}
+        tot = sum(wgt for _, wgt in pool)
+        probs = {f"p_{t}": round(sum(wgt for e, wgt in pool if lp[h - 1] - e >= math.log(t)) / tot, 3)
                  for t in THRESHOLDS}
         out.append({
             "week": f"{y}-W{w:02d}", "year": y, "iso_week": w,
@@ -119,7 +145,8 @@ def make_forecast(series, origin=None):
         "model": {
             "name": MODEL_NAME, "label": MODEL_LABEL,
             "origin": f"{origin[0]}-W{origin[1]:02d}",
-            "interval_method": f"empirické chyby zpětného testu, fáze sezóny ±{PHASE_WINDOW} týdnů",
+            "interval_method": f"empirické chyby zpětného testu ze stejné fáze sezóny (±{PHASE_WINDOW} týdnů), "
+                               f"pocovidové sezóny s vahou {RECENT_WEIGHT:g}×, rozptyl ×{WIDEN:g}".replace(".", ","),
             "skill": skill_summary(res, legacy),
         },
     }

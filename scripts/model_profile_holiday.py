@@ -95,18 +95,15 @@ def _median(xs):
     return (xs[(n - 1) // 2] + xs[n // 2]) / 2 if n else 0.0
 
 
-def forecast(hist, origin, H, p=None):
-    p = {**P, **(p or {})}
-    Z = {}
-    for (y, w), v in hist.items():
-        if v and v > 0:
-            Z[_widx(y, w)] = math.log(v)
-    i0 = _widx(*origin)
-    if i0 not in Z:
-        i0 = max(i for i in Z if i <= i0)
-    S0 = _season(*_from_idx(i0))
+def log_series(hist):
+    """{index týdne: log hodnota} (jen kladné hodnoty)."""
+    return {_widx(y, w): math.log(v) for (y, w), v in hist.items() if v and v > 0}
+
+
+def holiday_effects(Z, recent=True):
+    """δ pro každý typ svátku: medián (log hodnota − log-lineární interpolace mezi
+    nejbližšími nesvátkovými sousedy do 3 týdnů); covidové sezóny se vynechávají."""
     tau = {i: htype(*_from_idx(i)) for i in Z}
-    # δ: svátkové efekty
     occ = {}
     for i, t in tau.items():
         if t is None or _season(*_from_idx(i)) in COVID_SEASONS:
@@ -121,11 +118,31 @@ def forecast(hist, origin, H, p=None):
     for t, xs in occ.items():
         allv = [x for _, x in xs]
         rec = [x for s, x in xs if s >= RECENT_FROM]
-        if p["recent"] and t in ("autumn", "xmas1", "xmas2", "eastermon") and len(rec) >= 2:
+        if recent and t in ("autumn", "xmas1", "xmas2", "eastermon") and len(rec) >= 2:
             delta[t] = _median(rec)
         elif len(allv) >= 2:
             delta[t] = _median(allv)
-    D = lambda i: delta.get(htype(*_from_idx(i)), 0.0) if htype(*_from_idx(i)) else 0.0
+    return delta
+
+
+def effect(i, delta):
+    """Svátkový efekt (log) pro týden s indexem i."""
+    t = htype(*_from_idx(i))
+    return delta.get(t, 0.0) if t else 0.0
+
+
+def forecast(hist, origin, H, p=None):
+    p = {**P, **(p or {})}
+    Z = log_series(hist)
+    io = _widx(*origin)
+    known = [i for i in Z if i <= io]
+    if not known:
+        return [0.0] * H
+    i0 = max(known)                 # chybí-li týden origin, navážeme na poslední známý
+    gap = io - i0
+    S0 = _season(*_from_idx(io))
+    delta = holiday_effects(Z, p["recent"])
+    D = lambda i: effect(i, delta)
     A = {i: z - D(i) for i, z in Z.items()}
     # profil růstu z minulých sezón
     by_w = {}
@@ -150,11 +167,11 @@ def forecast(hist, origin, H, p=None):
     else:
         anom = 0.0
     out, a = [], A[i0]
-    for h in range(1, H + 1):
+    for h in range(1, gap + H + 1):
         i = i0 + h
         a += g(_from_idx(i)[1]) + p["phi"] ** h * anom
         out.append(a + D(i))
-    return out
+    return out[gap:]
 
 
 def predict(hist, origin, H):

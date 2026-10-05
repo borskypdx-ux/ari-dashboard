@@ -31,7 +31,12 @@ v okně se vynechá.
 Kontrakt: predict(hist, origin, H) -> [log ARI pro týdny origin+1..origin+H].
 """
 import math
+import sys
 from datetime import date
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+import model_profile_holiday as PH  # noqa: E402
 
 COVID_SEASONS = (2019, 2020, 2021)
 
@@ -43,6 +48,7 @@ DEFAULTS = dict(
     tau=0.25,       # šířka gaussovských vah podle vzdálenosti (log)
     L=104,          # okno trvalého posunu letos vs analog (týdny)
     rho=0.80,       # útlum aktuální anomálie k trvalému posunu (rho**h)
+    hol=True,       # porovnávat na řadě očištěné o svátky (model_profile_holiday)
 )
 
 
@@ -88,19 +94,28 @@ def forecast(hist, origin, H, p=None):
     L, rho = P["L"], P["rho"]
 
     LI = _logmap(hist)
-    i0 = _widx(*origin)
-    if i0 not in LI:  # origin chybí → poslední dostupný týden
-        prev = [i for i in LI if i <= i0]
-        if not prev:
-            v = hist.get(origin) or next((x for x in reversed(list(hist.values())) if x), 1.0)
-            return [math.log(max(v, 1.0))] * H
-        i0 = max(prev)
+    io = _widx(*origin)
+    prev = [i for i in LI if i <= io]
+    if not prev:
+        v = next((x for x in reversed(list(hist.values())) if x), 1.0)
+        return [math.log(max(v, 1.0))] * H
+    i0 = max(prev)            # chybí-li týden origin, navážeme na poslední známý
+    gap = io - i0
+    HH = gap + H
+    # svátkové efekty: analogy se porovnávají na řadě očištěné o svátky a
+    # do cílových svátkových týdnů se efekt vrátí (zarovnání podle data čtvrtka
+    # jinak páruje svátek se svátkem jen podle toho, na jaký den připadne)
+    eff = lambda i: 0.0
+    if P["hol"]:
+        delta = PH.holiday_effects(PH.log_series(hist))
+        eff = lambda i: PH.effect(i, delta)
+        LI = {i: z - eff(i) for i, z in LI.items()}
     x0 = LI[i0]
     S0 = _season(*origin)
     seasons = sorted({_season_of_index(i) for i in LI})
     seasons = [s for s in seasons if s < S0 and s not in COVID_SEASONS]
 
-    cands = []
+    cands, weak = [], []
     for S in seasons:
         sh = _shift(S0, S)
         # trvalý posun: průměr (letos − analog) za posledních L týdnů
@@ -115,19 +130,26 @@ def forecast(hist, origin, H, p=None):
             a, b = LI.get(i0 - j), LI.get(i0 - j + sh)
             if a is not None and b is not None:
                 win.append((decay ** j, a - b))
+        fut = [LI.get(i0 + h + sh) for h in range(1, HH + 1)]
+        if all(f is None for f in fut):
+            continue
+        z0 = LI.get(i0 + sh)
         if len(win) < max(P["min_pairs"], (k + 1) // 2):
+            # málo letošních týdnů v okně (výpadek dat) → analog jen s dlouhodobým posunem
+            if len(lng) >= 13:
+                o_long = sum(lng) / len(lng)
+                weak.append(dict(S=S, d2=0.0, o_now=x0 - z0 if z0 is not None else o_long,
+                                 o_long=o_long, fut=fut))
             continue
         o_win = _wmean(win)
         d2 = _wmean([(w, (r - o_win) ** 2) for w, r in win])
-        z0 = LI.get(i0 + sh)
         o_now = x0 - z0 if z0 is not None else o_win
         o_long = sum(lng) / len(lng) if lng else o_win
-        fut = [LI.get(i0 + h + sh) for h in range(1, H + 1)]
-        if all(f is None for f in fut):
-            continue
         cands.append(dict(S=S, d2=d2, o_now=o_now, o_long=o_long, fut=fut))
     if not cands:
-        return [x0] * H
+        cands = weak           # stejné váhy
+    if not cands:
+        return [x0 + eff(io + h) for h in range(1, H + 1)]
 
     cands.sort(key=lambda c: (c["d2"], c["S"]))
     sel = cands[:K]
@@ -139,7 +161,7 @@ def forecast(hist, origin, H, p=None):
 
     out = []
     last = x0
-    for h in range(1, H + 1):
+    for h in range(1, HH + 1):
         damp = rho ** h
         acc = [(c["w"], c["fut"][h - 1] + c["o_long"] + (c["o_now"] - c["o_long"]) * damp)
                for c in sel if c["fut"][h - 1] is not None]
@@ -148,7 +170,7 @@ def forecast(hist, origin, H, p=None):
             v = last
         out.append(v)
         last = v
-    return out
+    return [v + eff(i0 + h) for h, v in enumerate(out, 1)][gap:]
 
 
 def predict(hist, origin, H):
