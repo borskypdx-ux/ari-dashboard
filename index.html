@@ -430,6 +430,10 @@ const SITUATIONS = {
     { e: '🏥', h: 'Prevence a kontroly', p: 'Nevyužité akutní sloty uvolňujte 24–48 h předem pro kontroly, preventivní prohlídky a dispenzarizaci.' },
     { e: '💉', h: 'Příprava očkování', p: 'Objednejte vakcíny na podzim (chřipka, COVID-19, pneumokoky) a připravte seznamy rizikových pacientů k oslovení.' },
     { e: '📅', h: 'Dovolené', p: 'Plánujte je na léto a jarní útlum, ne na období od konce listopadu do února.' } ] },
+  S1b: { icon: '🟡', badge: 'Doznívá', title: 'NEMOCNOST JEŠTĚ MÍRNĚ ZVÝŠENÁ – kapacitu snižujte až po potvrzeném poklesu', recs: [
+    { e: '📉', h: 'Postupná redukce', p: 'Akutní kapacitu ubírejte po jednom stupni za týden, až data potvrdí pokles dva týdny po sobě.' },
+    { e: '📋', h: 'Odložená péče', p: 'Uvolněné sloty využijte pro preventivní prohlídky a kontroly chronicky nemocných.' },
+    { e: '📅', h: 'Dovolené', p: 'Plánujte je na léto, ne na období od konce listopadu do února.' } ] },
   S2: { icon: '🟢', badge: 'Nástup', title: 'ZAČÍNÁ PODZIMNÍ VZESTUP – připravte navýšení akutní kapacity', recs: [
     { e: '🗂️', h: 'Rezerva slotů', p: 'Předem označte 15–20 % slotů, které lze během týdne převést na akutní.' },
     { e: '📞', h: 'Telefonická triáž', p: 'Zaveďte triáž podle varovných příznaků s jasnými pravidly pro objednání na tentýž den.' },
@@ -443,6 +447,14 @@ const SITUATIONS = {
     { e: '📋', h: 'Uvolněte kapacitu', p: 'Odložitelné preventivní prohlídky přesuňte na méně vytížené dny, kontroly stabilních chronicky nemocných řešte i telefonicky.' },
     { e: '💉', h: 'Dokončete očkování', p: 'Očkování proti chřipce (a COVID-19 u rizikových) stihněte do konce listopadu – ochrana nastupuje asi za 2 týdny.' },
     { e: '📅', h: 'Zimní režim', p: 'Do konce listopadu připravte rozpis směn, zástupy a rozšířené telefonní hodiny; vrchol chřipky bývá v lednu až únoru.' } ] },
+  S3a: { icon: '🟡', badge: 'Očekává se růst', title: 'OČEKÁVÁ SE RYCHLÝ NÁRŮST RESPIRAČNÍCH INFEKCÍ – připravte navýšení kapacity a očkujte', recs: [
+    { e: '🗂️', h: 'Připravte rezervu', p: 'Rezervní sloty mějte připravené k převedení na akutní – horní odhad předpovědi na příští 2 týdny je už v mírně zvýšeném pásmu.' },
+    { e: '📞', h: 'Vzdálené konzultace', p: 'Lehké infekty bez rizikových faktorů řešte na dálku: rady k léčbě, eRecept, telefonická kontrola stavu.' },
+    { e: '💉', h: 'Očkování', p: 'Říjen a listopad jsou hlavní okno pro očkování proti chřipce; chřipku a COVID-19 lze podat při jedné návštěvě.' } ] },
+  S4a: { icon: '🟠', badge: 'Očekává se zvýšená', title: 'OČEKÁVÁ SE ZVÝŠENÁ ZÁTĚŽ – navyšte akutní kapacitu a připravte zimní režim', recs: [
+    { e: '🗂️', h: 'Navyšte akutní kapacitu', p: 'Horní odhad předpovědi na příští 2 týdny přesahuje 1\u00a0000/100k – převeďte rezervní sloty na akutní dřív, než nárůst přijde.' },
+    { e: '🚪', h: 'Oddělte respirační pacienty', p: 'Samostatný časový blok nebo prostor pro pacienty s horečkou a kašlem.' },
+    { e: '💉', h: 'Očkování', p: 'Očkování proti chřipce (a COVID-19 u rizikových) stihněte do konce listopadu – ochrana nastupuje asi za 2 týdny.' } ] },
   S5: { icon: '🟠', badge: 'Plató', title: 'NEMOCNOST SE DRŽÍ NA ZVÝŠENÉ ÚROVNI – kapacitu nesnižujte', recs: [
     { e: '📊', h: 'Zimní vlna teprve přijde', p: 'Po podzimním plató historicky přichází chřipková vlna (epidemická úroveň typicky W49–W05, tj. od začátku prosince do začátku února).' },
     { e: '🍂', h: 'Pozor na svátky', p: 'Pokles v týdnech se svátky (28. září, podzimní prázdniny koncem října, 17. listopadu, Vánoce) je hlavně důsledek volných dnů, ne ústup nemocí.' },
@@ -508,6 +520,9 @@ function decide(c) {
     : c.phase === 'leto' ? (down ? 'S11' : 'S1')
     : down ? 'S11' : 'S8j';
   else key = (autumnLike && (up || c.pUp4 >= 0.3)) ? 'S2' : (down && c.phase === 'jaro') ? 'S11' : 'S1';
+  // nadpis „vysoká/rychle přibývá“ jen když to ukazují i naměřená data, jinak „očekává se“
+  if (key === 'S4' && c.lastBand !== 'amber' && c.lastBand !== 'red') key = 'S4a';
+  if (key === 'S3' && c.lastBand === 'green' && c.trend !== 'U' && c.trend !== 'UU') key = 'S3a';
 
   // stupeň kapacity: z pásma plánované hodnoty, s ochrannými pravidly
   let L = { green: 0, yellow: 1, amber: 2, red: 3 }[b];
@@ -515,8 +530,8 @@ function decide(c) {
   if (b === 'red' && c.lastRed && (up || c.phase === 'zima_pred')) L = 4;
   if (key === 'S6' || key === 'S9') L = Math.max(L, 3);
   if (autumnLike) L = Math.max(L, 1);
-  // trend se počítá bez svátkových týdnů, takže svátek sám pokles „nepotvrdí“
-  const reduceOk = down && !autumnLike && (c.phase === 'jaro' || c.phase === 'zima_po' || c.phase === 'leto');
+  // ve svátkovém týdnu se nesnižuje (nižší číslo ≠ ústup); trend svátky vynechává
+  const reduceOk = down && !c.holidayLast && !autumnLike && (c.phase === 'jaro' || c.phase === 'zima_po' || c.phase === 'leto');
   if (!reduceOk) L = Math.max(L, c.levelRecent);      // bez potvrzeného poklesu se nesnižuje
   return { key, L, up, down, reduceOk };
 }
@@ -540,25 +555,36 @@ function assess(hist, fc, now) {
   const ref = clean.length ? clean : ahead;
   const fcLevel = ref.length ? Math.exp(ref.reduce((s, f) => s + Math.log(f.median), 0) / ref.length) : last.v;
   const fcRising = fcLevel > last.v * 1.05, fcFalling = fcLevel < last.v * 0.95;
-  const xPlan = Math.max(last.v, f2 ? f2.q75 : last.v);          // horní odhad za 2 týdny
+  // horní odhad za 2 týdny; připadne-li cílový týden na svátek, vezme se geometrický
+  // průměr sousedních nesvátkových týdnů (propad je jen v hlášení, ne v nemocnosti)
+  const nb = d => { for (let k = 2 + d; k >= 0 && k <= 6; k += d) { const f = fcAt(k); if (f && !f.holiday) return f; } return null; };
+  const nbs = f2 && f2.holiday && fcAt(2) ? [nb(-1), nb(1)].filter(Boolean) : [];
+  const q2 = nbs.length ? Math.exp(nbs.reduce((s, f) => s + Math.log(f.q75), 0) / nbs.length) : (f2 ? f2.q75 : last.v);
+  const xPlan = Math.max(last.v, q2);
   const bandPlan = bandOf(xPlan);
   const nextThr = { green: 'p_750', yellow: 'p_1000', amber: 'p_1500', red: 'p_1500' }[bandPlan.key];
-  const iliNow = last.ili_per_100k, ili2 = prev2 ? prev2.ili_per_100k : null;
-  const flu = iliNow != null && ili2 ? (iliNow >= 25 && iliNow / ili2 >= 1.5) : false;
+  // signál chřipky: ILI proti poslednímu nesvátkovému týdnu aspoň 2 týdny zpět (Vánoce ILI
+  // uměle snižují) a ILI nesmí proti předchozímu nesvátkovému týdnu klesat
+  const ref2 = hist.slice(0, -2).filter(r => !r.holiday).pop();
+  const iliNow = last.ili_per_100k, ili2 = ref2 ? ref2.ili_per_100k : null;
+  const iliFalling = prev && !prev.holiday && prev.ili_per_100k != null && iliNow < prev.ili_per_100k;
+  const flu = iliNow != null && ili2 ? (iliNow >= 25 && iliNow / ili2 >= 1.5 && !iliFalling) : false;
   const holidayLast = !!last.holiday;
   // ve svátkovém týdnu je hlášená hodnota uměle nízká → úroveň podle posledního nesvátkového týdne
   const refWeek = hist.slice(-3).filter(r => !r.holiday).pop();          // poslední nesvátkový týden
   const lastLevel = holidayLast && refWeek ? Math.max(last.v, refWeek.v) : last.v;
   const levelRecent = { green: 0, yellow: 1, amber: 2, red: 3 }[bandOf(Math.max(last.v, prev ? prev.v : 0)).key];
   const dec = decide({ bandPlan: bandPlan.key, trend: tr.cls, phase: si.phase, flu, holidayLast, fcRising, fcFalling,
-    pUp4: maxP(nextThr), pRed4: maxP('p_1500'), levelRecent, week: last.w, lastRed: lastLevel >= 1500, postPeak: si.postPeak });
+    pUp4: maxP(nextThr), pRed4: maxP('p_1500'), levelRecent, lastRed: lastLevel >= 1500, lastBand: bandOf(lastLevel).key,
+    // „od W33“ = podle dnešního týdne (data mají 1–2 týdny zpoždění)
+    week: last.w + Math.max(0, weeksBetween([last.y, last.w], now)), postPeak: si.postPeak });
   // odhad akutní kapacity pro ordinaci pro dospělé (poptávka dospělých vs. jejich letní úroveň)
   const summerRows = hist.filter(r => r.w >= 27 && r.w <= 34);
   const adultSummer = median(summerRows.map(adultIndex).filter(v => v != null));
   const totalSummer = median(summerRows.filter(r => r.y >= last.y - 3).map(r => r.v));
   // podíl dospělých na letošním růstu: (index dospělých / jejich léto) ÷ (celkem / léto),
   // z posledních 3 nesvátkových týdnů (vyšší ze dvou nejnovějších, ať jeden týden odhad nesníží)
-  const adj = hist.slice(-6).filter(r => !r.holiday).slice(-3).map(r => {
+  const adj = hist.slice(-6).filter(r => !r.holiday && adultIndex(r) != null).slice(-3).map(r => {
     const a = adultIndex(r);
     return a && adultSummer ? (a / adultSummer) / (r.v / totalSummer) : 1;
   });
@@ -569,11 +595,17 @@ function assess(hist, fc, now) {
     iliNow, flu, holidayLast, dec, M, capLo: cap(0.25), capHi: cap(0.45) };
 }
 
-/** Asymetrie: bez potvrzeného poklesu nikdy pod doporučení předchozího týdne. */
+/** Asymetrie: bez potvrzeného poklesu nikdy pod doporučení předchozího týdne;
+    i při potvrzeném poklesu nejvýše o jeden stupeň a zhruba o polovinu rozdílu % za týden. */
 function guard(a, prev) {
-  if (prev && !a.dec.reduceOk) {
+  if (!prev) return a;
+  if (!a.dec.reduceOk) {
     a.dec.L = Math.max(a.dec.L, prev.dec.L);
     a.capLo = Math.max(a.capLo, prev.capLo); a.capHi = Math.max(a.capHi, prev.capHi);
+  } else {
+    a.dec.L = Math.max(a.dec.L, prev.dec.L - 1);
+    a.capLo = Math.max(a.capLo, Math.round((a.capLo + prev.capLo) / 10) * 5);
+    a.capHi = Math.max(a.capHi, Math.round((a.capHi + prev.capHi) / 10) * 5);
   }
   return a;
 }
@@ -625,6 +657,8 @@ function render(data) {
     G = guard(assess(hist.slice(0, n + 1), toFc(p.forecast), addWeeks(now[0], now[1], -back)), G);
   }
   const A = guard(assess(hist, fc, now), G);
+  // „klidné období“ jen při základní kapacitě; jinak ještě doznívá (drží se do potvrzeného poklesu)
+  if (A.dec.key === 'S1' && A.dec.L >= 1) A.dec.key = 'S1b';
   const { tr, si, f4, fcAt, maxP, nextThr, fcRising, fcFalling, xPlan, bandPlan, iliNow, flu, holidayLast, dec, M, capLo, capHi } = A;
   const sit = SITUATIONS[dec.key];
   const ch1 = prev ? (last.v / prev.v - 1) * 100 : null;
@@ -678,7 +712,8 @@ function render(data) {
   const f8 = f8c && f8c !== f4 ? f8c : null;
   const p4 = f4 ? Math.round((f4.p_1500 || 0) * 100) : null, p8 = f8 ? Math.round((f8.p_1500 || 0) * 100) : null;
   setText('kpi-risk', p4 == null ? '–' : p8 == null ? `${p4} %` : `${p4} % · ${p8} %`);
-  el('kpi-4').className = 'kpi-card ' + ((p8 ?? 0) >= 50 ? 'red' : (p8 ?? 0) >= 20 ? 'amber' : 'green');
+  const pc = Math.max(p4 ?? 0, p8 ?? 0);
+  el('kpi-4').className = 'kpi-card' + (p4 == null ? '' : pc >= 50 ? ' red' : pc >= 20 ? ' amber' : ' green');
   el('kpi-risk-sub').replaceChildren(
     h('div', {}, 'pravděpodobnost, že nemocnost bude ≥\u00a01\u00a0500/100k'),
     h('div', {}, f4 ? `${weekLabel(f4.y, f4.w, { year: false })}: ${p4} %` : ''),
@@ -725,7 +760,7 @@ function render(data) {
   const sks = data.model?.skill?.seasons || [];
   const skSeasons = sks.length ? `${sks[0]}/${String((sks[0] + 1) % 100).padStart(2, '0')}–${sks[sks.length - 1]}/${String((sks[sks.length - 1] + 1) % 100).padStart(2, '0')}` : '';
   notes.push(skh && skh.length >= 6
-    ? `Typická odchylka v kontrolních sezónách ${skSeasons}: ±${fmtN1(skh[0])}–${fmtN1(skh[3])} % na 1–4 týdny od posledních dat, ±${fmtN1(skh[4])}–${fmtN1(Math.max(...skh.slice(4)))} % na ${skh.length > 5 ? '5–' + skh.length : '5'} týdnů (nejistota roste s horizontem).`
+    ? `Typická odchylka v kontrolních sezónách ${skSeasons}: ±${fmtN1(Math.min(...skh.slice(0, 4)))}–${fmtN1(Math.max(...skh.slice(0, 4)))} % na 1–4 týdny od posledních dat, ±${fmtN1(Math.min(...skh.slice(4)))}–${fmtN1(Math.max(...skh.slice(4)))} % na ${skh.length > 5 ? '5–' + skh.length : '5'} týdnů (nejistota s horizontem obecně roste).`
     : 'Týdny 1–4 jsou spolehlivější, další orientační (nejistota roste s horizontem).');
   if (holidays.length) notes.push(`Pozor na svátky: ${holidays.join('; ')} – hlášená nemocnost bývá uměle nižší a po svátcích se vrací.`);
   setText('fc-note', notes.join(' '));
@@ -782,7 +817,7 @@ function xPos(y, w, ref, spill = false) {
   // sezóna ref = W27 roku ref … W26 roku ref+1
   const start = [ref, 27];
   const d = weeksBetween(start, [y, w]);
-  return d >= 0 && d <= 60 ? d + 1 : null;
+  return d >= 0 && d <= 62 ? d + 1 : null;      // 53 týdnů sezóny + 10 týdnů předpovědi
 }
 /** Kalendářní týden pro pozici x v roce/sezóně ref (pro popisky a tooltip). */
 function weekAt(x, ref) {
@@ -853,7 +888,7 @@ const markerPlugin = {
     const { ctx, chartArea: a, scales: { x, y } } = c;
     ctx.save();
     // svislá čára „poslední data“ a „dnes“
-    const nowX = xPos(STATE.now[0], STATE.now[1], S.cur);
+    const nowX = xPos(STATE.now[0], STATE.now[1], S.cur, true);
     for (const [xv, label] of [[S.lastX, 'poslední data'], [nowX, 'dnes']]) {
       if (xv == null) continue;
       const px = x.getPixelForValue(xv);

@@ -38,11 +38,11 @@ Při zpětném stažení všech oficiálních PDF (153 týdnů od 2023-W40) se u
 Každý týden v `data/ari_data.json` má pole `source`: `szu` (oficiální PDF), `who_scaled` (WHO × 1,20) nebo `interpolated`; svátkové týdny mají navíc pole `holiday` (popis svátku).
 
 ## 2. Sezónní průběh (co je v datech vidět)
-Medián týdenní změny přes 15 sezón (2009–2025, bez covidových let):
+Medián týdenní změny přes 14 sezón (2009/10–2025/26, bez covidových 2019/20–2021/22):
 
-- **W34 → W38:** nemocnost roste **každý rok** (začátek škol), nejprudčeji W36→W38 (+29 % a +31 % týdně).
-- **W38 → W41:** růst obvykle pokračuje (v 64–100 % let), už mírněji.
-- **W43 → W44:** pravidelný pokles hlášené nemocnosti (podzimní prázdniny + 28. října), po něm návrat.
+- **W34 → W38:** nemocnost roste **každý rok** (začátek škol), nejprudčeji W36→W37 a W37→W38 (+33 % a +29 % týdně).
+- **W38 → W41:** růst obvykle pokračuje (v 67–100 % let), už mírněji.
+- **Týden s 28. říjnem ve všední den** (W43 nebo W44, s podzimními prázdninami): pravidelný pokles hlášené nemocnosti, po něm návrat.
 - **W46 → W49:** další růst k zimě; **W51 → W52 ≈ −42 %** (Vánoce – lidé nechodí k lékaři), pak prudký návrat.
 - Chřipková vlna od ledna, **vrchol obvykle W05–W07**, od února pokles až do léta.
 - Velikost vrcholu se v některých obdobích **střídá silná / slabší sezóna** (2011/12–2016/17 i po covidu).
@@ -94,10 +94,10 @@ Předpověď je **vážený průměr dvou modelů v logaritmu**; oba se při ka�
 | sezónní profil (bez svátků) | 11,5 | 9,4 | | |
 | klimatologie + odchylka | 8,9 | 10,6 | | |
 | sezónní profil se svátky | 8,5 | 8,9 | 10,8 | 90–93 % |
-| analogové sezóny (očištěné o svátky) | 6,4 | 8,0 | 9,6 | 92–94 % |
+| analogové sezóny (očištěné o svátky) | 6,4 | 8,0 | 9,5 | 92–94 % |
 | **použitý vážený průměr** | **6,4** | **7,7** | **9,2** | **92–94 %** |
 
-Kontrolní sezóny podle horizontu (použitý model vs. původní): 1 týden 4,5 % vs. 7,0 %, 2 týdny 5,7 vs. 11,1, 4 týdny 7,5 vs. 16,0, 8 týdnů 10,3 vs. 28,2, 10 týdnů 11,2 vs. 31,7. Zima (nástup a vrchol chřipky) 9,2 % vs. 21,2 %. Dashboard v tabulce „Jak přesná je předpověď" ukazuje právě čísla z kontrolních sezón (nepoužitých k ladění).
+Kontrolní sezóny podle horizontu (použitý model vs. původní): 1 týden 4,5 % vs. 7,0 %, 2 týdny 5,7 vs. 11,1, 4 týdny 7,5 vs. 16,0, 8 týdnů 10,3 vs. 28,2, 10 týdnů 11,2 vs. 31,7. Zima (nástup a vrchol chřipky) 9,1 % vs. 21,2 %. Dashboard v tabulce „Jak přesná je předpověď" ukazuje právě čísla z kontrolních sezón (nepoužitých k ladění).
 
 **Známé slabiny:** model nepozná předem netypicky časný vrchol (2022/23 s vrcholem v prosinci model z W51 nadhodnotil o desítky %) a velké chřipkové vrcholy spíš podhodnocuje (o 15–20 % na 2–4 týdny). Proto se doporučení plánují na horní odhad (75. percentil) a sledují se i ILI.
 
@@ -111,17 +111,20 @@ Intervaly nejsou „od oka": při každé aktualizaci se model zpětně otestuje
 ## 4. Doporučení
 Doporučení vychází ze čtyř vstupů:
 
-1. **Plánovaná hodnota** = vyšší z (poslední hodnota, **75. percentil předpovědi za 2 týdny od dneška**). Plánuje se na horní odhad, protože nedostatek akutní kapacity je pro ordinaci zhruba 3× horší než přebytek (přetížení, odmítnutí pacienti, přesčasy). Z ní se určí pásmo: 🟢 < 750, 🟡 750–999, 🟠 1 000–1 499, 🔴 ≥ 1 500. Pásma jsou orientační hranice dashboardu, ne oficiální prahy: za epidemii SZÚ obvykle považuje nemocnost kolem 1 600–1 700/100k a posuzuje i laboratorní data.
+1. **Plánovaná hodnota** = vyšší z (poslední hodnota, **75. percentil předpovědi za 2 týdny od dneška**; připadne-li tento týden na svátek, bere se geometrický průměr sousedních nesvátkových týdnů, protože svátkový propad je jen v hlášení). Plánuje se na horní odhad, protože nedostatek akutní kapacity je pro ordinaci zhruba 3× horší než přebytek (přetížení, odmítnutí pacienti, přesčasy). Z ní se určí pásmo: 🟢 < 750, 🟡 750–999, 🟠 1 000–1 499, 🔴 ≥ 1 500. Pásma jsou orientační hranice dashboardu, ne oficiální prahy: za epidemii SZÚ obvykle považuje nemocnost kolem 1 600–1 700/100k a posuzuje i laboratorní data.
 2. **Trend** – týdenní log-růst z dvoutýdenních součtů posledních 4 **nesvátkových** týdnů `g = ½·ln((x₀+x₁)/(x₂+x₃))`: ≥ +10 % rychle roste, ≥ +3 % roste, ±3 % stabilní; **pokles se uzná jen tehdy, když hodnota klesla dva týdny po sobě** (svátkový propad se do trendu nepočítá vůbec). Za „roste" se bere i předpověď: průměr příštích 1–4 týdnů od dneška (bez svátkových týdnů) o > 5 % nad poslední hodnotou.
-3. **Fáze sezóny** – léto W22–W34 (od W33 se bere jako začátek podzimu), podzim W35–W47, zima před vrcholem, zima po vrcholu (vrchol ≥ 1 000 před ≥ 3 týdny, hodnota ≤ 85 % vrcholu a klesá), jaro W11–W21 (pozdní vlna, která v W11–W16 ještě roste, se bere jako zima před vrcholem).
-4. **Signál chřipky** – ILI ≥ 25/100k a nárůst ILI ×1,5 za 2 týdny (ILI předbíhá nástup chřipkové vlny o 1–3 týdny). **Svátkový týden** – poslední data ovlivněná volnými dny.
+3. **Fáze sezóny** – léto W22–W34 (od dnešního W33 se bere jako začátek podzimu), podzim W35–W47, zima před vrcholem, zima po vrcholu (vrchol ≥ 1 000 před ≥ 3 týdny, hodnota ≤ 85 % vrcholu a klesá), jaro W11–W21 (pozdní vlna, která v W11–W16 ještě roste, se bere jako zima před vrcholem).
+4. **Signál chřipky** – ILI ≥ 25/100k, nárůst ×1,5 proti poslednímu nesvátkovému týdnu aspoň 2 týdny zpět a ILI proti předchozímu týdnu neklesá (ILI předbíhá nástup chřipkové vlny o 1–3 týdny; po Vánocích by srovnání se svátkovým týdnem dávalo falešný signál). **Svátkový týden** – poslední data ovlivněná volnými dny.
 
 | Situace | Kdy (pásmo = pásmo plánované hodnoty) |
 |---|---|
-| S1 Klid | 🟢, nic neroste; 🟡 v létě bez růstu a bez potvrzeného poklesu |
+| S1 Klid | 🟢 nebo 🟡 v létě, nic neroste – jen při stupni „základ“ |
+| S1b Doznívá | jako S1, ale kapacita se ještě drží (stupeň ≥ „připravenost“) do potvrzeného poklesu |
 | S2 Nástup podzimu | 🟢 na podzim (nebo od W33), roste nebo P(🟡 do 4 týdnů) ≥ 30 % |
 | S3 Rychle přibývá | 🟡 na podzim (od W33) / v zimě před vrcholem, roste nebo P(🟠 do 4 týdnů) ≥ 50 % |
-| S4 Vysoká a roste | 🟠 na podzim (od W33), roste |
+| S3a Očekává se rychlý nárůst | jako S3, ale naměřená hodnota je ještě v 🟢 a zatím neroste (🟡 jen podle předpovědi) |
+| S4 Vysoká a roste | 🟠 na podzim (od W33), roste, naměřená hodnota aspoň 🟠 |
+| S4a Očekává se zvýšená zátěž | jako S4, ale 🟠 jen podle horního odhadu předpovědi |
 | S5 Plató | 🟠 na podzim bez růstu; 🟡 na podzim / v zimě před vrcholem bez růstu |
 | S6 Nástup chřipky | signál ILI pod epidemickou úrovní (mimo jaro a zimu po vrcholu) – má přednost |
 | S7 Blíží se epidemická úroveň | 🟠 v zimě před vrcholem, roste nebo P(🔴 do 4 týdnů) ≥ 30 % |
@@ -137,7 +140,8 @@ Doporučení vychází ze čtyř vstupů:
 **Stupeň akutní kapacity** se odvozuje z pásma plánované hodnoty: 🟢 základ, 🟡 připravenost (připravená rezerva slotů), 🟠 navýšeno, 🔴 vysoce navýšeno; zimní krizový režim jen při skutečné epidemické úrovni (poslední hodnota ≥ 1 500) s růstem nebo v zimě před vrcholem. Při signálu chřipky nebo epidemii aspoň „vysoce navýšeno". Stupeň je slovní popis; konkrétní % je samostatný odhad (níže).
 
 **Ochranná pravidla (asymetrie):**
-- Navyšuje se hned, **snižuje se jen při potvrzeném poklesu** a jen na jaře, v zimě po vrcholu nebo v létě do W32 – nikdy na podzim ani v zimě před vrcholem.
+- Navyšuje se hned, **snižuje se jen při potvrzeném poklesu** a jen na jaře, v zimě po vrcholu nebo v létě do W32 – nikdy na podzim, v zimě před vrcholem ani ve svátkovém týdnu.
+- I při potvrzeném poklesu se stupeň snižuje **nejvýše o jeden za týden** a % kapacity nejvýše o polovinu rozdílu proti minulému týdnu.
 - Bez potvrzeného poklesu se stupeň ani % **nesníží pod doporučení předchozího týdne**. Dashboard k tomu z předpovědí uložených za posledních 8 týdnů (`forecast_past`) dopočítá tehdejší doporučení a drží nejvyšší z nich, dokud pokles nepotvrdí data. Simulace všech týdnů 2024-W20 – 2026-W39 (data k danému týdnu, předpověď z tehdy dostupných dat, zobrazeno o 2 týdny později) nenašla jediný týden, kdy by doporučení kleslo při rostoucí nemocnosti nebo předpovědi.
 - Na podzim je minimum stupeň „připravenost".
 - **Zkrácení akutního času se nikdy nedoporučí, když nemocnost nebo předpověď roste.**

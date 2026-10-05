@@ -28,7 +28,7 @@
 
 ### Krok 3 – Nahrajte soubory
 1. Na stránce repozitáře klikněte **"uploading an existing file"**
-2. Přetáhněte všechny soubory z tohoto repozitáře (na GitHubu **Code → Download ZIP** stáhne vždy aktuální verzi), včetně složek `data/`, `scripts/` a `.github/`. Jednodušší alternativa: na stránce repozitáře klikněte **Fork** – zkopíruje se vše najednou.
+2. Přetáhněte všechny soubory z tohoto repozitáře (na GitHubu **Code → Download ZIP** stáhne vždy aktuální verzi), včetně složek `data/`, `scripts/` a `.github/`. Jednodušší alternativa místo kroků 2–3: na stránce repozitáře klikněte **Fork** – zkopíruje se vše najednou. **U forku jsou automatické běhy zpočátku vypnuté:** otevřete záložku **Actions**, klikněte na „I understand my workflows, go ahead and enable them“ (případně u „Weekly ARI Data Update“ na **Enable workflow**) a jednou ho spusťte přes **Run workflow** – musí doběhnout zeleně. Krok 4 (Settings → Pages) platí i pro fork.
 3. Commit: "Přidání ARI dashboardu"
 4. Klikněte **"Commit changes"**
 
@@ -100,7 +100,7 @@ Nebo použijte VS Code s rozšířením "Live Server".
 | 🟢 Klidná sezóna | < 750 | léto | základ – akutní sloty obsazovat kontrolami a prevencí |
 | 🟡 Mírně zvýšená | 750–999 | podzimní nástup, jarní ústup | připravenost – rezerva slotů, při růstu nezkracovat |
 | 🟠 Zvýšená zátěž | 1 000–1 499 | podzim–zima | navýšeno |
-| 🔴 Epidemická úroveň | ≥ 1 500 | chřipková vlna (prosinec–únor) | vysoce navýšeno, při epidemii a růstu zimní krizový režim |
+| 🔴 Epidemická úroveň | ≥ 1 500 | chřipková vlna (prosinec–únor) | vysoce navýšeno; zimní krizový režim při epidemické úrovni (poslední hodnota ≥ 1 500) s růstem nebo v zimě před vrcholem |
 
 Pásma jsou orientační hranice dashboardu (za epidemii SZÚ obvykle považuje ~1 600–1 700/100k). Konkrétní **% akutní kapacity** dashboard odhaduje zvlášť pro každý týden (vůči běžné letní úrovni ordinace pro dospělé) – viz METODIKA.md.
 

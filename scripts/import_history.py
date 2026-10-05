@@ -66,9 +66,10 @@ def main(szu_path, who_path):
     for k, r in szu.items():
         hist[k] = S.make_entry(*k, r["ari"], r.get("ili"), "szu", r["url"], groups=r.get("ari_groups"))
     # oficiální hodnoty z předchozího souboru (i ty, které mezitím přidal
-    # fetch_ari_data.py), které zpětné stažení nenašlo – nikdy je nemazat
+    # fetch_ari_data.py) se nikdy nemažou: vyhrávají nad WHO, a nad zpětným
+    # stažením, nesou-li opravu (poznámku o revizi)
     for k, e in old.items():
-        if k not in hist and S.is_official(e):
+        if S.is_official(e) and (not S.is_official(hist.get(k)) or e.get("note")):
             hist[k] = dict(e)
     # týdny bez SZÚ reportu po 2023-W40 → WHO × poměr (např. 2024-W45, 2025-W52)
     for k, (a, i) in who.items():

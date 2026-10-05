@@ -128,8 +128,11 @@ jumps = [(b["week"], round(b["ari_per_100k"] / a["ari_per_100k"], 2)) for a, b i
          and not S.PLAUSIBLE_RATIO[0] <= b["ari_per_100k"] / a["ari_per_100k"] <= S.PLAUSIBLE_RATIO[1]]
 check("žádné nepravděpodobné skoky mezi týdny SZÚ", not jumps, jumps)
 
-print("Předpověď na skutečných datech (podzim 2026)")
-real = {(e["year"], e["iso_week"]): e["ari_per_100k"] for e in h if e.get("ari_per_100k")}
+print("Předpověď na skutečných datech (podzim 2026, zmrazený snímek řady do 2026-W39)")
+# zmrazená řada → testy nezávisí na nových datech ani na zpětných opravách SZÚ
+# (jinak by revize W39 v reportu za W40 mohla zablokovat všechny další aktualizace)
+snap = json.loads((HERE / "fixtures" / "ari_series_2026w39.json").read_text(encoding="utf-8"))
+real = {(int(k[:4]), int(k[6:])): v for k, v in snap.items()}
 if (2026, 39) in real:
     v39 = real[(2026, 39)]
     f38 = M.make_forecast(F.history_upto(real, (2026, 38)))["forecast"]

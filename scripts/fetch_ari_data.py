@@ -289,6 +289,8 @@ def main():
     if not urls:
         problems.append("datová stránka SZÚ nevrátila žádné PDF (nedostupná nebo změněná)")
     new, failed = 0, set()
+    # od nejstaršího: kontrola poměru a revize předchozího týdne potřebují předchozí týden
+    urls.sort(key=lambda u: F.week_index(*guess_key(u)))
     for url in urls if HAS_PDF else []:
         k = guess_key(url)
         if k and is_official(hist.get(k)):
