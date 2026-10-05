@@ -133,7 +133,7 @@ def print_table(name_to_summary, title, H=8):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("series", nargs="?", default="research/derived/combined_series.json")
+    ap.add_argument("series", nargs="?", default=str(Path(__file__).parent.parent / "data" / "ari_data.json"))
     ap.add_argument("--candidate", action="append", default=[])
     ap.add_argument("--models", default=",".join(F.MODELS))
     ap.add_argument("--split", default="both", choices=["tune", "holdout", "all", "both"])

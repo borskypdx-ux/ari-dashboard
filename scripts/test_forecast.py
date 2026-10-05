@@ -59,7 +59,7 @@ for y in range(2010, 2027):
         ser[(y, w)] = base * (1 + 0.05 * math.sin(y * 7 + w))
 fc = M.make_forecast(ser)
 f = fc["forecast"]
-check("8 týdnů předpovědi", len(f) == 8)
+check(f"{M.H} týdnů předpovědi", len(f) == M.H)
 check("týdny navazují", all(F.week_add(*((f[i]["year"], f[i]["iso_week"])), 1) == (f[i + 1]["year"], f[i + 1]["iso_week"]) for i in range(7)))
 check("kvantily uspořádané", all(x["q10"] <= x["q25"] <= x["median"] <= x["q75"] <= x["q90"] for x in f))
 check("pravděpodobnosti pásem monotónní", all(x["p_750"] >= x["p_1000"] >= x["p_1500"] for x in f))
@@ -76,7 +76,7 @@ for y in range(2010, 2027):
         if (y, w) <= (2026, 48):
             ser53[(y, w)] = 900 + 600 * math.cos((w - 5) / 52 * 2 * math.pi)
 p53 = M.point_forecast(ser53, (2026, 48))
-check("předpověď přes W53/2026 je konečná", len(p53) == 8 and all(math.isfinite(x) for x in p53))
+check("předpověď přes W53/2026 je konečná", len(p53) == M.H and all(math.isfinite(x) for x in p53))
 
 print("Svátkové týdny (podle data)")
 import model_profile_holiday as PH

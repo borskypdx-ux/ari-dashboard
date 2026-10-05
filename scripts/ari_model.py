@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Produkční předpověď ARI pro dashboard: bodový model + kalibrované intervaly.
 
-make_forecast(series) vrátí předpověď na 1–8 týdnů:
+make_forecast(series) vrátí předpověď na 1–10 týdnů od posledních dat (SZÚ data
+mají 1–2 týdny zpoždění, takže to je zhruba 2 měsíce od dneška):
   median           – bodová předpověď (na 100 000)
   q10, q25, q75, q90 – hranice intervalů 50 % a 80 %
   p_750/p_1000/p_1500 – pravděpodobnost, že hodnota bude ≥ hranice pásma
@@ -20,7 +21,7 @@ import forecast as F
 import model_analog
 import model_profile_holiday
 
-H = 8
+H = 10
 EVAL_EXCLUDE = (2019, 2020, 2021)
 PHASE_WINDOW = 6          # ± týdnů pro výběr historických chyb
 MIN_PHASE_SAMPLES = 60    # jinak se použijí chyby z celého roku
@@ -31,7 +32,7 @@ MODEL_LABEL = "Analogové sezóny + sezónní profil se svátkovými efekty (vá
 # váha analogových sezón podle horizontu (zbytek = sezónní profil se svátky);
 # vybráno na ladicích sezónách 2012–2018: profil je přesnější na 1–3 týdny,
 # analogy na delší horizont
-W_ANALOG = (0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.0)
+W_ANALOG = (0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)   # dál 1.0
 
 
 def point_forecast(hist, origin, H=H):

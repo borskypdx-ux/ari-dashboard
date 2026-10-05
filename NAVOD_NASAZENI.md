@@ -48,7 +48,7 @@ Tento odkaz funguje pro kohokoliv bez přihlašování. Sdílejte ho v ordinaci,
 
 ### Automatická aktualizace
 - GitHub kontroluje datovou stránku SZÚ **dvakrát denně** (ráno a odpoledne). SZÚ zveřejňuje report za uplynulý týden v průběhu následujícího týdne – dashboard ho tak převezme ještě týž den.
-- Při každé kontrole se doplní i týdny, které dřív chyběly, přepočítá se předpověď na 8 týdnů a doporučení.
+- Při každé kontrole se doplní i týdny, které dřív chyběly, přepočítá se předpověď na 10 týdnů a doporučení.
 - Commit (a přebudování stránky) vznikne jen tehdy, když přibudou nová data.
 - Před každou aktualizací proběhnou automatické testy (`scripts/test_forecast.py`).
 - Ručně lze spustit: **Actions → Weekly ARI Data Update → Run workflow**
@@ -103,7 +103,7 @@ Nebo použijte VS Code s rozšířením "Live Server".
 
 **Doporučení nezávisí jen na pásmu.** Dashboard kombinuje aktuální úroveň, trend za poslední 2 týdny a předpověď na příští 4 týdny (včetně pravděpodobnosti přechodu do vyššího pásma). Zkrácení akutního času nikdy nedoporučí, když nemocnost nebo předpověď roste.
 
-**Předpověď** na 8 týdnů je sezónní model ověřený zpětným testem na minulých sezónách; ukazuje nejpravděpodobnější hodnotu a 50% / 80% rozmezí. Podrobnosti v [METODIKA.md](METODIKA.md).
+**Předpověď** na 10 týdnů (od posledních dat SZÚ, tj. zhruba 2 měsíce od dneška) je sezónní model ověřený zpětným testem na minulých sezónách; ukazuje nejpravděpodobnější hodnotu a 50% / 80% rozmezí. Podrobnosti v [METODIKA.md](METODIKA.md).
 
 **Datum u týdne:** všude je uvedeno pondělí daného ISO týdne (např. „W39 · po 21. 9. 2026").
 
