@@ -43,6 +43,24 @@ check("ARI Celkem = 738", r and r["ari"] == 738)
 check("ILI Celkem = 7", r and r["ili"] == 7)
 check("věkové skupiny ARI", r and r["ari_groups"] == [2194, 1099, 672, 496, 330])
 check("neznámý formát → None", S.parse_szu_pdf_text("bez tabulky") is None)
+check("změna Celkem proti předchozímu týdnu", r and r["ari_change_pct"] == -0.81, r and r.get("ari_change_pct"))
+row = "Česká republika - the Czech Republic 2194 1099 672 496 330 738"
+check("poznámka uvnitř řádku (496*) → odmítnuto", S.parse_szu_pdf_text(SAMPLE.replace("496 330", "496* 330")) is None)
+check("chybějící buňka → odmítnuto", S.parse_szu_pdf_text(SAMPLE.replace("672 496", "– 496")) is None)
+check("oddělovač tisíců (1 078) → odmítnuto", S.parse_szu_pdf_text(SAMPLE.replace(" 738\n", " 1 078\n", 1)) is None)
+check("Celkem mimo rozsah skupin → odmítnuto", S.parse_szu_pdf_text(SAMPLE.replace(" 330 738", " 330 7380")) is None)
+check("neplatný týden 53/2027 → odmítnuto", S.parse_szu_pdf_text(SAMPLE.replace("25 týden 2026", "53 týden 2027")) is None)
+check("jen řádek ILI → odmítnuto", S.parse_szu_pdf_text(SAMPLE.split("ARI\n0 - 5")[0] + SAMPLE.split("ILI\n")[1]) is None)
+check("číslo na dalším řádku se nepřilepí", S.parse_szu_pdf_text(SAMPLE.replace(" 330 738\n", " 330 738\n12\n")) is not None)
+# revize předchozího týdne podle „Změna [%]“ (skutečný případ 2025-W38: 851 → 890)
+REV = SAMPLE.replace("2194 1099 672 496 330 738", "2211 1311 1321 665 402 955").replace(
+    "-2,71 -3,26 4,35 0,61 -2,08 -0,81", "0,14 -9,83 20,2 14,85 14,86 7,3")
+rr = S.parse_szu_pdf_text(REV)
+pe = S.make_entry(2026, 24, 851, 7, "szu", groups=[2079, 1468, 1013, 554, 324])
+check("revize předchozího týdne", rr and S.revise_previous(pe, rr, (2026, 25)) and pe["ari_per_100k"] == 890
+      and pe["ari_age"] == [2208, 1454, 1099, 579, 350], (pe["ari_per_100k"], pe.get("ari_age")))
+pe2 = S.make_entry(2026, 24, 744, 7, "szu")
+check("bez revize, když sedí", not S.revise_previous(pe2, r, (2026, 25)) and pe2["ari_per_100k"] == 744)
 u = "https://szu.gov.cz/wp-content/uploads/{}/{}/{}_tyden.pdf"
 check("W52 nahraný v lednu → předchozí rok", S.guess_key(u.format(2026, "01", 52)) == (2025, 52))
 check("W01 nahraný v prosinci → další rok", S.guess_key(u.format(2025, "12", "01")) == (2026, 1))
@@ -68,7 +86,8 @@ check("pondělí odpovídá týdnu", all(F.monday(x["year"], x["iso_week"]).isof
 origin = (2026, 20)
 past = F.history_upto(ser, origin)
 full = dict(ser)
-check("model nevidí budoucnost", M.point_forecast(past, origin) == M.point_forecast(F.history_upto(full, origin), origin))
+# předání celé řady (i s daty po origin) musí dát stejnou předpověď jako oříznutá řada
+check("model nevidí budoucnost", M.point_forecast(full, origin) == M.point_forecast(past, origin))
 # přelom roku s W53 (2026 má 53 týdnů)
 ser53 = {}
 for y in range(2010, 2027):
@@ -81,7 +100,14 @@ check("předpověď přes W53/2026 je konečná", len(p53) == M.H and all(math.i
 print("Svátkové týdny (podle data)")
 import model_profile_holiday as PH
 exp = {(2026, 40): "minor", (2026, 44): "autumn", (2026, 47): "minor", (2026, 52): "xmas1",
-       (2026, 53): "xmas2", (2027, 1): None, (2026, 41): None, (2025, 52): "xmas1", (2026, 1): "xmas2"}
+       (2026, 53): "xmas2", (2027, 1): None, (2026, 41): None, (2025, 52): "xmas1", (2026, 1): "xmas2",
+       # 25. 12. v neděli (2022) / v sobotu (2027): hlavní propad až týden po Vánocích
+       (2022, 51): None, (2022, 52): "xmas1", (2023, 1): None,
+       (2027, 51): "minor", (2027, 52): "xmas1", (2028, 1): None,
+       # 28. 10. o víkendu (2018, 2023): propad v datech není → bez svátku
+       (2018, 43): None, (2018, 44): None, (2023, 43): None,
+       # svátky o víkendu se nepočítají
+       (2025, 39): None, (2027, 17): None, (2027, 18): None, (2026, 27): None}
 got = {k: PH.htype(*k) for k in exp}
 check("typy svátků 2025–2027", got == exp, got)
 
@@ -95,6 +121,12 @@ check("platné zdroje", all(e["source"] in ("szu", "who_scaled", "interpolated")
 check("current = poslední týden", data["current"]["week"] == h[-1]["week"])
 check("předpověď navazuje na poslední týden", data["forecast"][0]["week"] == "%d-W%02d" % F.week_add(h[-1]["year"], h[-1]["iso_week"], 1))
 check("pondělí v historii", all(F.monday(e["year"], e["iso_week"]).isoformat() == e["monday"] for e in h[-60:]))
+vals = [e["ari_per_100k"] for e in h if e.get("ari_per_100k") is not None]
+check("hodnoty ARI v rozumném rozsahu (50–5 000)", all(50 <= v <= 5000 for v in vals), (min(vals), max(vals)))
+jumps = [(b["week"], round(b["ari_per_100k"] / a["ari_per_100k"], 2)) for a, b in zip(h, h[1:])
+         if b["source"] == "szu" and a.get("ari_per_100k") and F.week_add(a["year"], a["iso_week"], 1) == (b["year"], b["iso_week"])
+         and not S.PLAUSIBLE_RATIO[0] <= b["ari_per_100k"] / a["ari_per_100k"] <= S.PLAUSIBLE_RATIO[1]]
+check("žádné nepravděpodobné skoky mezi týdny SZÚ", not jumps, jumps)
 
 print("Předpověď na skutečných datech (podzim 2026)")
 real = {(e["year"], e["iso_week"]): e["ari_per_100k"] for e in h if e.get("ari_per_100k")}
@@ -108,6 +140,10 @@ if (2026, 39) in real:
     # podzimní nárůst: W41–W43 nikdy pod úrovní W39 (mimo svátkové týdny ve 12 sezónách)
     check("z W39: W41–W43 nad hodnotou W39", all(med[w] > v39 for w in (41, 42, 43)), med)
     check("svátkové propady: W40 < W41, W44 < W43 i W45", med[40] < med[41] and med[44] < med[43] and med[44] < med[45], med)
+    # od automatizovaného hlášení (2024/25) je propad o podzimních prázdninách −25 až −30 %
+    check("propad W44 aspoň 15 % pod W43", med[44] / med[43] < 0.85, round(med[44] / med[43], 3))
+    hol = {x["iso_week"]: x.get("holiday") for x in f39}
+    check("svátky v předpovědi popsané", bool(hol[40]) and bool(hol[44]) and bool(hol[47]) and not hol[41], hol)
 
 print()
 if FAILS:

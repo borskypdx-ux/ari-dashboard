@@ -25,10 +25,16 @@ jobs:
       - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install requests beautifulsoup4 pdfplumber
-      - name: Testy
+      - name: Testy (kód + data před aktualizací)
         run: python scripts/test_forecast.py
       - name: Stažení dat a předpověď
+        id: fetch
+        # při problému (SZÚ nedostupné, nečitelné PDF, stará data) skript uloží, co
+        # se podařilo, a skončí chybou – běh se pak označí jako neúspěšný (e-mail)
+        continue-on-error: true
         run: python scripts/fetch_ari_data.py
+      - name: Kontrola nových dat
+        run: python scripts/test_forecast.py
       - name: Commit při změně
         run: |
           git config user.name  "github-actions[bot]"
@@ -37,3 +43,8 @@ jobs:
           git diff --cached --quiet && { echo "Beze změny."; exit 0; }
           git commit -m "auto: ARI data $(date +'%Y-%m-%d')"
           git push
+      - name: Upozornění na problém se stažením
+        if: steps.fetch.outcome == 'failure'
+        run: |
+          echo "::error::Stažení dat ze SZÚ hlásilo problém – viz log kroku 'Stažení dat a předpověď'."
+          exit 1

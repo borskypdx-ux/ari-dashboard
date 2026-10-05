@@ -18,11 +18,11 @@ Použití:
 Výsledek se zapíše do data/ari_data.json (history + current + forecast + model).
 """
 import csv, json, math, sys
+from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 import forecast as F
-import ari_model as M
 import fetch_ari_data as S
 
 ARI_RATIO, ILI_RATIO = 1.20, 1.163
@@ -62,28 +62,22 @@ def main(szu_path, who_path):
             hist[k] = S.make_entry(*k, a * ARI_RATIO, i * ILI_RATIO if i else None, "who_scaled")
     for k, r in szu.items():
         hist[k] = S.make_entry(*k, r["ari"], r.get("ili"), "szu", r["url"], groups=r.get("ari_groups"))
-    # oficiální hodnoty z předchozího souboru, které zpětné stažení nenašlo
+    # oficiální hodnoty z předchozího souboru (i ty, které mezitím přidal
+    # fetch_ari_data.py), které zpětné stažení nenašlo – nikdy je nemazat
     for k, e in old.items():
-        if k not in hist and "SZÚ týdenní PDF" in (e.get("note") or "") and e.get("ari_per_100k"):
-            hist[k] = S.make_entry(*k, e["ari_per_100k"], e.get("ili_per_100k"), "szu", e.get("source_url"))
+        if k not in hist and S.is_official(e):
+            hist[k] = dict(e)
     # týdny bez SZÚ reportu po 2023-W40 → WHO × poměr (např. 2024-W45, 2025-W52)
     for k, (a, i) in who.items():
         if k not in hist and F.week_index(*k) >= first_szu:
             hist[k] = S.make_entry(*k, a * ARI_RATIO, i * ILI_RATIO if i else None, "who_scaled",
                                    note="SZÚ report chybí – WHO FluID × 1,20")
     S.fill_single_gaps(hist)
-
-    data["history"] = S.sorted_history(hist)
-    data["current"] = S.compute_current(hist)
-    series = {(e["year"], e["iso_week"]): e["ari_per_100k"] for e in data["history"]}
-    fc = M.make_forecast(series)
-    data["forecast"], data["model"] = fc["forecast"], fc["model"]
+    S.finalize(data, hist)
     data["meta"] = {
-        "last_updated": data["meta"].get("last_updated"),
+        "last_updated": date.today().isoformat(),
         "source": "Státní zdravotní ústav (SZÚ) – týdenní hlášení ARI/ILI: https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
         "history_note": "2009–2023: WHO FluID (ARI_CASE/ARI_POP_COV, CZE) × 1,20 na měřítko SZÚ; od 2023-W40 oficiální týdenní PDF SZÚ. Viz METODIKA.md.",
-        "baseline_label": "únor 2025",
-        "baseline_ari_per_100k": 2053,
         "bands": {"green": "< 750", "yellow": "750–999", "amber": "1000–1499", "red": "≥ 1500"},
     }
     DATA.write_text(S.dump_data(data), encoding="utf-8")

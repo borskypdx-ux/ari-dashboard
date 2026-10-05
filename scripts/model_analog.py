@@ -93,9 +93,9 @@ def forecast(hist, origin, H, p=None):
     k, K, tau, decay = P["k"], P["K"], P["tau"], P["decay"]
     L, rho = P["L"], P["rho"]
 
-    LI = _logmap(hist)
     io = _widx(*origin)
-    prev = [i for i in LI if i <= io]
+    LI = {i: z for i, z in _logmap(hist).items() if i <= io}   # data po origin se nepoužijí
+    prev = list(LI)
     if not prev:
         v = next((x for x in reversed(list(hist.values())) if x), 1.0)
         return [math.log(max(v, 1.0))] * H
@@ -107,7 +107,7 @@ def forecast(hist, origin, H, p=None):
     # jinak páruje svátek se svátkem jen podle toho, na jaký den připadne)
     eff = lambda i: 0.0
     if P["hol"]:
-        delta = PH.holiday_effects(PH.log_series(hist))
+        delta = PH.holiday_effects(PH.log_series(hist, io))
         eff = lambda i: PH.effect(i, delta)
         LI = {i: z - eff(i) for i, z in LI.items()}
     x0 = LI[i0]

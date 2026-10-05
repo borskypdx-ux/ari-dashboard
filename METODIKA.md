@@ -10,6 +10,9 @@ Státní zdravotní ústav zveřejňuje každý týden PDF report na [datové st
 - **Týden a rok se berou z hlavičky PDF** („39 týden 2026"), ne z cesty souboru – report za W52 bývá nahrán až v lednu (`/2026/01/52_tyden.pdf`) a podle cesty by se přiřadil ke špatnému roku.
 - Datová stránka drží zhruba poslední rok reportů; každý běh doplní všechny týdny, které ještě nemají oficiální hodnotu (dřívější verze doplňovala jen týdny po posledním známém, takže jednou vynechaný týden už nikdy nedoplnila).
 - SZÚ zveřejňuje report za týden v průběhu následujícího týdne. Kontrola proto běží dvakrát denně a data jsou obvykle 1–2 týdny „pozadu" za kalendářem; dashboard to přiznává (týdny označené *proběhlo · čeká na data*).
+- **Kontrola načtených hodnot:** národní řádek musí mít přesně 6 čísel, Celkem musí ležet mezi hodnotami věkových skupin (je to jejich vážený průměr), ARI musí být výrazně vyšší než ILI a změna proti předchozímu týdnu v rozmezí ×0,4–×2,5. Report, který kontrolou neprojde, se neuloží (raději chybějící týden než špatné číslo).
+- **Opravy SZÚ:** SZÚ občas zpětně opraví předchozí týden (pozdní hlášení); oprava je vidět jen v řádku *Změna [%]* následujícího reportu. Liší-li se z něj odvozená hodnota o víc než 2 %, dashboard předchozí týden opraví (i věkové skupiny) a označí poznámkou.
+- **Upozornění na poruchu:** když se datovou stránku nepodaří načíst, některý report nejde přečíst nebo jsou poslední data starší než 4 týdny, automatický běh uloží, co se podařilo, ale skončí chybou – GitHub pak pošle správci e-mail. Stránka v takovém případě hlásí „SZÚ zatím nezveřejnil novější report, nebo selhala automatická aktualizace".
 
 ### Historie 2009–2023 – WHO FluID
 Pro sezónní srovnání a pro předpovědní model je potřeba víc sezón. Starší data jsou z databáze [WHO FluID](https://www.who.int/tools/flunet) (API `xmart-api-public.who.int/FLUMART/VIW_FID_EPI`, země CZE): týdenní `ARI_CASE / ARI_POP_COV` sečtené přes věkové skupiny 0–4, 5–14, 15–64 a 65+.
@@ -22,16 +25,17 @@ WHO a SZÚ počítají nemocnost s jinou pokrytou populací, proto se hodnoty WH
 | nezávislá kontrola | 1,18 | 45 hodnot ARI uvedených v textu zpráv NRL SZÚ 2018–2020 |
 | ILI SZÚ / WHO | 1,163 | 136 společných týdnů |
 
-Delší mezery ve WHO datech (léto 2011 a 2014) se nevyplňují; jednotlivý chybějící týden mezi dvěma známými se dopočte geometrickým průměrem a je označen `source: "interpolated"`.
+Delší mezery ve WHO datech (léto 2011 a 2014) se nevyplňují; jednotlivý chybějící týden mezi dvěma známými se dopočte geometrickým průměrem a je označen `source: "interpolated"`. **Svátkové týdny se nedopočítávají** – průměr sousedů by vánoční propad přecenil o 40–60 %.
 
 ### Opravy oproti dřívějším datům
 Při zpětném stažení všech oficiálních PDF (153 týdnů od 2023-W40) se ukázalo, že část dřívějších hodnot neodpovídala SZÚ:
 - **2026-W13 až W19** byly jen odhady z krajských dat (KHS Středočeský kraj × koeficient) – nahrazeny oficiálními hodnotami.
 - **2025-W26 až W42** pocházely z pracovního Excelu s chybou ve vzorcích (např. W36: 643 místo 468, W37: 811 místo 621).
 - **2026-W02 = 1 416** byla omylem zkopírovaná hodnota z 2025-W02 (oficiálně 1 583).
+- **2023-W39** je oficiální hodnota SZÚ 709 (dřív WHO × 1,20 = 670); **2025-W38** je podle opravy v reportu za W39 890 (původně zveřejněno 851); dopočtený svátkový týden **2009-W53** byl odstraněn.
 - Týden **2026-W27** SZÚ nezveřejnil (dopočten), **2024-W45** a **2025-W52** jsou z WHO FluID × 1,20.
 
-Každý týden v `data/ari_data.json` má pole `source`: `szu` (oficiální PDF), `who_scaled` (WHO × 1,20) nebo `interpolated`.
+Každý týden v `data/ari_data.json` má pole `source`: `szu` (oficiální PDF), `who_scaled` (WHO × 1,20) nebo `interpolated`; svátkové týdny mají navíc pole `holiday` (popis svátku).
 
 ## 2. Sezónní průběh (co je v datech vidět)
 Medián týdenní změny přes 15 sezón (2009–2025, bez covidových let):
@@ -68,7 +72,13 @@ Předpověď je **vážený průměr dvou modelů v logaritmu**; oba se při ka�
 - chybí-li několik posledních týdnů dat, model pokračuje s průměrným posunem úrovní (nespadne do „ploché" předpovědi).
 
 **2. Sezónní profil se svátky** (`scripts/model_profile_holiday.py`) – „navázat na aktuální úroveň a pokračovat typickým týdenním tempem":
-- z historie se odhadne, o kolik % hlášená nemocnost klesá ve svátkových týdnech (podle **data**, ne čísla týdne): 28. září, 28. října + podzimní prázdniny, 17. listopadu, Vánoce, Nový rok, Velký pátek, Velikonoční pondělí, 1. a 8. května, 5.–6. července. U podzimních prázdnin, Vánoc a Velikonoc se od sezóny 2024/25 berou jen novější roky – propady jsou od zavedení automatizovaného hlášení hlubší (W44 −25 až −30 % místo −10 až −15 %);
+- z historie se odhadne, o kolik % hlášená nemocnost klesá ve svátkových týdnech. Svátkový týden se určuje **podle data a dne v týdnu** (svátek o víkendu se nepočítá):
+  - *Vánoce* = týden, ve kterém je 27. 12. (24.–26. 12. a „mezi svátky"); když 25. 12. připadne na víkend, hlavní propad je až v týdnu po něm (ověřeno na letech 2010, 2011, 2016, 2021, 2022),
+  - *Nový rok* = týden s 1. 1. ve všední den, je-li to jiný týden,
+  - *28. října a podzimní prázdniny* = 28. 10. ve všední den (připadne-li na víkend, propad v datech vidět není),
+  - Velký pátek, Velikonoční pondělí, 1. a 8. května, 28. září, 17. listopadu, 5. a 6. července ve všední den, Štědrý den ve všední den mimo vánoční týden;
+  
+  u podzimních prázdnin, Vánoc a Velikonoc se od sezóny 2024/25 berou jen novější roky – propady jsou od zavedení automatizovaného hlášení hlubší (W44 −25 až −30 % místo −10 až −15 %);
 - řada se o svátky očistí, z minulých sezón se spočítá **typická týdenní změna pro každý týden roku** (medián, ±1 týden) a ta se přičítá k aktuální očištěné úrovni; do cílových svátkových týdnů se propad zase vrátí.
 
 **Váhy:** profil je přesnější na 1–3 týdny, analogy na delší horizont. Váha analogů je 0,4 / 0,5 / 0,6 / 0,7 / 0,8 / 0,9 pro horizont 1–6 týdnů a 1 od 7. týdne (zvoleno jen na ladicích sezónách).
@@ -79,15 +89,15 @@ Předpověď je **vážený průměr dvou modelů v logaritmu**; oba se při ka�
 
 | Model | ladicí 2012–2018 | kontrolní 2022–2025 | z toho podzim | správný směr (h 1–4) |
 |---|---|---|---|---|
-| původní (MA4 + loňský rok) | 21,3 | 17,9 | 21,3 | 64–68 % |
-| loňský týden × poměr | 13,5 | 16,7 | | |
-| sezónní profil (bez svátků) | 11,4 | 9,5 | | |
+| původní (MA4 + loňský rok) | 21,3 | 18,0 | 21,6 | 64–68 % |
+| loňský týden × poměr | 13,5 | 16,8 | | |
+| sezónní profil (bez svátků) | 11,5 | 9,4 | | |
 | klimatologie + odchylka | 8,9 | 10,6 | | |
-| sezónní profil se svátky | 8,5 | 8,8 | 10,8 | 89–93 % |
-| analogové sezóny (očištěné o svátky) | 6,5 | 8,0 | 9,4 | 91–94 % |
-| **použitý vážený průměr** | **6,4** | **7,9** | **9,0** | **91–95 %** |
+| sezónní profil se svátky | 8,5 | 8,9 | 10,8 | 90–93 % |
+| analogové sezóny (očištěné o svátky) | 6,4 | 8,0 | 9,6 | 92–94 % |
+| **použitý vážený průměr** | **6,4** | **7,7** | **9,2** | **92–94 %** |
 
-Kontrolní sezóny podle horizontu (použitý model vs. původní): 1 týden 4,3 % vs. 7,0 %, 2 týdny 6,2 vs. 11,1, 4 týdny 7,4 vs. 15,8, 8 týdnů 10,7 vs. 28,2, 10 týdnů 11,5 vs. 31,9. Zima (nástup a vrchol chřipky) 9,1 % vs. 21,2 %.
+Kontrolní sezóny podle horizontu (použitý model vs. původní): 1 týden 4,5 % vs. 7,0 %, 2 týdny 5,7 vs. 11,1, 4 týdny 7,5 vs. 16,0, 8 týdnů 10,3 vs. 28,2, 10 týdnů 11,2 vs. 31,7. Zima (nástup a vrchol chřipky) 9,2 % vs. 21,2 %. Dashboard v tabulce „Jak přesná je předpověď" ukazuje právě čísla z kontrolních sezón (nepoužitých k ladění).
 
 **Známé slabiny:** model nepozná předem netypicky časný vrchol (2022/23 s vrcholem v prosinci model z W51 nadhodnotil o desítky %) a velké chřipkové vrcholy spíš podhodnocuje (o 15–20 % na 2–4 týdny). Proto se doporučení plánují na horní odhad (75. percentil) a sledují se i ILI.
 
@@ -101,43 +111,46 @@ Intervaly nejsou „od oka": při každé aktualizaci se model zpětně otestuje
 ## 4. Doporučení
 Doporučení vychází ze čtyř vstupů:
 
-1. **Plánovaná hodnota** = vyšší z (poslední hodnota, **75. percentil předpovědi za 2 týdny od dneška**). Plánuje se na horní odhad, protože nedostatek akutní kapacity je pro ordinaci zhruba 3× horší než přebytek (přetížení, odmítnutí pacienti, přesčasy). Z ní se určí pásmo: 🟢 < 750, 🟡 750–999, 🟠 1 000–1 499, 🔴 ≥ 1 500 (SZÚ vyhlašuje epidemii obvykle nad 1 600–1 700).
-2. **Trend** – týdenní log-růst z dvoutýdenních součtů `g = ½·ln((x₀+x₁)/(x₂+x₃))`: ≥ +10 % rychle roste, ≥ +3 % roste, ±3 % stabilní; **pokles se uzná jen tehdy, když hodnota klesla dva týdny po sobě** (jednorázový propad, typicky svátek, se nebere jako ústup). Za „roste" se bere i předpověď za 4 týdny o > 5 % výš.
-3. **Fáze sezóny** – léto W22–W34, podzim W35–W47, zima před vrcholem, zima po vrcholu (vrchol ≥ 1 000 před ≥ 3 týdny, hodnota ≤ 85 % vrcholu a klesá), jaro W11–W21.
+1. **Plánovaná hodnota** = vyšší z (poslední hodnota, **75. percentil předpovědi za 2 týdny od dneška**). Plánuje se na horní odhad, protože nedostatek akutní kapacity je pro ordinaci zhruba 3× horší než přebytek (přetížení, odmítnutí pacienti, přesčasy). Z ní se určí pásmo: 🟢 < 750, 🟡 750–999, 🟠 1 000–1 499, 🔴 ≥ 1 500. Pásma jsou orientační hranice dashboardu, ne oficiální prahy: za epidemii SZÚ obvykle považuje nemocnost kolem 1 600–1 700/100k a posuzuje i laboratorní data.
+2. **Trend** – týdenní log-růst z dvoutýdenních součtů posledních 4 **nesvátkových** týdnů `g = ½·ln((x₀+x₁)/(x₂+x₃))`: ≥ +10 % rychle roste, ≥ +3 % roste, ±3 % stabilní; **pokles se uzná jen tehdy, když hodnota klesla dva týdny po sobě** (svátkový propad se do trendu nepočítá vůbec). Za „roste" se bere i předpověď: průměr příštích 1–4 týdnů od dneška (bez svátkových týdnů) o > 5 % nad poslední hodnotou.
+3. **Fáze sezóny** – léto W22–W34 (od W33 se bere jako začátek podzimu), podzim W35–W47, zima před vrcholem, zima po vrcholu (vrchol ≥ 1 000 před ≥ 3 týdny, hodnota ≤ 85 % vrcholu a klesá), jaro W11–W21 (pozdní vlna, která v W11–W16 ještě roste, se bere jako zima před vrcholem).
 4. **Signál chřipky** – ILI ≥ 25/100k a nárůst ILI ×1,5 za 2 týdny (ILI předbíhá nástup chřipkové vlny o 1–3 týdny). **Svátkový týden** – poslední data ovlivněná volnými dny.
 
 | Situace | Kdy (pásmo = pásmo plánované hodnoty) |
 |---|---|
-| S1 Klid | 🟢, nic neroste |
+| S1 Klid | 🟢, nic neroste; 🟡 v létě bez růstu i bez poklesu |
 | S2 Nástup podzimu | 🟢 na podzim (nebo od W33), roste nebo P(🟡 do 4 týdnů) ≥ 30 % |
-| S3 Rychle přibývá | 🟡 na podzim / v zimě před vrcholem, roste nebo P(🟠 do 4 týdnů) ≥ 50 % |
-| S4 Vysoká a roste | 🟠 na podzim, roste |
-| S5 Plató | 🟠 na podzim bez růstu; 🟡 bez růstu a bez potvrzeného poklesu |
-| S6 Nástup chřipky | signál ILI (mimo jaro a zimu po vrcholu) – má přednost |
+| S3 Rychle přibývá | 🟡 na podzim (od W33) / v zimě před vrcholem, roste nebo P(🟠 do 4 týdnů) ≥ 50 % |
+| S4 Vysoká a roste | 🟠 na podzim (od W33), roste |
+| S5 Plató | 🟠 na podzim bez růstu; 🟡 na podzim / v zimě před vrcholem bez růstu |
+| S6 Nástup chřipky | signál ILI pod epidemickou úrovní (mimo jaro a zimu po vrcholu) – má přednost |
 | S7 Blíží se epidemie | 🟠 v zimě před vrcholem, roste nebo P(🔴 do 4 týdnů) ≥ 30 % |
 | S8 Zvýšená, stabilní | 🟠 v zimě před vrcholem bez růstu |
-| S8j Po vrcholu | 🟠 po vrcholu / na jaře, 🟡 po vrcholu / na jaře – bez potvrzeného poklesu |
-| S9 Epidemie | 🔴 |
-| S10 Za vrcholem | 🔴 nebo 🟠 v zimě po vrcholu s potvrzeným poklesem |
-| S11 Ústup | potvrzený pokles: 🟠 na jaře, 🟡 mimo podzim a zimu před vrcholem, 🟢 na jaře |
-| S12 Svátky | poslední týden ovlivněný svátky a nic neroste |
-| S14 Mimo sezónu | léto: rychlý růst, nebo růst nad zeleným pásmem |
+| S8j Po vrcholu | 🟠/🟡 po vrcholu nebo na jaře bez potvrzeného poklesu |
+| S9 Epidemie | 🔴 a poslední hodnota ≥ 1 500 |
+| S9a Očekává se epidemie | 🔴 jen podle horního odhadu předpovědi (poslední hodnota < 1 500) |
+| S10 Za vrcholem | 🔴 po vrcholu bez růstu; 🟠 v zimě po vrcholu s potvrzeným poklesem |
+| S11 Ústup | potvrzený pokles mimo podzim a zimu před vrcholem; 🟡 v létě s klesající předpovědí |
+| S12 Svátky | poslední týden je svátkový a nic neroste ani potvrzeně neklesá |
+| S14 Mimo sezónu | léto do W32: pozorovaný rychlý růst, nebo růst nad zeleným pásmem |
 
-**Stupeň akutní kapacity** se odvozuje z pásma plánované hodnoty: 🟢 základ (100 %), 🟡 připravenost (100–120 % + připravená rezerva), 🟠 navýšeno (130–150 %), 🔴 vysoce navýšeno (150–170 %), 🔴 s růstem nebo v zimě před vrcholem zimní krizový režim (170–200 %); při signálu chřipky aspoň „vysoce navýšeno".
+**Stupeň akutní kapacity** se odvozuje z pásma plánované hodnoty: 🟢 základ, 🟡 připravenost (připravená rezerva slotů), 🟠 navýšeno, 🔴 vysoce navýšeno; zimní krizový režim jen při skutečné epidemické úrovni (poslední hodnota ≥ 1 500) s růstem nebo v zimě před vrcholem. Při signálu chřipky nebo epidemii aspoň „vysoce navýšeno". Stupeň je slovní popis; konkrétní % je samostatný odhad (níže).
 
 **Ochranná pravidla (asymetrie):**
-- Navyšuje se hned, **snižuje se jen při potvrzeném poklesu** a jen na jaře, v zimě po vrcholu nebo v létě – nikdy na podzim, v zimě před vrcholem ani ve svátkovém týdnu. Bez potvrzeného poklesu se stupeň nesníží pod úroveň odpovídající poslednímu ze dvou týdnů.
+- Navyšuje se hned, **snižuje se jen při potvrzeném poklesu** a jen na jaře, v zimě po vrcholu nebo v létě do W32 – nikdy na podzim ani v zimě před vrcholem.
+- Bez potvrzeného poklesu se stupeň ani % **nesníží pod doporučení předchozího týdne**. Dashboard k tomu z předpovědí uložených za posledních 8 týdnů (`forecast_past`) dopočítá tehdejší doporučení a drží nejvyšší z nich, dokud pokles nepotvrdí data. Simulace všech týdnů 2024-W20 – 2026-W39 (data k danému týdnu, předpověď z tehdy dostupných dat, zobrazeno o 2 týdny později) nenašla jediný týden, kdy by doporučení kleslo při rostoucí nemocnosti nebo předpovědi.
 - Na podzim je minimum stupeň „připravenost".
 - **Zkrácení akutního času se nikdy nedoporučí, když nemocnost nebo předpověď roste.**
 
-**Odhad akutní kapacity v %** (orientační, pro ordinaci pro dospělé): respirační poptávka dospělých se počítá z věkových skupin SZÚ (index dospělých = 0,114·ARI₁₅₋₂₄ + 0,636·ARI₂₅₋₆₄ + 0,25·ARI₆₅₊, váhy podle počtu obyvatel) jako násobek `M` letního mediánu (W27–W34), přepočtený na plánovanou hodnotu. Kapacita = `(1 − s) + s·M`, kde `s` = podíl respiračních pacientů na akutních kontaktech v létě (25–45 %); výsledek je rozsah, zaokrouhlený na 5 %, nejméně 100 %.
+**Odhad akutní kapacity v %** (orientační, pro ordinaci pro dospělé): `M` = plánovaná hodnota ÷ letní medián (W27–W34 posledních 3 let) × podíl dospělých na růstu. Podíl dospělých = (index dospělých ÷ jeho letní medián) ÷ (celková ARI ÷ její letní medián), vyšší ze dvou posledních nesvátkových týdnů, omezený na 0,5–1,5; index dospělých = 0,114·ARI₁₅₋₂₄ + 0,636·ARI₂₅₋₆₄ + 0,25·ARI₆₅₊ (váhy podle počtu obyvatel). Kapacita = `(1 − s) + s·M`, kde `s` = podíl respiračních pacientů na akutních kontaktech v létě (25–45 %); výsledek je rozsah, zaokrouhlený na 5 %, nejméně 100 %.
 
 Svátkové týdny (28. září, 28. října a podzimní prázdniny, 17. listopadu, Vánoce, Velikonoce, květnové a červencové svátky) jsou v předpovědi označené – hlášená nemocnost v nich bývá uměle nižší (W44 typicky −15 až −30 %, W52 kolem −40 %), po nich přichází skokový návrat.
 
 ## 5. Omezení
 - Předpověď je statistický odhad z minulých sezón; neví o nových variantách virů ani o mimořádných opatřeních.
 - Horizont 5–10 týdnů je orientační (širší intervaly), zvlášť kolem nástupu chřipkové vlny.
-- SZÚ hodnotu předchozího týdne občas mírně opraví (např. 2025-W38: v reportu 851, podle změny v následujícím reportu ~890); dashboard drží hodnotu z reportu za daný týden.
+- Pásma a odhad % kapacity jsou orientační pomůcka pro plánování, ne oficiální prahy ani normativ.
+- Starší historie (WHO × 1,20) se od úrovně SZÚ typicky liší o několik procent (v jednotlivých týdnech až ~15 %); tvar sezón (týdenní změny) obě řady sledují velmi přesně.
 
 ## 6. Soubory
 | Soubor | Účel |

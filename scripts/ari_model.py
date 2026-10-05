@@ -23,7 +23,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).parent))
 import forecast as F
 import model_analog
-import model_profile_holiday
+import model_profile_holiday as PH
 
 H = 10
 EVAL_EXCLUDE = (2019, 2020, 2021)
@@ -32,6 +32,7 @@ MIN_PHASE_SAMPLES = 60    # jinak se použijí chyby z celého roku
 THRESHOLDS = (750, 1000, 1500)
 RECENT_FROM, RECENT_WEIGHT = 2022, 3.0   # váha chyb z pocovidových sezón
 WIDEN = 1.15                             # rozšíření rozptylu chyb kolem mediánu
+HOLDOUT_FROM = 2022                      # sezóny pro zobrazenou přesnost (nepoužité k ladění)
 
 MODEL_NAME = "blend_analog_profile_holiday"
 MODEL_LABEL = "Analogové sezóny + sezónní profil se svátkovými efekty (vážený průměr v logaritmu)"
@@ -44,7 +45,7 @@ W_ANALOG = (0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)   # dál 1.0
 def point_forecast(hist, origin, H=H):
     """log-předpovědi pro h = 1..H (jen z dat do origin)."""
     a = model_analog.predict(hist, origin, H)
-    b = model_profile_holiday.predict(hist, origin, H)
+    b = PH.predict(hist, origin, H)
     return [W_ANALOG[min(i, len(W_ANALOG) - 1)] * x + (1 - W_ANALOG[min(i, len(W_ANALOG) - 1)]) * y
             for i, (x, y) in enumerate(zip(a, b))]
 
@@ -98,16 +99,21 @@ def _wquantile(pairs, q):
     return pts[-1][1]
 
 
-def skill_summary(residuals, legacy_residuals=None):
-    """Souhrn přesnosti pro zobrazení na dashboardu."""
+def skill_summary(residuals, legacy_residuals=None, current_season=None):
+    """Souhrn přesnosti pro dashboard – jen z nezávislých (kontrolních) sezón:
+    od 2022/23, které se při výběru modelu nepoužily k ladění, bez běžící sezóny."""
+    def oos(rs):
+        return [x for x in rs if F.season_of(*x[0]) >= HOLDOUT_FROM and F.season_of(*x[0]) != current_season]
     def mdae(rs, h):
         e = sorted(abs(x[2]) for x in rs if x[1] == h)
-        return (math.exp(e[len(e) // 2]) - 1) * 100 if e else None
-    s = {"mdae_pct_by_h": [round(mdae(residuals, h), 1) for h in range(1, H + 1)]}
+        return round((math.exp(e[len(e) // 2]) - 1) * 100, 1) if e else None
+    r = oos(residuals)
+    s = {"mdae_pct_by_h": [mdae(r, h) for h in range(1, H + 1)]}
     if legacy_residuals:
-        s["legacy_mdae_pct_by_h"] = [round(mdae(legacy_residuals, h), 1) for h in range(1, H + 1)]
-    s["n_origins"] = len({x[0] for x in residuals})
-    s["seasons"] = sorted({F.season_of(*x[0]) for x in residuals})
+        s["legacy_mdae_pct_by_h"] = [mdae(oos(legacy_residuals), h) for h in range(1, H + 1)]
+    s["n_origins"] = len({x[0] for x in r})
+    s["seasons"] = sorted({F.season_of(*x[0]) for x in r})
+    s["note"] = "kontrolní sezóny (nepoužité k ladění modelu)"
     return s
 
 
@@ -139,6 +145,9 @@ def make_forecast(series, origin=None):
             "q75": round(q[0.75]), "q90": round(q[0.9]),
             **probs,
         })
+        hol = PH.holiday(y, w)[1]
+        if hol:
+            out[-1]["holiday"] = hol
     legacy = backtest_residuals(series, lambda hh, o, H: F.m_legacy(hh, o, H))
     return {
         "forecast": out,
@@ -147,7 +156,7 @@ def make_forecast(series, origin=None):
             "origin": f"{origin[0]}-W{origin[1]:02d}",
             "interval_method": f"empirické chyby zpětného testu ze stejné fáze sezóny (±{PHASE_WINDOW} týdnů), "
                                f"pocovidové sezóny s vahou {RECENT_WEIGHT:g}×, rozptyl ×{WIDEN:g}".replace(".", ","),
-            "skill": skill_summary(res, legacy),
+            "skill": skill_summary(res, legacy, F.season_of(*origin)),
         },
     }
 

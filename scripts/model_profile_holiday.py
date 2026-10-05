@@ -10,9 +10,8 @@ Zpětný test vybral φ = 0: letošní tempo nad rámec sezónního profilu pře
 nezlepšilo (φ = 0,3 a 0,5 vyšly hůř), takže růst se bere z profilu minulých
 sezón a navazuje na aktuální (svátky očištěnou) úroveň.
 
-Svátkové typy podle data (ne čísla týdne): xmas1 (25. 12.), xmas2 (1. 1.),
-autumn (28. 10. ve všední den), goodfri, eastermon, minor (1. 5., 8. 5.,
-28. 9., 17. 11., 5. 7., 6. 7. ve všední den). δ = medián rozdílu log hodnoty
+Svátkové typy podle data a dne v týdnu (ne čísla týdne) – viz holiday().
+δ = medián rozdílu log hodnoty
 proti log-lineární interpolaci mezi nejbližšími nesvátkovými sousedy.
 U podzimních prázdnin, Vánoc a Velikonočního pondělí se od sezóny 2024/25
 berou jen novější výskyty (pokud jsou aspoň 2) – propady jsou od zavedení
@@ -22,6 +21,7 @@ automatizovaného hlášení výrazně hlubší (W44: −25 až −30 % místo �
 """
 import math
 from datetime import date, timedelta
+from functools import lru_cache
 
 COVID_SEASONS = (2019, 2020, 2021)
 P = dict(n=3, phi=0.0, win=1, recent=True, clip=0.35)
@@ -55,34 +55,50 @@ def _easter(y):
     return date(y, mo, da)
 
 
-_TAU = {}
+_MINOR = ((5, 1, "1. května"), (5, 8, "8. května"), (9, 28, "28. září"),
+          (11, 17, "17. listopadu"), (7, 5, "5. července"), (7, 6, "6. července"))
 
 
-def htype(y, w):
-    key = (y, w)
-    if key in _TAU:
-        return _TAU[key]
+@lru_cache(maxsize=None)
+def holiday(y, w):
+    """(typ, popis) svátku v ISO týdnu (y, w), nebo (None, None).
+
+    Typy podle data a dne v týdnu (volný musí být pracovní den):
+      xmas1     – týden s 27. 12. (hlavní vánoční propad: 24.–26. 12. + „mezi svátky“;
+                  když 25. 12. připadne na víkend, je to až týden po něm)
+      xmas2     – týden s 1. 1. ve všední den (pokud to není už týden xmas1)
+      autumn    – 28. 10. ve všední den (+ podzimní prázdniny v témž týdnu); když
+                  28. 10. připadne na víkend, propad v datech vidět není (2012, 2017,
+                  2018, 2023), proto se takový týden nepočítá
+      goodfri / eastermon – Velký pátek / Velikonoční pondělí
+      minor     – 1. 5., 8. 5., 28. 9., 17. 11., 5. 7., 6. 7. ve všední den, nebo Štědrý
+                  den ve všední den mimo týden xmas1
+    """
     mon = date.fromisocalendar(y, w, 1)
     days = [mon + timedelta(d) for d in range(7)]
     wd = days[:5]
-    t = None
-    for Y in {mon.year, (mon + timedelta(6)).year}:
-        if date(Y, 12, 25) in days:
-            t = "xmas1"
-        elif date(Y, 1, 1) in days:
-            t = t or "xmas2"
-        elif date(Y, 10, 28) in wd:
-            t = t or "autumn"
-        else:
-            e = _easter(Y)
-            if e - timedelta(2) in days:
-                t = t or "goodfri"
-            elif e + timedelta(1) in days:
-                t = t or "eastermon"
-            elif any(date(Y, m_, d_) in wd for m_, d_ in ((5, 1), (5, 8), (9, 28), (11, 17), (7, 5), (7, 6))):
-                t = t or "minor"
-    _TAU[key] = t
-    return t
+    for Y in sorted({mon.year, days[-1].year}):
+        if date(Y, 12, 27) in days:
+            return "xmas1", "Vánoce"
+        if date(Y, 1, 1) in wd:
+            return "xmas2", "Nový rok"
+        if date(Y, 12, 24) in wd:
+            return "minor", "Štědrý den"
+        if date(Y, 10, 28) in wd:
+            return "autumn", "28. října a podzimní prázdniny"
+        e = _easter(Y)
+        if e - timedelta(2) in days:
+            return "goodfri", "Velký pátek"
+        if e + timedelta(1) in days:
+            return "eastermon", "Velikonoční pondělí"
+        hits = [lab for m_, d_, lab in _MINOR if date(Y, m_, d_) in wd]
+        if hits:
+            return "minor", "5.–6. července" if len(hits) == 2 and "července" in hits[0] else " a ".join(hits)
+    return None, None
+
+
+def htype(y, w):
+    return holiday(y, w)[0]
 
 
 def _wk(w):
@@ -95,9 +111,10 @@ def _median(xs):
     return (xs[(n - 1) // 2] + xs[n // 2]) / 2 if n else 0.0
 
 
-def log_series(hist):
-    """{index týdne: log hodnota} (jen kladné hodnoty)."""
-    return {_widx(y, w): math.log(v) for (y, w), v in hist.items() if v and v > 0}
+def log_series(hist, upto=None):
+    """{index týdne: log hodnota} (jen kladné hodnoty; s upto jen týdny ≤ upto)."""
+    out = {_widx(y, w): math.log(v) for (y, w), v in hist.items() if v and v > 0}
+    return out if upto is None else {i: z for i, z in out.items() if i <= upto}
 
 
 def holiday_effects(Z, recent=True):
@@ -133,9 +150,9 @@ def effect(i, delta):
 
 def forecast(hist, origin, H, p=None):
     p = {**P, **(p or {})}
-    Z = log_series(hist)
     io = _widx(*origin)
-    known = [i for i in Z if i <= io]
+    Z = log_series(hist, io)          # data po origin se nikdy nepoužijí
+    known = list(Z)
     if not known:
         return [0.0] * H
     i0 = max(known)                 # chybí-li týden origin, navážeme na poslední známý

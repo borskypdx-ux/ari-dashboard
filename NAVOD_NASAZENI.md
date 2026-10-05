@@ -6,9 +6,9 @@
 ## Co dostanete
 
 - **Webový dashboard** přístupný odkaz pro všechny kolegy (žádná instalace)
-- **Automatická aktualizace** každé pondělí z webu SZÚ
+- **Automatická aktualizace** – kontrola webu SZÚ dvakrát denně, nová data se převezmou hned po zveřejnění
 - **Semafor a doporučení** – kolik akutních slotů plánovat tento týden
-- **Forecast** na 4 týdny dopředu
+- **Předpověď** na 10 týdnů (≈ 2 měsíce) s 50% a 80% rozmezím, ověřená na minulých sezónách
 - **Zdarma** – využívá GitHub Pages + GitHub Actions (free tier)
 
 ---
@@ -28,7 +28,7 @@
 
 ### Krok 3 – Nahrajte soubory
 1. Na stránce repozitáře klikněte **"uploading an existing file"**
-2. Přetáhněte všechny soubory z tohoto ZIP (včetně složky `data/` a `.github/`)
+2. Přetáhněte všechny soubory z tohoto repozitáře (nebo z přiloženého `ari-dashboard.zip`), včetně složek `data/`, `scripts/` a `.github/`
 3. Commit: "Přidání ARI dashboardu"
 4. Klikněte **"Commit changes"**
 
@@ -50,7 +50,8 @@ Tento odkaz funguje pro kohokoliv bez přihlašování. Sdílejte ho v ordinaci,
 - GitHub kontroluje datovou stránku SZÚ **dvakrát denně** (ráno a odpoledne). SZÚ zveřejňuje report za uplynulý týden v průběhu následujícího týdne – dashboard ho tak převezme ještě týž den.
 - Při každé kontrole se doplní i týdny, které dřív chyběly, přepočítá se předpověď na 10 týdnů a doporučení.
 - Commit (a přebudování stránky) vznikne jen tehdy, když přibudou nová data.
-- Před každou aktualizací proběhnou automatické testy (`scripts/test_forecast.py`).
+- Před každou aktualizací i po ní proběhnou automatické testy (`scripts/test_forecast.py`), takže se nikdy neuloží nesmyslná data.
+- Když se stažení nepovede (web SZÚ nedostupný, nečitelný report, data starší než 4 týdny), běh skončí chybou a GitHub pošle vlastníkovi repozitáře e-mail.
 - Ručně lze spustit: **Actions → Weekly ARI Data Update → Run workflow**
 
 ---
@@ -77,9 +78,9 @@ Jednou týdně zkontrolujte:
 
 ---
 
-## MOŽNOST C – Otevřít lokálně (bez internetu)
+## MOŽNOST C – Otevřít lokálně
 
-Pro lokální otevření potřebujete spustit jednoduchý HTTP server:
+Pro lokální otevření potřebujete spustit jednoduchý HTTP server (graf se načítá z internetu – knihovna Chart.js a písma, takže připojení je potřeba):
 
 ```bash
 # Python (nejjednodušší)
@@ -94,14 +95,16 @@ Nebo použijte VS Code s rozšířením "Live Server".
 
 ## Interpretace dashboardu
 
-| Pásmo | ARI / 100k | Typicky | Akutní kapacita |
+| Pásmo | ARI / 100k | Typicky | Stupeň akutní kapacity |
 |------|-----------|---------|-----------------|
-| 🟢 Klidná sezóna | < 750 | léto | akutní sloty obsazovat kontrolami a prevencí |
-| 🟡 Mírně zvýšená | 750–999 | podzimní nástup, jarní ústup | při růstu nezkracovat, při poklesu pozvolna ubírat |
-| 🟠 Zvýšená zátěž | 1 000–1 499 | podzim–zima | udržet, při růstu +10–20 % |
-| 🔴 Epidemie | ≥ 1 500 | chřipková vlna (leden–únor) | +20–40 %, telefonická triáž |
+| 🟢 Klidná sezóna | < 750 | léto | základ – akutní sloty obsazovat kontrolami a prevencí |
+| 🟡 Mírně zvýšená | 750–999 | podzimní nástup, jarní ústup | připravenost – rezerva slotů, při růstu nezkracovat |
+| 🟠 Zvýšená zátěž | 1 000–1 499 | podzim–zima | navýšeno |
+| 🔴 Epidemická úroveň | ≥ 1 500 | chřipková vlna (prosinec–únor) | vysoce navýšeno, při epidemii a růstu zimní krizový režim |
 
-**Doporučení nezávisí jen na pásmu.** Dashboard kombinuje aktuální úroveň, trend za poslední 2 týdny a předpověď na příští 4 týdny (včetně pravděpodobnosti přechodu do vyššího pásma). Zkrácení akutního času nikdy nedoporučí, když nemocnost nebo předpověď roste.
+Pásma jsou orientační hranice dashboardu (za epidemii SZÚ obvykle považuje ~1 600–1 700/100k). Konkrétní **% akutní kapacity** dashboard odhaduje zvlášť pro každý týden (vůči běžné letní úrovni ordinace pro dospělé) – viz METODIKA.md.
+
+**Doporučení nezávisí jen na pásmu.** Dashboard kombinuje plánovanou hodnotu (horní odhad předpovědi za 2 týdny), trend bez svátkových týdnů, fázi sezóny, signál chřipky (ILI) a svátky. Navyšuje hned, ale snižuje jen při potvrzeném poklesu – zkrácení akutního času nikdy nedoporučí, když nemocnost nebo předpověď roste.
 
 **Předpověď** na 10 týdnů (od posledních dat SZÚ, tj. zhruba 2 měsíce od dneška) je sezónní model ověřený zpětným testem na minulých sezónách; ukazuje nejpravděpodobnější hodnotu a 50% / 80% rozmezí. Podrobnosti v [METODIKA.md](METODIKA.md).
 
