@@ -17,6 +17,8 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent))
 import forecast as F
+import model_analog
+import model_profile_holiday
 
 H = 8
 EVAL_EXCLUDE = (2019, 2020, 2021)
@@ -24,15 +26,20 @@ PHASE_WINDOW = 6          # ± týdnů pro výběr historických chyb
 MIN_PHASE_SAMPLES = 60    # jinak se použijí chyby z celého roku
 THRESHOLDS = (750, 1000, 1500)
 
-MODEL_NAME = "ensemble_profile_climatology"
-MODEL_LABEL = "Sezónní profil + klimatologie s odchylkou (průměr v logaritmu)"
+MODEL_NAME = "blend_analog_profile_holiday"
+MODEL_LABEL = "Analogové sezóny + sezónní profil se svátkovými efekty (vážený průměr v logaritmu)"
+# váha analogových sezón podle horizontu (zbytek = sezónní profil se svátky);
+# vybráno na ladicích sezónách 2012–2018: profil je přesnější na 1–3 týdny,
+# analogy na delší horizont
+W_ANALOG = (0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.0)
 
 
 def point_forecast(hist, origin, H=H):
     """log-předpovědi pro h = 1..H (jen z dat do origin)."""
-    a = F.m_profile(hist, origin, H)
-    b = F.m_clim_anomaly(hist, origin, H)
-    return [(x + y) / 2 for x, y in zip(a, b)]
+    a = model_analog.predict(hist, origin, H)
+    b = model_profile_holiday.predict(hist, origin, H)
+    return [W_ANALOG[min(i, len(W_ANALOG) - 1)] * x + (1 - W_ANALOG[min(i, len(W_ANALOG) - 1)]) * y
+            for i, (x, y) in enumerate(zip(a, b))]
 
 
 def _week_dist(w1, w2):

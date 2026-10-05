@@ -1,6 +1,6 @@
 {
  "meta": {
- "last_updated": "2026-09-28",
+ "last_updated": "2026-10-05",
  "source": "Státní zdravotní ústav (SZÚ) – týdenní hlášení ARI/ILI: https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
  "history_note": "2009–2023: WHO FluID (ARI_CASE/ARI_POP_COV, CZE) × 1,20 na měřítko SZÚ; od 2023-W40 oficiální týdenní PDF SZÚ. Viz METODIKA.md.",
  "baseline_label": "únor 2025",
@@ -25,14 +25,14 @@
  "source_url": "https://szu.gov.cz/wp-content/uploads/2026/09/39_tyden.pdf"
 },
  "forecast": [
-  {"week":"2026-W40","year":2026,"iso_week":40,"monday":"2026-09-28","horizon":1,"median":1198,"point":1177,"q10":1061,"q25":1138,"q75":1259,"q90":1330,"p_750":1.0,"p_1000":0.958,"p_1500":0.035},
-  {"week":"2026-W41","year":2026,"iso_week":41,"monday":"2026-10-05","horizon":2,"median":1239,"point":1209,"q10":1074,"q25":1152,"q75":1313,"q90":1422,"p_750":1.0,"p_1000":0.957,"p_1500":0.064},
-  {"week":"2026-W42","year":2026,"iso_week":42,"monday":"2026-10-12","horizon":3,"median":1233,"point":1231,"q10":1091,"q25":1164,"q75":1347,"q90":1493,"p_750":1.0,"p_1000":0.971,"p_1500":0.1},
-  {"week":"2026-W43","year":2026,"iso_week":43,"monday":"2026-10-19","horizon":4,"median":1198,"point":1208,"q10":1056,"q25":1137,"q75":1316,"q90":1538,"p_750":1.0,"p_1000":0.935,"p_1500":0.122},
-  {"week":"2026-W44","year":2026,"iso_week":44,"monday":"2026-10-26","horizon":5,"median":1210,"point":1194,"q10":1011,"q25":1117,"q75":1321,"q90":1570,"p_750":1.0,"p_1000":0.906,"p_1500":0.123},
-  {"week":"2026-W45","year":2026,"iso_week":45,"monday":"2026-11-02","horizon":6,"median":1248,"point":1230,"q10":1067,"q25":1138,"q75":1385,"q90":1720,"p_750":1.0,"p_1000":0.956,"p_1500":0.146},
-  {"week":"2026-W46","year":2026,"iso_week":46,"monday":"2026-11-09","horizon":7,"median":1227,"point":1217,"q10":1008,"q25":1107,"q75":1376,"q90":1805,"p_750":1.0,"p_1000":0.912,"p_1500":0.154},
-  {"week":"2026-W47","year":2026,"iso_week":47,"monday":"2026-11-16","horizon":8,"median":1369,"point":1349,"q10":1100,"q25":1226,"q75":1556,"q90":2128,"p_750":1.0,"p_1000":0.949,"p_1500":0.287}
+  {"week":"2026-W40","year":2026,"iso_week":40,"monday":"2026-09-28","horizon":1,"median":1059,"point":1055,"q10":984,"q25":1026,"q75":1094,"q90":1140,"p_750":1.0,"p_1000":0.838,"p_1500":0.0},
+  {"week":"2026-W41","year":2026,"iso_week":41,"monday":"2026-10-05","horizon":2,"median":1180,"point":1180,"q10":1078,"q25":1130,"q75":1235,"q90":1306,"p_750":1.0,"p_1000":0.965,"p_1500":0.021},
+  {"week":"2026-W42","year":2026,"iso_week":42,"monday":"2026-10-12","horizon":3,"median":1183,"point":1191,"q10":1056,"q25":1116,"q75":1250,"q90":1315,"p_750":1.0,"p_1000":0.979,"p_1500":0.014},
+  {"week":"2026-W43","year":2026,"iso_week":43,"monday":"2026-10-19","horizon":4,"median":1214,"point":1210,"q10":1054,"q25":1121,"q75":1284,"q90":1356,"p_750":1.0,"p_1000":0.964,"p_1500":0.014},
+  {"week":"2026-W44","year":2026,"iso_week":44,"monday":"2026-10-26","horizon":5,"median":1026,"point":1028,"q10":877,"q25":948,"q75":1100,"q90":1155,"p_750":0.993,"p_1000":0.609,"p_1500":0.022},
+  {"week":"2026-W45","year":2026,"iso_week":45,"monday":"2026-11-02","horizon":6,"median":1171,"point":1181,"q10":993,"q25":1086,"q75":1274,"q90":1355,"p_750":1.0,"p_1000":0.883,"p_1500":0.036},
+  {"week":"2026-W46","year":2026,"iso_week":46,"monday":"2026-11-09","horizon":7,"median":1185,"point":1201,"q10":1006,"q25":1081,"q75":1313,"q90":1380,"p_750":1.0,"p_1000":0.904,"p_1500":0.051},
+  {"week":"2026-W47","year":2026,"iso_week":47,"monday":"2026-11-16","horizon":8,"median":1177,"point":1196,"q10":970,"q25":1061,"q75":1279,"q90":1409,"p_750":0.993,"p_1000":0.853,"p_1500":0.081}
  ],
  "history": [
   {"week":"2009-W32","year":2009,"iso_week":32,"monday":"2009-08-03","ari_per_100k":615,"ili_per_100k":9.3,"source":"who_scaled"},
@@ -888,20 +888,20 @@
   {"week":"2026-W39","year":2026,"iso_week":39,"monday":"2026-09-21","ari_per_100k":1078,"ili_per_100k":16.0,"source":"szu","source_url":"https://szu.gov.cz/wp-content/uploads/2026/09/39_tyden.pdf","ari_age":[3104.0,1638.0,1379.0,661.0,334.0,1078.0]}
  ],
  "model": {
- "name": "ensemble_profile_climatology",
- "label": "Sezónní profil + klimatologie s odchylkou (průměr v logaritmu)",
+ "name": "blend_analog_profile_holiday",
+ "label": "Analogové sezóny + sezónní profil se svátkovými efekty (vážený průměr v logaritmu)",
  "origin": "2026-W39",
  "interval_method": "empirické chyby zpětného testu, fáze sezóny ±6 týdnů",
  "skill": {
   "mdae_pct_by_h": [
-   5.1,
-   7.5,
-   8.4,
-   9.2,
-   10.8,
-   11.0,
-   12.0,
-   12.3
+   3.6,
+   5.4,
+   6.5,
+   7.0,
+   8.1,
+   8.2,
+   8.9,
+   8.9
   ],
   "legacy_mdae_pct_by_h": [
    7.8,

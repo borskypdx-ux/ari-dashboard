@@ -63,21 +63,40 @@ Intervaly nejsou „od oka": při každé aktualizaci se model zpětně otestuje
 - **pravděpodobnost**, že nemocnost bude ≥ 750, ≥ 1 000 a ≥ 1 500/100k.
 
 ## 4. Doporučení
-Doporučení nezávisí jen na aktuálním pásmu, ale na kombinaci:
-1. **úrovně** (pásmo zelené < 750, žluté 750–999, oranžové 1 000–1 499, červené ≥ 1 500),
-2. **trendu** – průměrná týdenní změna za poslední 2 týdny (> +5 % = roste, < −5 % = klesá),
-3. **předpovědi na 4 týdny od dneška** – roste/klesá o víc než 5 % a pravděpodobnost přechodu do vyššího pásma.
+Doporučení vychází ze čtyř vstupů:
 
-| Pásmo | Roste (nebo předpověď roste) | Stabilní | Klesá (i předpověď) |
-|---|---|---|---|
-| 🔴 ≥ 1 500 | epidemie – akutní kapacita +20–40 %, triáž | epidemie | epidemie odeznívá – kapacitu zatím držet |
-| 🟠 1 000–1 499 | zvýšená a roste – +10–20 %, očkování, triáž | udržet akutní čas | udržet, redukovat až po 2 týdnech pod 1 000 |
-| 🟡 750–999 | nástup sezóny – nezkracovat, připravit +10–20 % | udržet | doznívání – pozvolná redukce |
-| 🟢 < 750 | klid, ale roste – připravit podzim | klidná sezóna | klidná sezóna |
+1. **Plánovaná hodnota** = vyšší z (poslední hodnota, **75. percentil předpovědi za 2 týdny od dneška**). Plánuje se na horní odhad, protože nedostatek akutní kapacity je pro ordinaci zhruba 3× horší než přebytek (přetížení, odmítnutí pacienti, přesčasy). Z ní se určí pásmo: 🟢 < 750, 🟡 750–999, 🟠 1 000–1 499, 🔴 ≥ 1 500 (SZÚ vyhlašuje epidemii obvykle nad 1 600–1 700).
+2. **Trend** – týdenní log-růst z dvoutýdenních součtů `g = ½·ln((x₀+x₁)/(x₂+x₃))`: ≥ +10 % rychle roste, ≥ +3 % roste, ±3 % stabilní; **pokles se uzná jen tehdy, když hodnota klesla dva týdny po sobě** (jednorázový propad, typicky svátek, se nebere jako ústup). Za „roste" se bere i předpověď za 4 týdny o > 5 % výš.
+3. **Fáze sezóny** – léto W22–W34, podzim W35–W47, zima před vrcholem, zima po vrcholu (vrchol ≥ 1 000 před ≥ 3 týdny, hodnota ≤ 85 % vrcholu a klesá), jaro W11–W21.
+4. **Signál chřipky** – ILI ≥ 25/100k a nárůst ILI ×1,5 za 2 týdny (ILI předbíhá nástup chřipkové vlny o 1–3 týdny). **Svátkový týden** – poslední data ovlivněná volnými dny.
 
-Zásada: **zkrácení akutního času se nikdy nedoporučí, když nemocnost nebo předpověď roste.** Oranžové pásmo se bere jako „roste" i tehdy, je-li pravděpodobnost epidemické úrovně do 4 týdnů ≥ 25 %; žluté, je-li pravděpodobnost zvýšené zátěže ≥ 50 %.
+| Situace | Kdy (pásmo = pásmo plánované hodnoty) |
+|---|---|
+| S1 Klid | 🟢, nic neroste |
+| S2 Nástup podzimu | 🟢 na podzim (nebo od W33), roste nebo P(🟡 do 4 týdnů) ≥ 30 % |
+| S3 Rychle přibývá | 🟡 na podzim / v zimě před vrcholem, roste nebo P(🟠 do 4 týdnů) ≥ 50 % |
+| S4 Vysoká a roste | 🟠 na podzim, roste |
+| S5 Plató | 🟠 na podzim bez růstu; 🟡 bez růstu a bez potvrzeného poklesu |
+| S6 Nástup chřipky | signál ILI (mimo jaro a zimu po vrcholu) – má přednost |
+| S7 Blíží se epidemie | 🟠 v zimě před vrcholem, roste nebo P(🔴 do 4 týdnů) ≥ 30 % |
+| S8 Zvýšená, stabilní | 🟠 v zimě před vrcholem bez růstu |
+| S8j Po vrcholu | 🟠 po vrcholu / na jaře, 🟡 po vrcholu / na jaře – bez potvrzeného poklesu |
+| S9 Epidemie | 🔴 |
+| S10 Za vrcholem | 🔴 nebo 🟠 v zimě po vrcholu s potvrzeným poklesem |
+| S11 Ústup | potvrzený pokles: 🟠 na jaře, 🟡 mimo podzim a zimu před vrcholem, 🟢 na jaře |
+| S12 Svátky | poslední týden ovlivněný svátky a nic neroste |
+| S14 Mimo sezónu | léto: rychlý růst, nebo růst nad zeleným pásmem |
 
-Svátkové týdny (28. října a podzimní prázdniny, 17. listopadu, Vánoce, Velikonoce) jsou v předpovědi označené – hlášená nemocnost v nich bývá uměle nižší.
+**Stupeň akutní kapacity** se odvozuje z pásma plánované hodnoty: 🟢 základ (100 %), 🟡 připravenost (100–120 % + připravená rezerva), 🟠 navýšeno (130–150 %), 🔴 vysoce navýšeno (150–170 %), 🔴 s růstem nebo v zimě před vrcholem zimní krizový režim (170–200 %); při signálu chřipky aspoň „vysoce navýšeno".
+
+**Ochranná pravidla (asymetrie):**
+- Navyšuje se hned, **snižuje se jen při potvrzeném poklesu** a jen na jaře, v zimě po vrcholu nebo v létě – nikdy na podzim, v zimě před vrcholem ani ve svátkovém týdnu. Bez potvrzeného poklesu se stupeň nesníží pod úroveň odpovídající poslednímu ze dvou týdnů.
+- Na podzim je minimum stupeň „připravenost".
+- **Zkrácení akutního času se nikdy nedoporučí, když nemocnost nebo předpověď roste.**
+
+**Odhad akutní kapacity v %** (orientační, pro ordinaci pro dospělé): respirační poptávka dospělých se počítá z věkových skupin SZÚ (index dospělých = 0,114·ARI₁₅₋₂₄ + 0,636·ARI₂₅₋₆₄ + 0,25·ARI₆₅₊, váhy podle počtu obyvatel) jako násobek `M` letního mediánu (W27–W34), přepočtený na plánovanou hodnotu. Kapacita = `(1 − s) + s·M`, kde `s` = podíl respiračních pacientů na akutních kontaktech v létě (25–45 %); výsledek je rozsah, zaokrouhlený na 5 %, nejméně 100 %.
+
+Svátkové týdny (28. září, 28. října a podzimní prázdniny, 17. listopadu, Vánoce, Velikonoce, květnové a červencové svátky) jsou v předpovědi označené – hlášená nemocnost v nich bývá uměle nižší (W44 typicky −15 až −30 %, W52 kolem −40 %), po nich přichází skokový návrat.
 
 ## 5. Omezení
 - Předpověď je statistický odhad z minulých sezón; neví o nových variantách virů ani o mimořádných opatřeních.

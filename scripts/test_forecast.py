@@ -69,6 +69,21 @@ origin = (2026, 20)
 past = F.history_upto(ser, origin)
 full = dict(ser)
 check("model nevidí budoucnost", M.point_forecast(past, origin) == M.point_forecast(F.history_upto(full, origin), origin))
+# přelom roku s W53 (2026 má 53 týdnů)
+ser53 = {}
+for y in range(2010, 2027):
+    for w in range(1, F.weeks_in_isoyear(y) + 1):
+        if (y, w) <= (2026, 48):
+            ser53[(y, w)] = 900 + 600 * math.cos((w - 5) / 52 * 2 * math.pi)
+p53 = M.point_forecast(ser53, (2026, 48))
+check("předpověď přes W53/2026 je konečná", len(p53) == 8 and all(math.isfinite(x) for x in p53))
+
+print("Svátkové týdny (podle data)")
+import model_profile_holiday as PH
+exp = {(2026, 40): "minor", (2026, 44): "autumn", (2026, 47): "minor", (2026, 52): "xmas1",
+       (2026, 53): "xmas2", (2027, 1): None, (2026, 41): None, (2025, 52): "xmas1", (2026, 1): "xmas2"}
+got = {k: PH.htype(*k) for k in exp}
+check("typy svátků 2025–2027", got == exp, got)
 
 print("Datový soubor")
 data = json.loads((HERE.parent / "data" / "ari_data.json").read_text(encoding="utf-8"))
@@ -80,6 +95,19 @@ check("platné zdroje", all(e["source"] in ("szu", "who_scaled", "interpolated")
 check("current = poslední týden", data["current"]["week"] == h[-1]["week"])
 check("předpověď navazuje na poslední týden", data["forecast"][0]["week"] == "%d-W%02d" % F.week_add(h[-1]["year"], h[-1]["iso_week"], 1))
 check("pondělí v historii", all(F.monday(e["year"], e["iso_week"]).isoformat() == e["monday"] for e in h[-60:]))
+
+print("Předpověď na skutečných datech (podzim 2026)")
+real = {(e["year"], e["iso_week"]): e["ari_per_100k"] for e in h if e.get("ari_per_100k")}
+if (2026, 39) in real:
+    v39 = real[(2026, 39)]
+    f38 = M.make_forecast(F.history_upto(real, (2026, 38)))["forecast"]
+    check("z W38: skutečná W39 v 80% intervalu", f38[0]["q10"] <= v39 <= f38[0]["q90"],
+          f"{f38[0]['q10']}–{f38[0]['q90']} vs {v39}")
+    f39 = M.make_forecast(F.history_upto(real, (2026, 39)))["forecast"]
+    med = {x["iso_week"]: x["median"] for x in f39}
+    # podzimní nárůst: W41–W43 nikdy pod úrovní W39 (mimo svátkové týdny ve 12 sezónách)
+    check("z W39: W41–W43 nad hodnotou W39", all(med[w] > v39 for w in (41, 42, 43)), med)
+    check("svátkové propady: W40 < W41, W44 < W43 i W45", med[40] < med[41] and med[44] < med[43] and med[44] < med[45], med)
 
 print()
 if FAILS:

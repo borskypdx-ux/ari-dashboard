@@ -173,9 +173,14 @@ def compute_current(hist):
     prev2 = rows[-3]["ari_per_100k"] if len(rows) > 2 else None
     ch1 = (v / prev - 1) if prev else None
     ch2 = (v / prev2 - 1) if prev2 else None
-    # trend: průměrný týdenní log-růst za 2 týdny (tlumí jednorázové výkyvy)
-    g = math.log(v / prev2) / 2 if prev2 else (math.log(v / prev) if prev else 0.0)
-    trend = "rostoucí" if g > math.log(1.05) else "klesající" if g < -math.log(1.05) else "stabilní"
+    # trend: stejné pravidlo jako na dashboardu (trendClass) – týdenní log-růst
+    # z dvoutýdenních součtů; „klesající" jen při poklesu potvrzeném 2 týdny po sobě
+    trend = "stabilní"
+    if len(rows) >= 4:
+        x3, x2, x1, x0 = (r["ari_per_100k"] for r in rows[-4:])
+        g = 0.5 * math.log((x0 + x1) / (x2 + x3))
+        down_ok = math.log(x0 / x1) <= 0.02 and math.log(x1 / x2) <= 0.02
+        trend = "rostoucí" if g >= 0.03 else "klesající" if g <= -0.03 and down_ok else "stabilní"
     return {"week": last["week"], "monday": last["monday"], "ari_per_100k": v,
             "ili_per_100k": last.get("ili_per_100k"), "band": band_of(v),
             "change_1w_pct": round(ch1 * 100, 1) if ch1 is not None else None,

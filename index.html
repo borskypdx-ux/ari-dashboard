@@ -303,7 +303,7 @@
     <h3 id="bands-h">🚦 Pásma nemocnosti</h3>
     <p class="sub">Kalibrace na sezónu 2024/25 a 2025/26 (vrchol 2 251/100k v únoru 2025, letní minimum ~400–700/100k)</p>
     <div class="bands">
-      <div class="band-card red"><h4>🔴 Epidemie <small>≥ 1 500 / 100k</small></h4><p>Vysoký příliv akutních pacientů. Navýšit akutní kapacitu, telefonická triáž, priorita rizikových skupin.</p></div>
+      <div class="band-card red"><h4>🔴 Epidemická úroveň <small>≥ 1 500 / 100k</small></h4><p>Vysoký příliv akutních pacientů. Navýšit akutní kapacitu, telefonická triáž, priorita rizikových skupin. (SZÚ vyhlašuje epidemii obvykle nad 1 600–1 700/100k.)</p></div>
       <div class="band-card amber"><h4>🟠 Zvýšená zátěž <small>1 000–1 499</small></h4><p>Udržet nebo navýšit akutní čas podle trendu. Roste-li nemocnost, připravit se na epidemické pásmo.</p></div>
       <div class="band-card yellow"><h4>🟡 Mírně zvýšená <small>750–999</small></h4><p>Přechodné období. Při růstu (podzim) akutní čas nezkracovat; redukce jen při jarním poklesu.</p></div>
       <div class="band-card green"><h4>🟢 Klidná sezóna <small>&lt; 750</small></h4><p>Akutní sloty lze obsazovat kontrolami a prevencí. Podzimní nástup přichází se začátkem škol (W36–W38).</p></div>
@@ -390,7 +390,10 @@ function holidayNote(y, w) {
   const yy = mon.getUTCFullYear();
   const notes = [];
   for (const Y of [yy, yy + 1]) {
+    if (inWeek(new Date(Date.UTC(Y, 8, 28)))) notes.push('28. září');
     if (inWeek(new Date(Date.UTC(Y, 9, 28)))) notes.push('28. října a podzimní prázdniny');
+    if (inWeek(new Date(Date.UTC(Y, 4, 1))) || inWeek(new Date(Date.UTC(Y, 4, 8)))) notes.push('květnové svátky');
+    if (inWeek(new Date(Date.UTC(Y, 6, 5))) || inWeek(new Date(Date.UTC(Y, 6, 6)))) notes.push('5.–6. července');
     if (inWeek(new Date(Date.UTC(Y, 10, 17)))) notes.push('17. listopadu');
     if ([24, 25, 26, 31].some(dd => inWeek(new Date(Date.UTC(Y, 11, dd)))) || inWeek(new Date(Date.UTC(Y, 0, 1)))) notes.push('vánoční svátky');
     const e = easterSunday(Y), gf = new Date(e), em = new Date(e);
@@ -401,101 +404,135 @@ function holidayNote(y, w) {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   DOPORUČENÍ – rozhodovací tabulka (úroveň × trend × předpověď)
-   Zásada: nikdy nedoporučit zkrácení akutního času, když nemocnost roste
-   nebo předpověď na příští týdny roste.
+   DOPORUČENÍ – situace S1–S14 (podrobně v METODIKA.md)
+   • navyšovat hned, snižovat jen při POTVRZENÉM poklesu (2 týdny po sobě),
+     mimo podzim / zimu před vrcholem a mimo svátkové týdny,
+   • plánovat na horní odhad (75. percentil) předpovědi za 2 týdny –
+     nedostatek akutní kapacity je pro ordinaci zhruba 3× horší než přebytek.
 ══════════════════════════════════════════════════════════════════════ */
-const VAX = { e: '💉', h: 'Očkování teď', p: 'Říjen a listopad jsou ideální na očkování proti chřipce (a COVID-19 u rizikových skupin) – ochrana nastupuje zhruba za 2 týdny, tedy před vrcholem sezóny.' };
+const LEVELS = [
+  { name: 'základ',              range: '100 %' },
+  { name: 'připravenost',        range: '100–120 % + připravená rezerva' },
+  { name: 'navýšeno',            range: '130–150 %' },
+  { name: 'vysoce navýšeno',     range: '150–170 %' },
+  { name: 'zimní krizový režim', range: '170–200 %' },
+];
+const PHASES = { leto: 'léto', podzim: 'podzim', zima_pred: 'zima před vrcholem', zima_po: 'zima po vrcholu', jaro: 'jaro' };
+const TREND_TXT = { UU: '↗↗ Rychle roste', U: '↗ Roste', S: '→ Stabilní', D: '↘ Klesá', DD: '↘↘ Rychle klesá' };
+
+/** Robustní trend z dvoutýdenních součtů; pokles jen potvrzený 2 týdny po sobě. */
+function trendClass(v) {
+  const [x3, x2, x1, x0] = v.slice(-4);
+  const g = 0.5 * Math.log((x0 + x1) / (x2 + x3));
+  const confirmedDown = Math.log(x0 / x1) <= 0.02 && Math.log(x1 / x2) <= 0.02;
+  const cls = g >= 0.10 ? 'UU' : g >= 0.03 ? 'U' : g > -0.03 ? 'S' : confirmedDown ? (g <= -0.10 ? 'DD' : 'D') : 'S';
+  return { g, cls };
+}
+/** Fáze sezóny; „po vrcholu" jen když vrchol sezóny (≥ 1 000) byl před ≥ 3 týdny a hodnota je ≤ 85 % vrcholu. */
+function seasonInfo(hist, last, g) {
+  const start = last.w >= 27 ? [last.y, 27] : [last.y - 1, 27];
+  const season = hist.filter(r => weeksBetween(start, [r.y, r.w]) >= 0);
+  const peak = season.reduce((a, b) => (b.v > a.v ? b : a), season[0]);
+  const w = last.w;
+  const postPeak = peak.v >= 1000 && weeksBetween([peak.y, peak.w], [last.y, last.w]) >= 3
+    && last.v <= 0.85 * peak.v && g < 0 && w >= 3 && w <= 26;
+  const phase = (w >= 22 && w <= 34) ? 'leto' : (w >= 35 && w <= 47) ? 'podzim'
+    : (w >= 11 && w <= 21) ? 'jaro' : postPeak ? 'zima_po' : 'zima_pred';
+  return { phase, peak, postPeak };
+}
+/** Index ARI dospělých (15+) z věkových skupin SZÚ [0–5, 6–14, 15–24, 25–64, 65+] váhami populace. */
+function adultIndex(e) {
+  const a = e && e.ari_age;
+  return a && a.length >= 5 ? 0.114 * a[2] + 0.636 * a[3] + 0.25 * a[4] : null;
+}
+const median = arr => { const s = [...arr].sort((a, b) => a - b); return s.length ? (s[(s.length - 1) >> 1] + s[s.length >> 1]) / 2 : null; };
+
 const SITUATIONS = {
-  epidemie: { band: 'red', icon: '🔴', badge: 'Epidemie',
-    title: 'EPIDEMICKÁ ÚROVEŇ – plná akutní kapacita',
-    recs: [
-      { e: '⏱️', h: 'Navyšte akutní kapacitu', p: 'Orientačně o 20–40 % proti běžnému provozu. Akutní sloty uvolněte z odkladatelných kontrol a preventivních prohlídek.' },
-      { e: '📞', h: 'Telefonická triáž', p: 'Předtřídění po telefonu odfiltruje pacienty bez potřeby osobního vyšetření (poradenství, neschopenky) a uvolní místo pro těžší stavy.' },
-      { e: '🤧', h: 'Rizikové skupiny přednostně', p: 'Senioři 65+, chronicky nemocní, těhotné a imunosuprimovaní: kratší čekání, včasná indikace antivirotik u chřipky.' },
-      { e: '👥', h: 'Personál a provoz', p: 'Počítejte s nemocností personálu (zástupy). Oddělte respirační pacienty v čekárně, roušky pro pacienty s příznaky.' },
-    ] },
-  epidemie_ustupuje: { band: 'red', icon: '🔴', badge: 'Epidemie · ustupuje',
-    title: 'EPIDEMIE ODEZNÍVÁ – kapacitu zatím držte',
-    recs: [
-      { e: '⏱️', h: 'Akutní kapacitu zatím nesnižujte', p: 'Snižujte až po dvou týdnech poklesu pod 1 500/100k – pokles bývá pozvolný a občas přijde druhá vlna (chřipka B po chřipce A).' },
-      { e: '📋', h: 'Připravte návrat kontrol', p: 'Naplánujte odložené kontroly a preventivní prohlídky na týdny, kdy předpověď klesne do pásma zvýšené zátěže.' },
-      { e: '📞', h: 'Triáž ponechte', p: 'Telefonické předtřídění ponechte, dokud je nemocnost nad 1 000/100k.' },
-      { e: '👥', h: 'Personál', p: 'Dejte prostor na zotavení týmu, ale plánujte dovolené až po poklesu do žlutého pásma.' },
-    ] },
-  zvysena_roste: { band: 'amber', icon: '🟠', badge: 'Zvýšená · roste',
-    title: 'ZVÝŠENÁ ZÁTĚŽ A NEMOCNOST DÁL ROSTE – navyšte kapacitu',
-    recs: [
-      { e: '⏱️', h: 'Navyšte akutní kapacitu', p: 'Orientačně o 10–20 % v příštích 2–4 týdnech. Akutní čas rozhodně nezkracujte.' },
-      VAX,
-      { e: '📞', h: 'Připravte triáž', p: 'Nastavte telefonické předtřídění a šablony pro rychlé záznamy respiračních konzultací dřív, než přijde vrchol.' },
-      { e: '📅', h: 'Plánujte personál', p: 'Dovolené a zástupy plánujte s ohledem na zimní vlnu – vrchol chřipky bývá v lednu až únoru (W03–W07).' },
-    ] },
-  zvysena_stabilni: { band: 'amber', icon: '🟠', badge: 'Zvýšená · stabilní',
-    title: 'ZVÝŠENÁ ZÁTĚŽ – STABILNÍ',
-    recs: [
-      { e: '⏱️', h: 'Akutní čas udržujte', p: 'Současný objem akutních slotů ponechte. Nezkracujte ho, dokud nemocnost neklesne pod 1 000/100k.' },
-      { e: '📊', h: 'Sledujte trend', p: 'Při obratu k růstu přidejte akutní sloty preventivně – nástup chřipkové vlny bývá rychlý (+20–40 % za týden).' },
-      VAX,
-      { e: '📋', h: 'Efektivní dokumentace', p: 'Šablony pro respirační konzultace a e-neschopenky ušetří čas při vyšším počtu pacientů.' },
-    ] },
-  zvysena_klesa: { band: 'amber', icon: '🟠', badge: 'Zvýšená · klesá',
-    title: 'ZVÝŠENÁ ZÁTĚŽ, ALE KLESÁ',
-    recs: [
-      { e: '⏱️', h: 'Akutní čas zatím ponechte', p: 'Redukovat začněte až po dvou týdnech poklesu pod 1 000/100k a jen pokud předpověď dál klesá.' },
-      { e: '📋', h: 'Vracejte odložené kontroly', p: 'Postupně obsazujte uvolněné sloty kontrolami, které se během vlny odkládaly.' },
-      { e: '📊', h: 'Pozor na výkyvy', p: 'Po svátcích a prázdninách hlášená nemocnost krátkodobě vyskočí – nejde o novou vlnu, pokud předpověď klesá.' },
-      { e: '💉', h: 'Dočkování rizikových', p: 'Nabídněte očkování těm, kdo ho ještě nemají – sezóna ještě nekončí.' },
-    ] },
-  nastup: { band: 'yellow', icon: '🟡', badge: 'Nástup sezóny',
-    title: 'NÁSTUP SEZÓNY – NEMOCNOST ROSTE, PŘIPRAVTE NAVÝŠENÍ',
-    recs: [
-      { e: '⏱️', h: 'Akutní čas nezkracujte', p: 'Naopak připravte jeho navýšení o 10–20 % na příští týdny – předpověď míří do pásma zvýšené zátěže.' },
-      VAX,
-      { e: '📞', h: 'Připravte provoz', p: 'Telefonická triáž, šablony záznamů, zásoba testů (chřipka/COVID/RSV) a ochranných pomůcek.' },
-      { e: '📅', h: 'Personál', p: 'Rozvrh na podzim a zimu domluvte teď; počítejte s tím, že kolem podzimních prázdnin (W44) bývá krátký pokles a pak další růst.' },
-    ] },
-  mirna_stabilni: { band: 'yellow', icon: '🟡', badge: 'Mírně zvýšená',
-    title: 'MÍRNĚ ZVÝŠENÁ ZÁTĚŽ – STABILNÍ',
-    recs: [
-      { e: '⏱️', h: 'Akutní čas udržujte', p: 'Bez změny. Rozhoduje směr – při obratu k růstu připravte navýšení, při dlouhodobém poklesu můžete pozvolna ubírat.' },
-      { e: '📊', h: 'Sledujte směr trendu', p: 'Na podzim nemocnost téměř vždy dál roste; na jaře spíš klesá. Řiďte se předpovědí na příští 4 týdny.' },
-      VAX,
-      { e: '🩺', h: 'Prevence a chronici', p: 'Vhodný čas na kontroly chronicky nemocných a úpravu léčby před zimou.' },
-    ] },
-  dozniva: { band: 'yellow', icon: '🟡', badge: 'Doznívání',
-    title: 'DOZNÍVÁNÍ SEZÓNY – můžete pozvolna redukovat',
-    recs: [
-      { e: '⏱️', h: 'Pozvolná redukce akutního času', p: 'Nemocnost i předpověď klesají – akutní sloty můžete postupně nahrazovat kontrolami a preventivními prohlídkami.' },
-      { e: '📋', h: 'Odložená péče', p: 'Dohoňte preventivní prohlídky, screeningy a dispenzární kontroly odložené během zimy.' },
-      { e: '📊', h: 'Hlídejte výkyvy', p: 'Velikonoce a jarní prázdniny dočasně snižují hlášenou nemocnost – po nich bývá mírný návrat.' },
-      { e: '📚', h: 'Administrativa a vzdělávání', p: 'Prostor pro CME, audit dokumentace a vyhodnocení zimní sezóny.' },
-    ] },
-  pred_sezonou: { band: 'green', icon: '🟢', badge: 'Klid · roste',
-    title: 'KLID, ALE NEMOCNOST ZAČÍNÁ RŮST',
-    recs: [
-      { e: '⏱️', h: 'Připravte se na podzim', p: 'Akutní sloty zatím obsazujte kontrolami, ale rozvrh nezamykejte dlouho dopředu – se začátkem škol nemocnost každoročně roste (W34–W41).' },
-      VAX,
-      { e: '📅', h: 'Plánujte kapacitu', p: 'Dohodněte rozvrh a zástupy na říjen až únor, objednejte vakcíny a testy.' },
-      { e: '🩺', h: 'Prevence teď', p: 'Využijte poslední klidné týdny na preventivní prohlídky a dispenzarizaci.' },
-    ] },
-  klid: { band: 'green', icon: '🟢', badge: 'Klid',
-    title: 'KLIDNÁ SEZÓNA – letní minimum',
-    recs: [
-      { e: '⏱️', h: 'Obsazujte akutní čas kontrolami', p: 'Nevyužité akutní sloty využijte pro plánované kontroly, preventivní prohlídky a dispenzární vyšetření.' },
-      { e: '🏥', h: 'Prevence a screening', p: 'Nejlepší čas na preventivní prohlídky, screeningy a bilance chronicky nemocných.' },
-      { e: '📚', h: 'Administrativa a vzdělávání', p: 'Prostor pro CME, audit dokumentace a přípravu zimního provozu.' },
-      { e: '🔭', h: 'Podzim přijde se školou', p: 'Nemocnost začíná růst se začátkem školního roku (W36–W38) – plánujte kapacitu na září až únor.' },
-    ] },
+  S1: { icon: '🟢', badge: 'Klid', title: 'KLIDNÉ OBDOBÍ – běžná akutní kapacita stačí', recs: [
+    { e: '🏥', h: 'Prevence a kontroly', p: 'Nevyužité akutní sloty uvolňujte 24–48 h předem pro kontroly, preventivní prohlídky a dispenzarizaci.' },
+    { e: '💉', h: 'Příprava očkování', p: 'Objednejte vakcíny na podzim (chřipka, COVID-19, pneumokoky) a připravte seznamy rizikových pacientů k oslovení.' },
+    { e: '📅', h: 'Dovolené', p: 'Plánujte je na léto a jarní útlum, ne na období od konce listopadu do února.' } ] },
+  S2: { icon: '🟢', badge: 'Nástup', title: 'ZAČÍNÁ PODZIMNÍ VZESTUP – připravte navýšení akutní kapacity', recs: [
+    { e: '🗂️', h: 'Rezerva slotů', p: 'Předem označte 15–20 % slotů, které lze během týdne převést na akutní.' },
+    { e: '📞', h: 'Telefonická triáž', p: 'Zaveďte triáž podle varovných příznaků s jasnými pravidly pro objednání na tentýž den.' },
+    { e: '💉', h: 'Pozvánky k očkování', p: 'Oslovte rizikové pacienty (65+, chronicky nemocní) s termíny od října.' } ] },
+  S3: { icon: '🟡', badge: 'Roste', title: 'RESPIRAČNÍ INFEKCE RYCHLE PŘIBÝVAJÍ – navyšte akutní kapacitu a očkujte', recs: [
+    { e: '🗂️', h: 'Rezervu převeďte na akutní', p: 'Připravené rezervní sloty převeďte na akutní a držte je až do zimy.' },
+    { e: '📞', h: 'Vzdálené konzultace', p: 'Lehké infekty bez rizikových faktorů řešte na dálku: rady k léčbě, eRecept, telefonická kontrola stavu.' },
+    { e: '💉', h: 'Očkování teď', p: 'Říjen a listopad jsou hlavní okno pro očkování proti chřipce; chřipku a COVID-19 lze podat při jedné návštěvě.' } ] },
+  S4: { icon: '🟠', badge: 'Zvýšená · roste', title: 'VYSOKÁ A ROSTOUCÍ NEMOCNOST – navyšte akutní kapacitu a připravte zimní režim', recs: [
+    { e: '🚪', h: 'Oddělte respirační pacienty', p: 'Samostatný časový blok nebo prostor pro pacienty s horečkou a kašlem; symptomatičtí pacienti v čekárně s rouškou či respirátorem.' },
+    { e: '📋', h: 'Uvolněte kapacitu', p: 'Odložitelné preventivní prohlídky přesuňte na méně vytížené dny, kontroly stabilních chronicky nemocných řešte i telefonicky.' },
+    { e: '💉', h: 'Dokončete očkování', p: 'Očkování proti chřipce (a COVID-19 u rizikových) stihněte do konce listopadu – ochrana nastupuje asi za 2 týdny.' },
+    { e: '📅', h: 'Zimní režim', p: 'Do konce listopadu připravte rozpis směn, zástupy a rozšířené telefonní hodiny; vrchol chřipky bývá v lednu až únoru.' } ] },
+  S5: { icon: '🟠', badge: 'Plató', title: 'NEMOCNOST SE DRŽÍ NA ZVÝŠENÉ ÚROVNI – kapacitu nesnižujte', recs: [
+    { e: '📊', h: 'Zimní vlna teprve přijde', p: 'Po podzimním plató historicky přichází chřipková vlna (epidemická úroveň typicky W49–W05).' },
+    { e: '🍂', h: 'Pozor na svátky', p: 'Pokles v týdnu podzimních prázdnin (W44) a kolem 28. září či 17. listopadu je hlavně důsledek volných dnů, ne ústup nemocí.' },
+    { e: '🔎', h: 'Sledujte ILI', p: 'Prudký nárůst chřipce podobných onemocnění (ILI) ohlašuje nástup chřipky obvykle 1–3 týdny předem.' } ] },
+  S6: { icon: '🔴', badge: 'Nástup chřipky', title: 'NASTUPUJE CHŘIPKOVÁ VLNA – výrazně navyšte akutní kapacitu', recs: [
+    { e: '💊', h: 'Včasná antivirotika', p: 'Rizikovým pacientům (65+, chronická onemocnění, imunosuprese, těhotné) zvažte oseltamivir nejpozději do 48 h od začátku příznaků; zajistěte jim rychlý kontakt s ordinací.' },
+    { e: '💉', h: 'Stále očkujte', p: 'Neočkované rizikové pacienty ještě očkujte – ochrana nastupuje asi za 2 týdny.' },
+    { e: '📅', h: 'Personál', p: 'Omezte dovolené na příštích 6–8 týdnů a domluvte zástup pro případ nemoci.' } ] },
+  S7: { icon: '🟠', badge: 'Blíží se epidemie', title: 'BLÍŽÍ SE EPIDEMICKÁ ÚROVEŇ – aktivujte zimní režim', recs: [
+    { e: '📞', h: 'Telefon ve špičce', p: 'Posilte obsazení telefonu ráno; pro neakutní požadavky nabídněte online formulář nebo e-mail.' },
+    { e: '🏠', h: 'Návštěvní služba', p: 'Naplánujte návštěvy u imobilních seniorů s respirační infekcí.' },
+    { e: '👥', h: 'Ochrana personálu', p: 'Očkování, respirátor při kontaktu s infekčními pacienty a záložní plán pro případ nemoci.' } ] },
+  S8: { icon: '🟠', badge: 'Zvýšená · stabilní', title: 'ZVÝŠENÁ ZÁTĚŽ BEZ JASNÉHO SMĚRU – kapacitu udržte', recs: [
+    { e: '📊', h: 'Epidemie může teprve přijít', p: 'V zimě před vrcholem se krátký pokles může rychle změnit v nový nárůst.' },
+    { e: '🧪', h: 'Cílené testování', p: 'Rychlotesty (chřipka/COVID-19) a CRP pomohou nasadit antivirotika a antibiotika jen tam, kde mají smysl.' },
+    { e: '💉', h: 'Dočkování', p: 'Dokončete očkování neočkovaných rizikových pacientů.' } ] },
+  S8j: { icon: '🟠', badge: 'Po vrcholu', title: 'ZVÝŠENÁ ZÁTĚŽ PO VRCHOLU – kapacitu zatím držte', recs: [
+    { e: '📉', h: 'Snižujte až po potvrzení', p: 'Kapacitu ubírejte teprve po poklesu dva týdny po sobě a při klesající předpovědi.' },
+    { e: '🔁', h: 'Druhá vlna', p: 'Počítejte s chřipkou B nebo RSV po první vlně; při novém nárůstu se vraťte o stupeň výš.' },
+    { e: '📋', h: 'Odložená péče', p: 'Začněte obnovovat odložené kontroly chronicky nemocných.' } ] },
+  S9: { icon: '🔴', badge: 'Epidemie', title: 'EPIDEMIE RESPIRAČNÍCH INFEKCÍ – ordinace v zimním krizovém režimu', recs: [
+    { e: '🚑', h: 'Osobně jen s varovnými příznaky', p: 'Dušnost, pokles saturace, bolest na hrudi, zmatenost, dehydratace, zhoršení po přechodném zlepšení, vysoký věk s komorbiditami, imunosuprese. Ostatní řešte na dálku.' },
+    { e: '🧪', h: 'Testy a antivirotika', p: 'Rychlotesty a CRP cíleně; antivirotika včas u rizikových pacientů.' },
+    { e: '👥', h: 'Provoz', p: 'Výpadky personálu vyhodnocujte denně; změnu režimu oznamte pacientům na webu a záznamníku.' } ] },
+  S10: { icon: '🔴', badge: 'Za vrcholem', title: 'EPIDEMIE JE ZA VRCHOLEM – kapacitu snižujte postupně', recs: [
+    { e: '📉', h: 'Po jednom stupni', p: 'Snižujte nejvýše o jeden stupeň (~10–20 %) za týden a jen při poklesu dva týdny po sobě.' },
+    { e: '📋', h: 'Obnovte prevenci', p: 'Jako první obnovte odložené preventivní prohlídky a kontroly chronicky nemocných.' },
+    { e: '🔁', h: 'Druhá vlna', p: 'Chřipka B, RSV nebo jarní prázdniny mohou přinést nový nárůst – pak se vraťte o stupeň výš.' } ] },
+  S11: { icon: '🟡', badge: 'Ústup', title: 'RESPIRAČNÍ INFEKCE USTUPUJÍ – akutní kapacitu postupně vracejte k běžné úrovni', recs: [
+    { e: '📉', h: 'Postupná redukce', p: 'Snižujte po jednom stupni za týden; rezervní sloty ponechte jako flexibilní.' },
+    { e: '📋', h: 'Odložená péče', p: 'Doplňte preventivní prohlídky, screeningy a kontroly chronicky nemocných.' },
+    { e: '📝', h: 'Vyhodnocení sezóny', p: 'Zhodnoťte vytížení, čekací doby a výpadky personálu a upravte plán na podzim.' } ] },
+  S12: { icon: '📆', badge: 'Svátky', title: 'SVÁTKOVÝ TÝDEN – data jsou podhodnocená, kapacitu nesnižujte', recs: [
+    { e: '📆', h: 'Nižší číslo ≠ ústup', p: 'Méně ordinačních dní znamená méně hlášení; po svátcích obvykle přichází skokový nárůst.' },
+    { e: '👥', h: 'Posilte týden po svátcích', p: 'Odložené návštěvy přicházejí hned v prvních dnech po volnu.' },
+    { e: '📣', h: 'Informujte pacienty', p: 'Včas oznamte ordinační hodiny přes svátky, zástup a lékařskou pohotovostní službu.' } ] },
+  S14: { icon: '🟠', badge: 'Mimo sezónu', title: 'NEOBVYKLÝ NÁRŮST MIMO SEZÓNU – krátkodobě navyšte kapacitu', recs: [
+    { e: '🧪', h: 'Cílené testování', p: 'Testujte na COVID-19 a chřipku; rizikovým nabídněte včasnou antivirovou léčbu.' },
+    { e: '🔎', h: 'Lokální, nebo celostátní?', p: 'Porovnejte s vlastní ordinací a sledujte vývoj v dalším týdnu.' },
+    { e: '📅', h: 'Snižování pozastavte', p: 'Plánované snižování akutní kapacity odložte, dokud nárůst neodezní.' } ] },
 };
 
-function decideSituation(ctx) {
-  const { band, rising, falling, fcRising, fcFalling, pRed4, pAmber4 } = ctx;
-  const up = rising || fcRising, down = falling && fcFalling;
-  if (band === 'red') return down ? 'epidemie_ustupuje' : 'epidemie';
-  if (band === 'amber') return (up || pRed4 >= 0.25) ? 'zvysena_roste' : down ? 'zvysena_klesa' : 'zvysena_stabilni';
-  if (band === 'yellow') return (up || pAmber4 >= 0.5) ? 'nastup' : down ? 'dozniva' : 'mirna_stabilni';
-  return (up || ctx.pYellow4 >= 0.5) ? 'pred_sezonou' : 'klid';
+/** Výběr situace a stupně akutní kapacity. */
+function decide(c) {
+  const up = c.trend === 'U' || c.trend === 'UU' || c.fcRising;
+  const down = (c.trend === 'D' || c.trend === 'DD') && !c.fcRising;
+  const b = c.bandPlan;
+  let key;
+  if (c.flu && c.phase !== 'jaro' && c.phase !== 'zima_po') key = 'S6';
+  else if (c.holidayLast && !up) key = 'S12';
+  else if (b === 'red') key = (c.phase === 'zima_po' && down) ? 'S10' : 'S9';
+  else if (c.phase === 'leto' && (c.trend === 'UU' || (b !== 'green' && up))) key = 'S14';
+  else if (b === 'amber') key = c.phase === 'podzim' ? (up ? 'S4' : 'S5')
+    : c.phase === 'zima_pred' ? ((up || c.pRed4 >= 0.3) ? 'S7' : 'S8')
+    : down ? (c.phase === 'jaro' ? 'S11' : 'S10') : 'S8j';
+  else if (b === 'yellow') key = (c.phase === 'podzim' || c.phase === 'zima_pred') ? ((up || c.pUp4 >= 0.5) ? 'S3' : 'S5')
+    : down ? 'S11' : (c.phase === 'zima_po' || c.phase === 'jaro') ? 'S8j' : 'S5';
+  else key = ((c.phase === 'podzim' || (c.phase === 'leto' && c.week >= 33)) && (up || c.pUp4 >= 0.3)) ? 'S2'
+    : (down && c.phase === 'jaro') ? 'S11' : 'S1';
+
+  // stupeň kapacity: z pásma plánované hodnoty, s ochrannými pravidly
+  let L = { green: 0, yellow: 1, amber: 2, red: 3 }[b];
+  if (b === 'red' && (up || c.phase === 'zima_pred')) L = 4;
+  if (key === 'S6') L = Math.max(L, 3);
+  if (c.phase === 'podzim') L = Math.max(L, 1);
+  const reduceOk = down && !c.holidayLast && (c.phase === 'jaro' || c.phase === 'zima_po' || c.phase === 'leto');
+  if (!reduceOk) L = Math.max(L, c.levelRecent);      // bez potvrzeného poklesu se nesnižuje
+  return { key, L, up, down };
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -531,52 +568,67 @@ function render(data) {
   fr.classList.toggle('stale', lag >= 3);
   if (lag >= 3) fr.append(h('div', { style: 'color:var(--amber)' }, `⚠ data ${lag} týdny pozadu – SZÚ zatím nezveřejnil novější report`));
 
-  /* ── trend a předpověď ── */
-  const g2 = prev2 ? Math.log(last.v / prev2.v) / 2 : (prev ? Math.log(last.v / prev.v) : 0);
-  const rising = g2 > Math.log(1.05), falling = g2 < -Math.log(1.05);
-  // „za 4 týdny" = od DNEŠNÍHO týdne (data mají ~1–2 týdny zpoždění)
-  const target = addWeeks(now[0], now[1], 4);
-  const f4 = fc.find(f => f.y === target[0] && f.w === target[1]) || fc[fc.length - 1];
-  const first4 = fc.filter(f => weeksBetween(now, [f.y, f.w]) <= 4);
-  const maxP = (k, arr = first4) => arr.length ? Math.max(...arr.map(f => f[k] || 0)) : 0;
-  const ctx = {
-    band: band.key, rising, falling,
-    fcRising: f4 ? f4.median > last.v * 1.05 : false,
-    fcFalling: f4 ? f4.median < last.v * 0.95 : false,
-    pRed4: maxP('p_1500'), pAmber4: maxP('p_1000'), pYellow4: maxP('p_750'),
-  };
-  const sitKey = decideSituation(ctx);
-  const sit = SITUATIONS[sitKey];
+  /* ── trend, fáze sezóny, plánovaná hodnota ── */
+  const tr = hist.length >= 4 ? trendClass(hist.map(r => r.v)) : { g: 0, cls: 'S' };
+  const si = seasonInfo(hist, last, tr.g);
   const ch1 = prev ? (last.v / prev.v - 1) * 100 : null;
   const ch2 = prev2 ? (last.v / prev2.v - 1) * 100 : null;
+  // „za k týdnů" = od DNEŠNÍHO týdne (data mají ~1–2 týdny zpoždění)
+  const fcAt = k => { const t = addWeeks(now[0], now[1], k); return fc.find(f => f.y === t[0] && f.w === t[1]); };
+  const f4 = fcAt(4) || fc[fc.length - 1];
+  const f2 = fcAt(2) || fc[Math.min(fc.length - 1, 1)];
+  const win4 = fc.filter(f => weeksBetween(now, [f.y, f.w]) <= 4);
+  const maxP = k => win4.length ? Math.max(...win4.map(f => f[k] || 0)) : 0;
+  const xPlan = Math.max(last.v, f2 ? f2.q75 : last.v);        // horní odhad za 2 týdny
+  const bandPlan = bandOf(xPlan);
+  const nextThr = { green: 'p_750', yellow: 'p_1000', amber: 'p_1500', red: 'p_1500' }[bandPlan.key];
+  const iliNow = last.ili_per_100k, ili2 = prev2 ? prev2.ili_per_100k : null;
+  const flu = iliNow != null && ili2 ? (iliNow >= 25 && iliNow / ili2 >= 1.5) : false;
+  const holidayLast = holidayNote(last.y, last.w).length > 0;
+  const levelRecent = { green: 0, yellow: 1, amber: 2, red: 3 }[bandOf(Math.max(last.v, prev ? prev.v : 0)).key];
+  const fcRising = f4 ? f4.median > last.v * 1.05 : false;
+  const fcFalling = f4 ? f4.median < last.v * 0.95 : false;
+  const dec = decide({ bandPlan: bandPlan.key, trend: tr.cls, phase: si.phase, flu, holidayLast, fcRising,
+    pUp4: maxP(nextThr), pRed4: maxP('p_1500'), levelRecent, week: last.w });
+  const sit = SITUATIONS[dec.key];
+  // odhad akutní kapacity pro ordinaci pro dospělé (poptávka dospělých vs. jejich letní úroveň)
+  const summerRows = hist.filter(r => r.w >= 27 && r.w <= 34);
+  const adultSummer = median(summerRows.map(adultIndex).filter(v => v != null));
+  const totalSummer = median(summerRows.filter(r => r.y >= last.y - 3).map(r => r.v));
+  const aNow = adultIndex(last);
+  const M = (aNow && adultSummer ? aNow / adultSummer : last.v / totalSummer) * (xPlan / last.v);
+  const cap = sh => Math.max(100, Math.round(((1 - sh) + sh * M) * 20) * 5);
+  const capLo = cap(0.25), capHi = cap(0.45);
 
   /* ── hlavní hlášení ── */
-  el('alert-banner').className = sit.band;
+  el('alert-banner').className = dec.key === 'S6' ? 'red' : bandPlan.key;
   setText('alert-icon', sit.icon);
   setText('alert-title', sit.title);
   let desc = `Nemocnost ARI ${fmtN(last.v)}/100k v týdnu ${weekLabel(last.y, last.w, { year: false })}`
     + (ch1 != null ? ` (${fmtPct(ch1)} proti předchozímu týdnu)` : '') + '.';
   if (f4) desc += ` Předpověď na ${weekLabel(f4.y, f4.w, { year: false })} (za ${weeksBetween(now, [f4.y, f4.w])} týdny): ${fmtN(f4.median)}/100k (80% rozmezí ${fmtN(f4.q10)}–${fmtN(f4.q90)}).`;
-  if (ctx.pRed4 >= 0.05) desc += ` Šance na epidemickou úroveň do 4 týdnů ${Math.round(ctx.pRed4 * 100)} %.`;
+  desc += ` Akutní kapacita orientačně ${capLo === capHi ? capLo : capLo + '–' + capHi} % běžné letní úrovně.`;
   setText('alert-desc', desc);
   setText('alert-badge', sit.badge);
 
   /* ── KPI ── */
   const k1 = el('kpi-1'); k1.className = 'kpi-card ' + band.key;
   setText('kpi-ari', fmtN(last.v));
+  const ag = last.ari_age;
   el('kpi-ari-sub').replaceChildren(
     h('div', {}, weekLabel(last.y, last.w)),
     h('div', {}, h('span', { class: ch1 > 2 ? 'arrow-up' : ch1 < -2 ? 'arrow-down' : '' }, ch1 > 2 ? '▲ ' : ch1 < -2 ? '▼ ' : '● '),
       h('strong', {}, fmtPct(ch1)), ' proti předchozímu týdnu'),
-    h('div', {}, `${band.name} · ${fmtN(last.v / (data.meta?.baseline_ari_per_100k || 2053) * 100)} % úrovně vrcholu 2025`)
+    ag && ag.length >= 5
+      ? h('div', {}, `děti 0–5: ${fmtN(ag[0])} · 6–14: ${fmtN(ag[1])} · dospělí 25–64: `, h('strong', {}, fmtN(ag[3])), ` · 65+: `, h('strong', {}, fmtN(ag[4])))
+      : h('div', {}, `${band.name} · ${fmtN(last.v / (data.meta?.baseline_ari_per_100k || 2053) * 100)} % úrovně vrcholu 2025`)
   );
-  const trendTxt = rising ? '↗ Rostoucí' : falling ? '↘ Klesající' : '→ Stabilní';
-  setText('kpi-trend', trendTxt);
-  el('kpi-2').className = 'kpi-card ' + (rising ? 'amber' : falling ? 'green' : '');
+  setText('kpi-trend', TREND_TXT[tr.cls]);
+  el('kpi-2').className = 'kpi-card ' + (tr.cls[0] === 'U' ? 'amber' : tr.cls[0] === 'D' ? 'green' : '');
   el('kpi-trend-sub').replaceChildren(
-    h('div', {}, h('strong', {}, fmtPct(ch2)), ' za 2 týdny'),
-    h('div', {}, `fáze sezóny: ${seasonPhase(last.w)}`),
-    h('div', {}, ctx.fcRising ? 'předpověď: další růst' : ctx.fcFalling ? 'předpověď: pokles' : 'předpověď: spíš stabilní')
+    h('div', {}, h('strong', {}, fmtPct((Math.exp(tr.g) - 1) * 100)), ' týdně (vyhlazeno za 2 týdny)'),
+    h('div', {}, `fáze sezóny: ${PHASES[si.phase]}`),
+    h('div', {}, fcRising ? 'předpověď: další růst' : fcFalling ? 'předpověď: pokles' : 'předpověď: spíš stabilní')
   );
   if (f4) {
     setText('kpi-fc', '≈ ' + fmtN(f4.median));
@@ -593,18 +645,23 @@ function render(data) {
   el('kpi-4').className = 'kpi-card ' + ((p8 ?? 0) >= 50 ? 'red' : (p8 ?? 0) >= 20 ? 'amber' : 'green');
   el('kpi-risk-sub').replaceChildren(
     h('div', {}, 'pravděpodobnost, že nemocnost bude ≥ 1 500/100k'),
-    h('div', {}, f4 && f8 ? `v týdnu W${String(f4.w).padStart(2, '0')} (${p4} %) a W${String(f8.w).padStart(2, '0')} (${p8} %)` : '')
+    h('div', {}, f4 && f8 ? `v týdnu W${String(f4.w).padStart(2, '0')} (${p4} %) a W${String(f8.w).padStart(2, '0')} (${p8} %)` : ''),
+    h('div', {}, 'SZÚ vyhlašuje epidemii obvykle nad 1 600–1 700')
   );
 
   /* ── doporučení ── */
   setText('rec-situation', `Situace: ${sit.title.charAt(0) + sit.title.slice(1).toLowerCase()}`);
-  el('rec-items').replaceChildren(...sit.recs.map(r =>
+  const capCard = { e: '⏱️', h: `Akutní kapacita ≈ ${capLo === capHi ? capLo : capLo + '–' + capHi} %`,
+    p: `Stupeň „${LEVELS[dec.L].name}“ vůči běžné letní úrovni. Odhad pro ordinaci pro dospělé: respirační poptávka dospělých je ×${M.toLocaleString('cs-CZ', { maximumFractionDigits: 1 })} letní úrovně (plán na horní odhad za 2 týdny); rozsah podle toho, jakou část akutních kontaktů tvoří v létě respirační pacienti (25–45 %).` };
+  el('rec-items').replaceChildren(...[capCard, ...sit.recs].map(r =>
     h('div', { class: 'rec-item' }, h('div', { class: 'rec-emoji', 'aria-hidden': 'true' }, r.e),
       h('div', {}, h('h4', {}, r.h), h('p', {}, r.p)))));
   setText('rec-why',
-    `Proč: úroveň ${fmtN(last.v)}/100k (${band.name}), trend ${trendTxt.slice(2).toLowerCase()} (${fmtPct(ch2)} za 2 týdny), `
-    + (f4 ? `předpověď za 4 týdny ${fmtN(f4.median)}/100k, ` : '')
-    + `šance na ≥ 1 000/100k do 4 týdnů ${Math.round(ctx.pAmber4 * 100)} %, na ≥ 1 500/100k ${Math.round(ctx.pRed4 * 100)} %.`);
+    `Proč: fáze ${PHASES[si.phase]} · trend ${TREND_TXT[tr.cls].replace(/^\S+ /, '').toLowerCase()} (${fmtPct((Math.exp(tr.g) - 1) * 100)} týdně) · `
+    + `plán na ${fmtN(xPlan)}/100k (horní odhad za 2 týdny, pásmo ${bandPlan.name}) · `
+    + `šance na vyšší pásmo do 4 týdnů ${Math.round(maxP(nextThr) * 100)} %`
+    + (iliNow != null ? ` · ILI ${String(iliNow).replace('.', ',')}/100k${flu ? ' – signál nástupu chřipky' : ''}` : '')
+    + (holidayLast ? ' · poslední týden ovlivnily svátky' : '') + '.');
 
   /* ── předpověď ── */
   const lastLbl = weekLabel(last.y, last.w, { year: false });
