@@ -1,25 +1,39 @@
 name: Weekly ARI Data Update
 
+# SZÚ zveřejňuje týdenní report v průběhu následujícího týdne (ne v pondělí),
+# proto se kontroluje dvakrát denně. Commit (a přebudování stránky) vznikne
+# jen tehdy, když přibudou nová data – jinak skript soubor nepřepíše.
 on:
   schedule:
-    - cron: "0 18 * * 1"
+    - cron: "17 5 * * *"     # 7:17 SELČ / 6:17 SEČ
+    - cron: "17 15 * * *"    # 17:17 SELČ / 16:17 SEČ
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: ari-data-update
+  cancel-in-progress: false
+
 jobs:
   update-ari-data:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with: { python-version: "3.12" }
       - run: pip install requests beautifulsoup4 pdfplumber
-      - run: python scripts/fetch_ari_data.py
-      - run: |
+      - name: Testy
+        run: python scripts/test_forecast.py
+      - name: Stažení dat a předpověď
+        run: python scripts/fetch_ari_data.py
+      - name: Commit při změně
+        run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ari_data.json
-          git diff --cached --quiet || git commit -m "auto: ARI data $(date +'%Y-%m-%d')"
+          git diff --cached --quiet && { echo "Beze změny."; exit 0; }
+          git commit -m "auto: ARI data $(date +'%Y-%m-%d')"
           git push

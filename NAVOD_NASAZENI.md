@@ -47,8 +47,10 @@ Pokud váš počítač skryje složky začínající tečkou, použijte GitHub D
 Tento odkaz funguje pro kohokoliv bez přihlašování. Sdílejte ho v ordinaci, přidejte do záložek telefonu nebo QR kód.
 
 ### Automatická aktualizace
-- Každé **pondělí v 20:00** GitHub automaticky stáhne nová data ze SZÚ
-- Pokud SZÚ data zveřejní, dashboard se sám aktualizuje
+- GitHub kontroluje datovou stránku SZÚ **dvakrát denně** (ráno a odpoledne). SZÚ zveřejňuje report za uplynulý týden v průběhu následujícího týdne – dashboard ho tak převezme ještě týž den.
+- Při každé kontrole se doplní i týdny, které dřív chyběly, přepočítá se předpověď na 8 týdnů a doporučení.
+- Commit (a přebudování stránky) vznikne jen tehdy, když přibudou nová data.
+- Před každou aktualizací proběhnou automatické testy (`scripts/test_forecast.py`).
 - Ručně lze spustit: **Actions → Weekly ARI Data Update → Run workflow**
 
 ---
@@ -68,8 +70,8 @@ Tento odkaz funguje pro kohokoliv bez přihlašování. Sdílejte ho v ordinaci,
 5. Sdílejte odkaz s kolegy
 
 ### Krok 3 – Ruční aktualizace (každý týden)
-Každé pondělí zkontrolujte:
-- https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/
+Jednou týdně zkontrolujte:
+- https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/ (týdenní PDF „ARI+komentář", řádek „Česká republika", sloupec „Celkem")
 - Doplňte nový týden do Google Sheetu
 - Dashboard v Looker Studio se automaticky aktualizuje
 
@@ -92,20 +94,25 @@ Nebo použijte VS Code s rozšířením "Live Server".
 
 ## Interpretace dashboardu
 
-| Stav | ARI / 100k | % z maxima | Doporučení |
-|------|-----------|------------|------------|
-| 🟢 Klid | < 205 | < 10 % | Normální provoz |
-| 🟡 Zvýšená zátěž | 205–680 | 10–33 % | +10–20 % akutní sloty |
-| 🔴 Vysoká zátěž | > 680 | > 33 % | +20–40 % akutní sloty, triáž |
+| Pásmo | ARI / 100k | Typicky | Akutní kapacita |
+|------|-----------|---------|-----------------|
+| 🟢 Klidná sezóna | < 750 | léto | akutní sloty obsazovat kontrolami a prevencí |
+| 🟡 Mírně zvýšená | 750–999 | podzimní nástup, jarní ústup | při růstu nezkracovat, při poklesu pozvolna ubírat |
+| 🟠 Zvýšená zátěž | 1 000–1 499 | podzim–zima | udržet, při růstu +10–20 % |
+| 🔴 Epidemie | ≥ 1 500 | chřipková vlna (leden–únor) | +20–40 %, telefonická triáž |
 
-**Baseline:** 2 053 / 100k = průměrný ARI únor 2025 (nejhorší měsíc v 2025)
+**Doporučení nezávisí jen na pásmu.** Dashboard kombinuje aktuální úroveň, trend za poslední 2 týdny a předpověď na příští 4 týdny (včetně pravděpodobnosti přechodu do vyššího pásma). Zkrácení akutního času nikdy nedoporučí, když nemocnost nebo předpověď roste.
+
+**Předpověď** na 8 týdnů je sezónní model ověřený zpětným testem na minulých sezónách; ukazuje nejpravděpodobnější hodnotu a 50% / 80% rozmezí. Podrobnosti v [METODIKA.md](METODIKA.md).
+
+**Datum u týdne:** všude je uvedeno pondělí daného ISO týdne (např. „W39 · po 21. 9. 2026").
 
 ---
 
 ## Zdroje dat
 
-- **SZÚ – týdenní zprávy:** https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/
-- **SZÚ – datová stránka ARI:** https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/
+- **SZÚ – datová stránka ARI (hlavní zdroj):** https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/
+- **WHO FluID** – historie 2009–2023 (přepočtená na měřítko SZÚ, viz METODIKA.md)
 - Data jsou ze státního dohledu nad infekčními chorobami – důvěryhodný a oficiální zdroj
 
 ---
@@ -115,8 +122,11 @@ Nebo použijte VS Code s rozšířením "Live Server".
 **Q: Dashboard se neaktualizoval automaticky.**
 A: Zkontrolujte záložku "Actions" v GitHub repozitáři – podívejte se, zda workflow proběhl. Pokud SZÚ nezveřejnil nová data, soubor zůstane beze změny.
 
-**Q: Chci přidat data z minulých let.**
-A: Editujte soubor `data/ari_data.json` – přidejte záznamy do pole `history`. Formát: `{"week":"2024-W01","year":2024,"iso_week":1,"ari_per_100k":600,"ili_per_100k":25}`.
+**Q: Odkud jsou data z minulých let?**
+A: Od sezóny 2023/24 z oficiálních týdenních PDF SZÚ, starší roky (2009–2023) z databáze WHO FluID přepočtené na měřítko SZÚ. Každý týden v `data/ari_data.json` má pole `source` (`szu`, `who_scaled`, `interpolated`).
+
+**Q: Proč je poslední týden o 1–2 týdny starší než dnešek?**
+A: SZÚ zveřejňuje report za týden až v průběhu následujícího týdne. Týdny, které už proběhly, ale data k nim ještě nejsou, ukazuje dashboard jako odhad („proběhlo · čeká na data").
 
 **Q: Jak dostat dashboard na telefon?**
 A: Otevřete URL v Chrome/Safari a klikněte "Přidat na plochu" – funguje jako app.

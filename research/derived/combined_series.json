@@ -1,0 +1,6963 @@
+[
+{
+"year": 2009,
+"iso_week": 32,
+"monday": "2009-08-03",
+"ari": 615,
+"ili": 9.3,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 33,
+"monday": "2009-08-10",
+"ari": 626,
+"ili": 8.8,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 37,
+"monday": "2009-09-07",
+"ari": 552,
+"ili": 9.9,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 38,
+"monday": "2009-09-14",
+"ari": 711,
+"ili": null,
+"source": "interpolated"
+},
+{
+"year": 2009,
+"iso_week": 39,
+"monday": "2009-09-21",
+"ari": 917,
+"ili": 22.0,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 40,
+"monday": "2009-09-28",
+"ari": 923,
+"ili": null,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 41,
+"monday": "2009-10-05",
+"ari": 973,
+"ili": 23.2,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 42,
+"monday": "2009-10-12",
+"ari": 1078,
+"ili": 33.0,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 43,
+"monday": "2009-10-19",
+"ari": 1151,
+"ili": 32.7,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 44,
+"monday": "2009-10-26",
+"ari": 1053,
+"ili": 41.5,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 45,
+"monday": "2009-11-02",
+"ari": 1344,
+"ili": 64.3,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 46,
+"monday": "2009-11-09",
+"ari": 1496,
+"ili": 110.5,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 47,
+"monday": "2009-11-16",
+"ari": 1797,
+"ili": 254.8,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 48,
+"monday": "2009-11-23",
+"ari": 1943,
+"ili": 339.6,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 49,
+"monday": "2009-11-30",
+"ari": 1858,
+"ili": 354.9,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 50,
+"monday": "2009-12-07",
+"ari": 1757,
+"ili": 318.5,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 51,
+"monday": "2009-12-14",
+"ari": 1491,
+"ili": 228.8,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 52,
+"monday": "2009-12-21",
+"ari": 871,
+"ili": 98.7,
+"source": "who_scaled"
+},
+{
+"year": 2009,
+"iso_week": 53,
+"monday": "2009-12-28",
+"ari": 929,
+"ili": null,
+"source": "interpolated"
+},
+{
+"year": 2010,
+"iso_week": 1,
+"monday": "2010-01-04",
+"ari": 990,
+"ili": 70.2,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 2,
+"monday": "2010-01-11",
+"ari": 939,
+"ili": 55.2,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 3,
+"monday": "2010-01-18",
+"ari": 970,
+"ili": 53.5,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 4,
+"monday": "2010-01-25",
+"ari": 1022,
+"ili": 47.3,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 5,
+"monday": "2010-02-01",
+"ari": 1094,
+"ili": 53.1,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 6,
+"monday": "2010-02-08",
+"ari": 1158,
+"ili": 56.0,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 7,
+"monday": "2010-02-15",
+"ari": 1151,
+"ili": 48.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 8,
+"monday": "2010-02-22",
+"ari": 1104,
+"ili": 46.5,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 9,
+"monday": "2010-03-01",
+"ari": 1062,
+"ili": 38.8,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 10,
+"monday": "2010-03-08",
+"ari": 998,
+"ili": 35.5,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 11,
+"monday": "2010-03-15",
+"ari": 958,
+"ili": 29.4,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 12,
+"monday": "2010-03-22",
+"ari": 905,
+"ili": 23.2,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 13,
+"monday": "2010-03-29",
+"ari": 830,
+"ili": 24.1,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 14,
+"monday": "2010-04-05",
+"ari": 820,
+"ili": 19.6,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 15,
+"monday": "2010-04-12",
+"ari": 875,
+"ili": 20.3,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 16,
+"monday": "2010-04-19",
+"ari": 876,
+"ili": 18.9,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 17,
+"monday": "2010-04-26",
+"ari": 851,
+"ili": 16.5,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 18,
+"monday": "2010-05-03",
+"ari": 857,
+"ili": 17.4,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 19,
+"monday": "2010-05-10",
+"ari": 855,
+"ili": 15.4,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 20,
+"monday": "2010-05-17",
+"ari": 847,
+"ili": 14.9,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 21,
+"monday": "2010-05-24",
+"ari": 820,
+"ili": 13.6,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 22,
+"monday": "2010-05-31",
+"ari": 804,
+"ili": 15.6,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 23,
+"monday": "2010-06-07",
+"ari": 704,
+"ili": 11.1,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 24,
+"monday": "2010-06-14",
+"ari": 719,
+"ili": 11.2,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 25,
+"monday": "2010-06-21",
+"ari": 661,
+"ili": 10.4,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 26,
+"monday": "2010-06-28",
+"ari": 576,
+"ili": 7.0,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 29,
+"monday": "2010-07-19",
+"ari": 443,
+"ili": 5.5,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 30,
+"monday": "2010-07-26",
+"ari": 421,
+"ili": null,
+"source": "interpolated"
+},
+{
+"year": 2010,
+"iso_week": 31,
+"monday": "2010-08-02",
+"ari": 400,
+"ili": 5.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 37,
+"monday": "2010-09-13",
+"ari": 797,
+"ili": 13.9,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 38,
+"monday": "2010-09-20",
+"ari": 837,
+"ili": null,
+"source": "interpolated"
+},
+{
+"year": 2010,
+"iso_week": 39,
+"monday": "2010-09-27",
+"ari": 879,
+"ili": 19.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 40,
+"monday": "2010-10-04",
+"ari": 956,
+"ili": 20.4,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 41,
+"monday": "2010-10-11",
+"ari": 975,
+"ili": 22.6,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 42,
+"monday": "2010-10-18",
+"ari": 1019,
+"ili": 23.5,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 43,
+"monday": "2010-10-25",
+"ari": 861,
+"ili": 17.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 44,
+"monday": "2010-11-01",
+"ari": 973,
+"ili": 20.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 45,
+"monday": "2010-11-08",
+"ari": 991,
+"ili": 24.2,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 46,
+"monday": "2010-11-15",
+"ari": 966,
+"ili": 19.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 47,
+"monday": "2010-11-22",
+"ari": 1140,
+"ili": 30.7,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 48,
+"monday": "2010-11-29",
+"ari": 1183,
+"ili": 32.9,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 49,
+"monday": "2010-12-06",
+"ari": 1245,
+"ili": 39.3,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 50,
+"monday": "2010-12-13",
+"ari": 1244,
+"ili": 41.1,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 51,
+"monday": "2010-12-20",
+"ari": 1000,
+"ili": 27.6,
+"source": "who_scaled"
+},
+{
+"year": 2010,
+"iso_week": 52,
+"monday": "2010-12-27",
+"ari": 808,
+"ili": 21.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 1,
+"monday": "2011-01-03",
+"ari": 1119,
+"ili": 35.4,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 2,
+"monday": "2011-01-10",
+"ari": 1221,
+"ili": 48.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 3,
+"monday": "2011-01-17",
+"ari": 1425,
+"ili": 89.4,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 4,
+"monday": "2011-01-24",
+"ari": 1693,
+"ili": 172.8,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 5,
+"monday": "2011-01-31",
+"ari": 1918,
+"ili": 280.9,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 6,
+"monday": "2011-02-07",
+"ari": 1900,
+"ili": 345.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 7,
+"monday": "2011-02-14",
+"ari": 1722,
+"ili": 263.0,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 8,
+"monday": "2011-02-21",
+"ari": 1578,
+"ili": 212.6,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 9,
+"monday": "2011-02-28",
+"ari": 1468,
+"ili": 172.9,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 10,
+"monday": "2011-03-07",
+"ari": 1439,
+"ili": 155.5,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 11,
+"monday": "2011-03-14",
+"ari": 1388,
+"ili": 136.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 12,
+"monday": "2011-03-21",
+"ari": 1235,
+"ili": 88.8,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 13,
+"monday": "2011-03-28",
+"ari": 1101,
+"ili": 57.0,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 14,
+"monday": "2011-04-04",
+"ari": 971,
+"ili": 39.3,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 15,
+"monday": "2011-04-11",
+"ari": 945,
+"ili": 32.0,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 16,
+"monday": "2011-04-18",
+"ari": 816,
+"ili": 21.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 17,
+"monday": "2011-04-25",
+"ari": 781,
+"ili": 18.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 18,
+"monday": "2011-05-02",
+"ari": 804,
+"ili": 16.4,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 19,
+"monday": "2011-05-09",
+"ari": 744,
+"ili": 14.9,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 20,
+"monday": "2011-05-16",
+"ari": 726,
+"ili": 14.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 21,
+"monday": "2011-05-23",
+"ari": 678,
+"ili": 12.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 22,
+"monday": "2011-05-30",
+"ari": 660,
+"ili": 11.8,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 23,
+"monday": "2011-06-06",
+"ari": 643,
+"ili": 10.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 24,
+"monday": "2011-06-13",
+"ari": 603,
+"ili": 10.1,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 40,
+"monday": "2011-10-03",
+"ari": 872,
+"ili": 19.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 41,
+"monday": "2011-10-10",
+"ari": 927,
+"ili": 20.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 42,
+"monday": "2011-10-17",
+"ari": 1030,
+"ili": 23.3,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 43,
+"monday": "2011-10-24",
+"ari": 902,
+"ili": 23.8,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 44,
+"monday": "2011-10-31",
+"ari": 1006,
+"ili": 26.3,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 45,
+"monday": "2011-11-07",
+"ari": 1036,
+"ili": 27.3,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 46,
+"monday": "2011-11-14",
+"ari": 963,
+"ili": 26.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 47,
+"monday": "2011-11-21",
+"ari": 1142,
+"ili": 35.4,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 48,
+"monday": "2011-11-28",
+"ari": 1196,
+"ili": 38.3,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 49,
+"monday": "2011-12-05",
+"ari": 1216,
+"ili": 41.5,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 50,
+"monday": "2011-12-12",
+"ari": 1295,
+"ili": 45.7,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 51,
+"monday": "2011-12-19",
+"ari": 1180,
+"ili": 39.9,
+"source": "who_scaled"
+},
+{
+"year": 2011,
+"iso_week": 52,
+"monday": "2011-12-26",
+"ari": 857,
+"ili": 27.4,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 1,
+"monday": "2012-01-02",
+"ari": 1141,
+"ili": 41.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 2,
+"monday": "2012-01-09",
+"ari": 1108,
+"ili": 36.9,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 3,
+"monday": "2012-01-16",
+"ari": 1105,
+"ili": 36.0,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 4,
+"monday": "2012-01-23",
+"ari": 1127,
+"ili": 40.9,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 5,
+"monday": "2012-01-30",
+"ari": 1108,
+"ili": 41.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 6,
+"monday": "2012-02-06",
+"ari": 1147,
+"ili": 45.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 7,
+"monday": "2012-02-13",
+"ari": 1145,
+"ili": 50.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 8,
+"monday": "2012-02-20",
+"ari": 1127,
+"ili": 49.2,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 9,
+"monday": "2012-02-27",
+"ari": 1183,
+"ili": 63.5,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 10,
+"monday": "2012-03-05",
+"ari": 1235,
+"ili": 80.5,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 11,
+"monday": "2012-03-12",
+"ari": 1300,
+"ili": 91.8,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 12,
+"monday": "2012-03-19",
+"ari": 1297,
+"ili": 95.2,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 13,
+"monday": "2012-03-26",
+"ari": 1250,
+"ili": 78.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 14,
+"monday": "2012-04-02",
+"ari": 1097,
+"ili": 56.5,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 15,
+"monday": "2012-04-09",
+"ari": 1059,
+"ili": 52.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 16,
+"monday": "2012-04-16",
+"ari": 1043,
+"ili": 38.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 17,
+"monday": "2012-04-23",
+"ari": 969,
+"ili": 32.2,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 18,
+"monday": "2012-04-30",
+"ari": 796,
+"ili": 22.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 19,
+"monday": "2012-05-07",
+"ari": 732,
+"ili": 19.0,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 20,
+"monday": "2012-05-14",
+"ari": 738,
+"ili": 16.0,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 21,
+"monday": "2012-05-21",
+"ari": 704,
+"ili": 14.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 22,
+"monday": "2012-05-28",
+"ari": 702,
+"ili": 14.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 23,
+"monday": "2012-06-04",
+"ari": 683,
+"ili": 11.9,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 24,
+"monday": "2012-06-11",
+"ari": 681,
+"ili": 11.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 25,
+"monday": "2012-06-18",
+"ari": 639,
+"ili": 10.0,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 26,
+"monday": "2012-06-25",
+"ari": 625,
+"ili": 10.4,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 27,
+"monday": "2012-07-02",
+"ari": 385,
+"ili": 4.9,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 28,
+"monday": "2012-07-09",
+"ari": 488,
+"ili": 8.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 29,
+"monday": "2012-07-16",
+"ari": 456,
+"ili": 7.5,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 30,
+"monday": "2012-07-23",
+"ari": 424,
+"ili": 7.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 31,
+"monday": "2012-07-30",
+"ari": 390,
+"ili": 7.0,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 32,
+"monday": "2012-08-06",
+"ari": 371,
+"ili": 5.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 33,
+"monday": "2012-08-13",
+"ari": 381,
+"ili": 4.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 34,
+"monday": "2012-08-20",
+"ari": 363,
+"ili": 5.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 35,
+"monday": "2012-08-27",
+"ari": 388,
+"ili": 5.2,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 36,
+"monday": "2012-09-03",
+"ari": 423,
+"ili": 6.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 37,
+"monday": "2012-09-10",
+"ari": 535,
+"ili": 8.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 38,
+"monday": "2012-09-17",
+"ari": 757,
+"ili": 13.9,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 39,
+"monday": "2012-09-24",
+"ari": 772,
+"ili": 17.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 40,
+"monday": "2012-10-01",
+"ari": 891,
+"ili": 20.2,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 41,
+"monday": "2012-10-08",
+"ari": 918,
+"ili": 20.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 42,
+"monday": "2012-10-15",
+"ari": 933,
+"ili": 22.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 43,
+"monday": "2012-10-22",
+"ari": 930,
+"ili": 22.8,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 44,
+"monday": "2012-10-29",
+"ari": 972,
+"ili": 24.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 45,
+"monday": "2012-11-05",
+"ari": 973,
+"ili": 25.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 46,
+"monday": "2012-11-12",
+"ari": 1047,
+"ili": 27.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 47,
+"monday": "2012-11-19",
+"ari": 1105,
+"ili": 31.1,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 48,
+"monday": "2012-11-26",
+"ari": 1139,
+"ili": 36.6,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 49,
+"monday": "2012-12-03",
+"ari": 1177,
+"ili": 41.3,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 50,
+"monday": "2012-12-10",
+"ari": 1265,
+"ili": 49.4,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 51,
+"monday": "2012-12-17",
+"ari": 1329,
+"ili": 62.7,
+"source": "who_scaled"
+},
+{
+"year": 2012,
+"iso_week": 52,
+"monday": "2012-12-24",
+"ari": 734,
+"ili": 51.8,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 1,
+"monday": "2012-12-31",
+"ari": 1087,
+"ili": 67.8,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 2,
+"monday": "2013-01-07",
+"ari": 1488,
+"ili": 137.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 3,
+"monday": "2013-01-14",
+"ari": 1548,
+"ili": 190.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 4,
+"monday": "2013-01-21",
+"ari": 1702,
+"ili": 243.3,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 5,
+"monday": "2013-01-28",
+"ari": 1824,
+"ili": 326.0,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 6,
+"monday": "2013-02-04",
+"ari": 1808,
+"ili": 328.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 7,
+"monday": "2013-02-11",
+"ari": 1619,
+"ili": 239.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 8,
+"monday": "2013-02-18",
+"ari": 1506,
+"ili": 192.7,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 9,
+"monday": "2013-02-25",
+"ari": 1326,
+"ili": 143.2,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 10,
+"monday": "2013-03-04",
+"ari": 1294,
+"ili": 115.1,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 11,
+"monday": "2013-03-11",
+"ari": 1280,
+"ili": 97.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 12,
+"monday": "2013-03-18",
+"ari": 1278,
+"ili": 92.1,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 13,
+"monday": "2013-03-25",
+"ari": 1227,
+"ili": 84.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 14,
+"monday": "2013-04-01",
+"ari": 1210,
+"ili": 79.4,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 15,
+"monday": "2013-04-08",
+"ari": 1161,
+"ili": 66.0,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 16,
+"monday": "2013-04-15",
+"ari": 1008,
+"ili": 47.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 17,
+"monday": "2013-04-22",
+"ari": 859,
+"ili": 30.2,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 18,
+"monday": "2013-04-29",
+"ari": 739,
+"ili": 21.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 19,
+"monday": "2013-05-06",
+"ari": 664,
+"ili": 16.8,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 20,
+"monday": "2013-05-13",
+"ari": 710,
+"ili": 16.3,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 21,
+"monday": "2013-05-20",
+"ari": 710,
+"ili": 17.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 22,
+"monday": "2013-05-27",
+"ari": 735,
+"ili": 18.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 23,
+"monday": "2013-06-03",
+"ari": 715,
+"ili": 17.7,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 24,
+"monday": "2013-06-10",
+"ari": 682,
+"ili": 15.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 25,
+"monday": "2013-06-17",
+"ari": 610,
+"ili": 12.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 26,
+"monday": "2013-06-24",
+"ari": 623,
+"ili": 14.0,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 27,
+"monday": "2013-07-01",
+"ari": 482,
+"ili": 9.4,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 28,
+"monday": "2013-07-08",
+"ari": 476,
+"ili": 8.8,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 29,
+"monday": "2013-07-15",
+"ari": 423,
+"ili": 7.2,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 30,
+"monday": "2013-07-22",
+"ari": 410,
+"ili": 7.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 31,
+"monday": "2013-07-29",
+"ari": 370,
+"ili": 5.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 32,
+"monday": "2013-08-05",
+"ari": 358,
+"ili": 7.4,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 33,
+"monday": "2013-08-12",
+"ari": 362,
+"ili": 6.6,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 34,
+"monday": "2013-08-19",
+"ari": 366,
+"ili": 5.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 35,
+"monday": "2013-08-26",
+"ari": 388,
+"ili": 6.0,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 36,
+"monday": "2013-09-02",
+"ari": 423,
+"ili": 7.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 37,
+"monday": "2013-09-09",
+"ari": 576,
+"ili": 11.4,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 38,
+"monday": "2013-09-16",
+"ari": 791,
+"ili": 16.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 39,
+"monday": "2013-09-23",
+"ari": 906,
+"ili": 19.8,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 40,
+"monday": "2013-09-30",
+"ari": 991,
+"ili": 27.7,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 41,
+"monday": "2013-10-07",
+"ari": 978,
+"ili": 25.1,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 42,
+"monday": "2013-10-14",
+"ari": 981,
+"ili": 24.3,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 43,
+"monday": "2013-10-21",
+"ari": 963,
+"ili": 25.2,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 44,
+"monday": "2013-10-28",
+"ari": 894,
+"ili": 21.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 45,
+"monday": "2013-11-04",
+"ari": 939,
+"ili": 20.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 46,
+"monday": "2013-11-11",
+"ari": 968,
+"ili": 26.3,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 47,
+"monday": "2013-11-18",
+"ari": 1026,
+"ili": 28.9,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 48,
+"monday": "2013-11-25",
+"ari": 1069,
+"ili": 30.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 49,
+"monday": "2013-12-02",
+"ari": 1114,
+"ili": 27.5,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 50,
+"monday": "2013-12-09",
+"ari": 1130,
+"ili": 31.4,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 51,
+"monday": "2013-12-16",
+"ari": 1127,
+"ili": 31.7,
+"source": "who_scaled"
+},
+{
+"year": 2013,
+"iso_week": 52,
+"monday": "2013-12-23",
+"ari": 515,
+"ili": 15.0,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 1,
+"monday": "2013-12-30",
+"ari": 679,
+"ili": 20.6,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 2,
+"monday": "2014-01-06",
+"ari": 1011,
+"ili": 28.2,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 3,
+"monday": "2014-01-13",
+"ari": 999,
+"ili": 28.1,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 4,
+"monday": "2014-01-20",
+"ari": 1066,
+"ili": 32.0,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 5,
+"monday": "2014-01-27",
+"ari": 1138,
+"ili": 34.7,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 6,
+"monday": "2014-02-03",
+"ari": 1140,
+"ili": 35.6,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 7,
+"monday": "2014-02-10",
+"ari": 1152,
+"ili": 37.9,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 8,
+"monday": "2014-02-17",
+"ari": 1137,
+"ili": 38.0,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 9,
+"monday": "2014-02-24",
+"ari": 1065,
+"ili": 33.0,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 10,
+"monday": "2014-03-03",
+"ari": 1057,
+"ili": 30.9,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 11,
+"monday": "2014-03-10",
+"ari": 999,
+"ili": 29.9,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 12,
+"monday": "2014-03-17",
+"ari": 981,
+"ili": 27.6,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 13,
+"monday": "2014-03-24",
+"ari": 949,
+"ili": 24.9,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 14,
+"monday": "2014-03-31",
+"ari": 890,
+"ili": 21.4,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 15,
+"monday": "2014-04-07",
+"ari": 889,
+"ili": 19.7,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 16,
+"monday": "2014-04-14",
+"ari": 831,
+"ili": 19.0,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 17,
+"monday": "2014-04-21",
+"ari": 808,
+"ili": 16.6,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 18,
+"monday": "2014-04-28",
+"ari": 658,
+"ili": 13.7,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 19,
+"monday": "2014-05-05",
+"ari": 647,
+"ili": 12.5,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 20,
+"monday": "2014-05-12",
+"ari": 767,
+"ili": 13.1,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 40,
+"monday": "2014-09-29",
+"ari": 956,
+"ili": 19.3,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 41,
+"monday": "2014-10-06",
+"ari": 984,
+"ili": 19.0,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 42,
+"monday": "2014-10-13",
+"ari": 997,
+"ili": 21.4,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 43,
+"monday": "2014-10-20",
+"ari": 1013,
+"ili": 23.4,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 44,
+"monday": "2014-10-27",
+"ari": 944,
+"ili": 21.8,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 45,
+"monday": "2014-11-03",
+"ari": 1007,
+"ili": 21.8,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 46,
+"monday": "2014-11-10",
+"ari": 1027,
+"ili": 22.4,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 47,
+"monday": "2014-11-17",
+"ari": 1102,
+"ili": 25.1,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 48,
+"monday": "2014-11-24",
+"ari": 1227,
+"ili": 27.3,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 49,
+"monday": "2014-12-01",
+"ari": 1260,
+"ili": 31.7,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 50,
+"monday": "2014-12-08",
+"ari": 1351,
+"ili": 36.7,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 51,
+"monday": "2014-12-15",
+"ari": 1408,
+"ili": 38.3,
+"source": "who_scaled"
+},
+{
+"year": 2014,
+"iso_week": 52,
+"monday": "2014-12-22",
+"ari": 810,
+"ili": 23.3,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 1,
+"monday": "2014-12-29",
+"ari": 721,
+"ili": 20.4,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 2,
+"monday": "2015-01-05",
+"ari": 1245,
+"ili": 37.1,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 3,
+"monday": "2015-01-12",
+"ari": 1237,
+"ili": 49.1,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 4,
+"monday": "2015-01-19",
+"ari": 1493,
+"ili": 98.3,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 5,
+"monday": "2015-01-26",
+"ari": 1912,
+"ili": 203.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 6,
+"monday": "2015-02-02",
+"ari": 2107,
+"ili": 335.7,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 7,
+"monday": "2015-02-09",
+"ari": 1987,
+"ili": 348.2,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 8,
+"monday": "2015-02-16",
+"ari": 1767,
+"ili": 277.7,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 9,
+"monday": "2015-02-23",
+"ari": 1535,
+"ili": 210.0,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 10,
+"monday": "2015-03-02",
+"ari": 1356,
+"ili": 135.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 11,
+"monday": "2015-03-09",
+"ari": 1195,
+"ili": 100.6,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 12,
+"monday": "2015-03-16",
+"ari": 1162,
+"ili": 72.7,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 13,
+"monday": "2015-03-23",
+"ari": 1129,
+"ili": 63.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 14,
+"monday": "2015-03-30",
+"ari": 1031,
+"ili": 45.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 15,
+"monday": "2015-04-06",
+"ari": 933,
+"ili": 37.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 16,
+"monday": "2015-04-13",
+"ari": 916,
+"ili": 26.4,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 17,
+"monday": "2015-04-20",
+"ari": 882,
+"ili": 22.2,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 18,
+"monday": "2015-04-27",
+"ari": 748,
+"ili": 17.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 19,
+"monday": "2015-05-04",
+"ari": 689,
+"ili": 17.7,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 20,
+"monday": "2015-05-11",
+"ari": 728,
+"ili": 14.2,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 21,
+"monday": "2015-05-18",
+"ari": 709,
+"ili": 12.4,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 22,
+"monday": "2015-05-25",
+"ari": 709,
+"ili": 13.2,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 23,
+"monday": "2015-06-01",
+"ari": 650,
+"ili": 9.6,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 24,
+"monday": "2015-06-08",
+"ari": 625,
+"ili": 10.3,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 25,
+"monday": "2015-06-15",
+"ari": 622,
+"ili": 10.9,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 26,
+"monday": "2015-06-22",
+"ari": 589,
+"ili": 8.4,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 27,
+"monday": "2015-06-29",
+"ari": 512,
+"ili": 7.1,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 28,
+"monday": "2015-07-06",
+"ari": 445,
+"ili": 6.0,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 29,
+"monday": "2015-07-13",
+"ari": 445,
+"ili": 4.3,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 30,
+"monday": "2015-07-20",
+"ari": 392,
+"ili": 4.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 31,
+"monday": "2015-07-27",
+"ari": 382,
+"ili": 4.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 32,
+"monday": "2015-08-03",
+"ari": 348,
+"ili": 4.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 33,
+"monday": "2015-08-10",
+"ari": 322,
+"ili": 3.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 34,
+"monday": "2015-08-17",
+"ari": 352,
+"ili": 4.0,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 35,
+"monday": "2015-08-24",
+"ari": 373,
+"ili": 4.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 36,
+"monday": "2015-08-31",
+"ari": 417,
+"ili": 6.3,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 37,
+"monday": "2015-09-07",
+"ari": 546,
+"ili": 8.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 38,
+"monday": "2015-09-14",
+"ari": 717,
+"ili": 13.7,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 39,
+"monday": "2015-09-21",
+"ari": 831,
+"ili": 16.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 40,
+"monday": "2015-09-28",
+"ari": 844,
+"ili": 17.4,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 41,
+"monday": "2015-10-05",
+"ari": 906,
+"ili": 21.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 42,
+"monday": "2015-10-12",
+"ari": 981,
+"ili": 22.7,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 43,
+"monday": "2015-10-19",
+"ari": 1001,
+"ili": 22.0,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 44,
+"monday": "2015-10-26",
+"ari": 852,
+"ili": 21.2,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 45,
+"monday": "2015-11-02",
+"ari": 981,
+"ili": 22.5,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 46,
+"monday": "2015-11-09",
+"ari": 941,
+"ili": 20.6,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 47,
+"monday": "2015-11-16",
+"ari": 906,
+"ili": 17.6,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 48,
+"monday": "2015-11-23",
+"ari": 998,
+"ili": 24.4,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 49,
+"monday": "2015-11-30",
+"ari": 1013,
+"ili": 26.2,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 50,
+"monday": "2015-12-07",
+"ari": 1049,
+"ili": 31.1,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 51,
+"monday": "2015-12-14",
+"ari": 1098,
+"ili": 29.8,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 52,
+"monday": "2015-12-21",
+"ari": 715,
+"ili": 19.1,
+"source": "who_scaled"
+},
+{
+"year": 2015,
+"iso_week": 53,
+"monday": "2015-12-28",
+"ari": 631,
+"ili": 19.9,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 1,
+"monday": "2016-01-04",
+"ari": 995,
+"ili": 26.9,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 2,
+"monday": "2016-01-11",
+"ari": 1023,
+"ili": 29.1,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 3,
+"monday": "2016-01-18",
+"ari": 1139,
+"ili": 42.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 4,
+"monday": "2016-01-25",
+"ari": 1297,
+"ili": 68.3,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 5,
+"monday": "2016-02-01",
+"ari": 1406,
+"ili": 104.9,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 6,
+"monday": "2016-02-08",
+"ari": 1435,
+"ili": 115.9,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 7,
+"monday": "2016-02-15",
+"ari": 1426,
+"ili": 122.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 8,
+"monday": "2016-02-22",
+"ari": 1384,
+"ili": 127.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 9,
+"monday": "2016-02-29",
+"ari": 1318,
+"ili": 108.4,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 10,
+"monday": "2016-03-07",
+"ari": 1262,
+"ili": 103.3,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 11,
+"monday": "2016-03-14",
+"ari": 1257,
+"ili": 92.1,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 12,
+"monday": "2016-03-21",
+"ari": 1105,
+"ili": 73.7,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 13,
+"monday": "2016-03-28",
+"ari": 1100,
+"ili": 63.4,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 14,
+"monday": "2016-04-04",
+"ari": 1105,
+"ili": 45.0,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 15,
+"monday": "2016-04-11",
+"ari": 949,
+"ili": 32.7,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 16,
+"monday": "2016-04-18",
+"ari": 851,
+"ili": 25.6,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 17,
+"monday": "2016-04-25",
+"ari": 867,
+"ili": 21.1,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 18,
+"monday": "2016-05-02",
+"ari": 829,
+"ili": 17.6,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 19,
+"monday": "2016-05-09",
+"ari": 762,
+"ili": 16.5,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 20,
+"monday": "2016-05-16",
+"ari": 720,
+"ili": 15.8,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 21,
+"monday": "2016-05-23",
+"ari": 666,
+"ili": 12.7,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 22,
+"monday": "2016-05-30",
+"ari": 628,
+"ili": 11.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 23,
+"monday": "2016-06-06",
+"ari": 608,
+"ili": 9.0,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 24,
+"monday": "2016-06-13",
+"ari": 606,
+"ili": 9.0,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 25,
+"monday": "2016-06-20",
+"ari": 542,
+"ili": 7.8,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 26,
+"monday": "2016-06-27",
+"ari": 508,
+"ili": 7.7,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 27,
+"monday": "2016-07-04",
+"ari": 352,
+"ili": 5.0,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 28,
+"monday": "2016-07-11",
+"ari": 420,
+"ili": 5.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 29,
+"monday": "2016-07-18",
+"ari": 389,
+"ili": 3.6,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 30,
+"monday": "2016-07-25",
+"ari": 373,
+"ili": 3.7,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 31,
+"monday": "2016-08-01",
+"ari": 357,
+"ili": 4.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 32,
+"monday": "2016-08-08",
+"ari": 364,
+"ili": 4.7,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 33,
+"monday": "2016-08-15",
+"ari": 362,
+"ili": 4.4,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 34,
+"monday": "2016-08-22",
+"ari": 370,
+"ili": 4.5,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 35,
+"monday": "2016-08-29",
+"ari": 396,
+"ili": 4.3,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 36,
+"monday": "2016-09-05",
+"ari": 444,
+"ili": 5.3,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 37,
+"monday": "2016-09-12",
+"ari": 535,
+"ili": 8.3,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 38,
+"monday": "2016-09-19",
+"ari": 689,
+"ili": 12.5,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 39,
+"monday": "2016-09-26",
+"ari": 677,
+"ili": 11.3,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 40,
+"monday": "2016-10-03",
+"ari": 820,
+"ili": 15.5,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 41,
+"monday": "2016-10-10",
+"ari": 852,
+"ili": 15.1,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 42,
+"monday": "2016-10-17",
+"ari": 902,
+"ili": 19.1,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 43,
+"monday": "2016-10-24",
+"ari": 783,
+"ili": 15.5,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 44,
+"monday": "2016-10-31",
+"ari": 905,
+"ili": 19.6,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 45,
+"monday": "2016-11-07",
+"ari": 939,
+"ili": 19.5,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 46,
+"monday": "2016-11-14",
+"ari": 831,
+"ili": 17.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 47,
+"monday": "2016-11-21",
+"ari": 1015,
+"ili": 23.2,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 48,
+"monday": "2016-11-28",
+"ari": 1046,
+"ili": 24.9,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 49,
+"monday": "2016-12-05",
+"ari": 1079,
+"ili": 28.0,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 50,
+"monday": "2016-12-12",
+"ari": 1214,
+"ili": 36.4,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 51,
+"monday": "2016-12-19",
+"ari": 1284,
+"ili": 55.6,
+"source": "who_scaled"
+},
+{
+"year": 2016,
+"iso_week": 52,
+"monday": "2016-12-26",
+"ari": 1038,
+"ili": 71.4,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 1,
+"monday": "2017-01-02",
+"ari": 1580,
+"ili": 150.6,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 2,
+"monday": "2017-01-09",
+"ari": 1628,
+"ili": 180.7,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 3,
+"monday": "2017-01-16",
+"ari": 1750,
+"ili": 232.1,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 4,
+"monday": "2017-01-23",
+"ari": 1914,
+"ili": 296.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 5,
+"monday": "2017-01-30",
+"ari": 1860,
+"ili": 257.6,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 6,
+"monday": "2017-02-06",
+"ari": 1604,
+"ili": 188.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 7,
+"monday": "2017-02-13",
+"ari": 1383,
+"ili": 109.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 8,
+"monday": "2017-02-20",
+"ari": 1281,
+"ili": 80.0,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 9,
+"monday": "2017-02-27",
+"ari": 1153,
+"ili": 54.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 10,
+"monday": "2017-03-06",
+"ari": 1070,
+"ili": 42.4,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 11,
+"monday": "2017-03-13",
+"ari": 908,
+"ili": 29.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 12,
+"monday": "2017-03-20",
+"ari": 894,
+"ili": 23.5,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 13,
+"monday": "2017-03-27",
+"ari": 846,
+"ili": 17.7,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 14,
+"monday": "2017-04-03",
+"ari": 880,
+"ili": 18.9,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 15,
+"monday": "2017-04-10",
+"ari": 735,
+"ili": 14.4,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 16,
+"monday": "2017-04-17",
+"ari": 784,
+"ili": 14.9,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 17,
+"monday": "2017-04-24",
+"ari": 816,
+"ili": 13.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 18,
+"monday": "2017-05-01",
+"ari": 758,
+"ili": 12.5,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 19,
+"monday": "2017-05-08",
+"ari": 713,
+"ili": 12.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 20,
+"monday": "2017-05-15",
+"ari": 694,
+"ili": 11.4,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 21,
+"monday": "2017-05-22",
+"ari": 673,
+"ili": 9.7,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 22,
+"monday": "2017-05-29",
+"ari": 607,
+"ili": 8.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 23,
+"monday": "2017-06-05",
+"ari": 601,
+"ili": 7.4,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 24,
+"monday": "2017-06-12",
+"ari": 582,
+"ili": 8.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 25,
+"monday": "2017-06-19",
+"ari": 541,
+"ili": 6.5,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 26,
+"monday": "2017-06-26",
+"ari": 513,
+"ili": 5.4,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 27,
+"monday": "2017-07-03",
+"ari": 319,
+"ili": 2.7,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 28,
+"monday": "2017-07-10",
+"ari": 400,
+"ili": 3.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 29,
+"monday": "2017-07-17",
+"ari": 373,
+"ili": 3.6,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 30,
+"monday": "2017-07-24",
+"ari": 364,
+"ili": 3.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 31,
+"monday": "2017-07-31",
+"ari": 336,
+"ili": 3.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 32,
+"monday": "2017-08-07",
+"ari": 334,
+"ili": 3.7,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 33,
+"monday": "2017-08-14",
+"ari": 330,
+"ili": 2.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 34,
+"monday": "2017-08-21",
+"ari": 334,
+"ili": 3.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 35,
+"monday": "2017-08-28",
+"ari": 372,
+"ili": 3.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 36,
+"monday": "2017-09-04",
+"ari": 429,
+"ili": 5.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 37,
+"monday": "2017-09-11",
+"ari": 614,
+"ili": 7.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 38,
+"monday": "2017-09-18",
+"ari": 843,
+"ili": 13.7,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 39,
+"monday": "2017-09-25",
+"ari": 776,
+"ili": 12.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 40,
+"monday": "2017-10-02",
+"ari": 938,
+"ili": 17.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 41,
+"monday": "2017-10-09",
+"ari": 917,
+"ili": 19.2,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 42,
+"monday": "2017-10-16",
+"ari": 898,
+"ili": 17.5,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 43,
+"monday": "2017-10-23",
+"ari": 899,
+"ili": 16.0,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 44,
+"monday": "2017-10-30",
+"ari": 922,
+"ili": 18.0,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 45,
+"monday": "2017-11-06",
+"ari": 944,
+"ili": 18.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 46,
+"monday": "2017-11-13",
+"ari": 908,
+"ili": 16.6,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 47,
+"monday": "2017-11-20",
+"ari": 1030,
+"ili": 22.3,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 48,
+"monday": "2017-11-27",
+"ari": 1097,
+"ili": 25.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 49,
+"monday": "2017-12-04",
+"ari": 1106,
+"ili": 28.1,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 50,
+"monday": "2017-12-11",
+"ari": 1134,
+"ili": 32.1,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 51,
+"monday": "2017-12-18",
+"ari": 1066,
+"ili": 24.8,
+"source": "who_scaled"
+},
+{
+"year": 2017,
+"iso_week": 52,
+"monday": "2017-12-25",
+"ari": 634,
+"ili": 14.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 1,
+"monday": "2018-01-01",
+"ari": 993,
+"ili": 25.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 2,
+"monday": "2018-01-08",
+"ari": 1116,
+"ili": 33.6,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 3,
+"monday": "2018-01-15",
+"ari": 1224,
+"ili": 54.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 4,
+"monday": "2018-01-22",
+"ari": 1449,
+"ili": 118.7,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 5,
+"monday": "2018-01-29",
+"ari": 1730,
+"ili": 185.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 6,
+"monday": "2018-02-05",
+"ari": 1897,
+"ili": 273.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 7,
+"monday": "2018-02-12",
+"ari": 1995,
+"ili": 317.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 8,
+"monday": "2018-02-19",
+"ari": 2057,
+"ili": 340.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 9,
+"monday": "2018-02-26",
+"ari": 2035,
+"ili": 323.7,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 10,
+"monday": "2018-03-05",
+"ari": 1960,
+"ili": 289.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 11,
+"monday": "2018-03-12",
+"ari": 1722,
+"ili": 232.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 12,
+"monday": "2018-03-19",
+"ari": 1439,
+"ili": 135.5,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 13,
+"monday": "2018-03-26",
+"ari": 1095,
+"ili": 69.7,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 14,
+"monday": "2018-04-02",
+"ari": 952,
+"ili": 45.8,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 15,
+"monday": "2018-04-09",
+"ari": 840,
+"ili": 26.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 16,
+"monday": "2018-04-16",
+"ari": 751,
+"ili": 16.7,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 17,
+"monday": "2018-04-23",
+"ari": 703,
+"ili": 12.6,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 18,
+"monday": "2018-04-30",
+"ari": 602,
+"ili": 10.7,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 19,
+"monday": "2018-05-07",
+"ari": 564,
+"ili": 9.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 20,
+"monday": "2018-05-14",
+"ari": 600,
+"ili": 8.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 21,
+"monday": "2018-05-21",
+"ari": 585,
+"ili": 7.5,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 22,
+"monday": "2018-05-28",
+"ari": 563,
+"ili": 6.4,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 23,
+"monday": "2018-06-04",
+"ari": 546,
+"ili": 7.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 24,
+"monday": "2018-06-11",
+"ari": 547,
+"ili": 6.8,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 25,
+"monday": "2018-06-18",
+"ari": 537,
+"ili": 6.3,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 26,
+"monday": "2018-06-25",
+"ari": 530,
+"ili": 6.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 27,
+"monday": "2018-07-02",
+"ari": 325,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 28,
+"monday": "2018-07-09",
+"ari": 409,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 29,
+"monday": "2018-07-16",
+"ari": 377,
+"ili": 3.4,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 30,
+"monday": "2018-07-23",
+"ari": 351,
+"ili": 2.7,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 31,
+"monday": "2018-07-30",
+"ari": 321,
+"ili": 2.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 32,
+"monday": "2018-08-06",
+"ari": 309,
+"ili": 4.2,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 33,
+"monday": "2018-08-13",
+"ari": 321,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 34,
+"monday": "2018-08-20",
+"ari": 320,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 35,
+"monday": "2018-08-27",
+"ari": 354,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 36,
+"monday": "2018-09-03",
+"ari": 386,
+"ili": 5.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 37,
+"monday": "2018-09-10",
+"ari": 497,
+"ili": 7.4,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 38,
+"monday": "2018-09-17",
+"ari": 613,
+"ili": 7.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 39,
+"monday": "2018-09-24",
+"ari": 640,
+"ili": 9.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 40,
+"monday": "2018-10-01",
+"ari": 819,
+"ili": 14.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 41,
+"monday": "2018-10-08",
+"ari": 835,
+"ili": 13.5,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 42,
+"monday": "2018-10-15",
+"ari": 869,
+"ili": 15.1,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 43,
+"monday": "2018-10-22",
+"ari": 926,
+"ili": 16.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 44,
+"monday": "2018-10-29",
+"ari": 902,
+"ili": 16.5,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 45,
+"monday": "2018-11-05",
+"ari": 932,
+"ili": 18.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 46,
+"monday": "2018-11-12",
+"ari": 1001,
+"ili": 18.5,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 47,
+"monday": "2018-11-19",
+"ari": 1084,
+"ili": 21.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 48,
+"monday": "2018-11-26",
+"ari": 1174,
+"ili": 23.9,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 49,
+"monday": "2018-12-03",
+"ari": 1173,
+"ili": 23.0,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 50,
+"monday": "2018-12-10",
+"ari": 1217,
+"ili": 26.8,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 51,
+"monday": "2018-12-17",
+"ari": 1193,
+"ili": 26.6,
+"source": "who_scaled"
+},
+{
+"year": 2018,
+"iso_week": 52,
+"monday": "2018-12-24",
+"ari": 597,
+"ili": 10.5,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 1,
+"monday": "2018-12-31",
+"ari": 879,
+"ili": 19.4,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 2,
+"monday": "2019-01-07",
+"ari": 1134,
+"ili": 31.8,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 3,
+"monday": "2019-01-14",
+"ari": 1183,
+"ili": 39.8,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 4,
+"monday": "2019-01-21",
+"ari": 1454,
+"ili": 84.0,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 5,
+"monday": "2019-01-28",
+"ari": 1729,
+"ili": 163.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 6,
+"monday": "2019-02-04",
+"ari": 1815,
+"ili": 202.2,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 7,
+"monday": "2019-02-11",
+"ari": 1724,
+"ili": 206.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 8,
+"monday": "2019-02-18",
+"ari": 1495,
+"ili": 166.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 9,
+"monday": "2019-02-25",
+"ari": 1340,
+"ili": 102.6,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 10,
+"monday": "2019-03-04",
+"ari": 1155,
+"ili": 66.4,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 11,
+"monday": "2019-03-11",
+"ari": 1005,
+"ili": 40.5,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 12,
+"monday": "2019-03-18",
+"ari": 948,
+"ili": 28.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 13,
+"monday": "2019-03-25",
+"ari": 911,
+"ili": 20.6,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 14,
+"monday": "2019-04-01",
+"ari": 843,
+"ili": 15.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 15,
+"monday": "2019-04-08",
+"ari": 805,
+"ili": 13.3,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 16,
+"monday": "2019-04-15",
+"ari": 681,
+"ili": 9.5,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 17,
+"monday": "2019-04-22",
+"ari": 689,
+"ili": 9.3,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 18,
+"monday": "2019-04-29",
+"ari": 603,
+"ili": 7.5,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 19,
+"monday": "2019-05-06",
+"ari": 593,
+"ili": 6.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 20,
+"monday": "2019-05-13",
+"ari": 682,
+"ili": 7.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 21,
+"monday": "2019-05-20",
+"ari": 670,
+"ili": 6.3,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 22,
+"monday": "2019-05-27",
+"ari": 641,
+"ili": 6.2,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 23,
+"monday": "2019-06-03",
+"ari": 599,
+"ili": 7.8,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 24,
+"monday": "2019-06-10",
+"ari": 571,
+"ili": 7.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 25,
+"monday": "2019-06-17",
+"ari": 543,
+"ili": 6.1,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 26,
+"monday": "2019-06-24",
+"ari": 496,
+"ili": 5.1,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 27,
+"monday": "2019-07-01",
+"ari": 395,
+"ili": 5.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 28,
+"monday": "2019-07-08",
+"ari": 415,
+"ili": 3.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 29,
+"monday": "2019-07-15",
+"ari": 393,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 30,
+"monday": "2019-07-22",
+"ari": 357,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 31,
+"monday": "2019-07-29",
+"ari": 354,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 32,
+"monday": "2019-08-05",
+"ari": 349,
+"ili": 3.0,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 33,
+"monday": "2019-08-12",
+"ari": 344,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 34,
+"monday": "2019-08-19",
+"ari": 354,
+"ili": 3.8,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 35,
+"monday": "2019-08-26",
+"ari": 373,
+"ili": 3.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 36,
+"monday": "2019-09-02",
+"ari": 430,
+"ili": 4.0,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 37,
+"monday": "2019-09-09",
+"ari": 555,
+"ili": 7.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 38,
+"monday": "2019-09-16",
+"ari": 796,
+"ili": 11.3,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 39,
+"monday": "2019-09-23",
+"ari": 929,
+"ili": 14.9,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 40,
+"monday": "2019-09-30",
+"ari": 933,
+"ili": 15.3,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 41,
+"monday": "2019-10-07",
+"ari": 972,
+"ili": 16.1,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 42,
+"monday": "2019-10-14",
+"ari": 977,
+"ili": 15.0,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 43,
+"monday": "2019-10-21",
+"ari": 968,
+"ili": 17.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 44,
+"monday": "2019-10-28",
+"ari": 921,
+"ili": 16.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 45,
+"monday": "2019-11-04",
+"ari": 978,
+"ili": 17.0,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 46,
+"monday": "2019-11-11",
+"ari": 1049,
+"ili": 18.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 47,
+"monday": "2019-11-18",
+"ari": 1078,
+"ili": 18.8,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 48,
+"monday": "2019-11-25",
+"ari": 1161,
+"ili": 22.4,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 49,
+"monday": "2019-12-02",
+"ari": 1193,
+"ili": 23.8,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 50,
+"monday": "2019-12-09",
+"ari": 1233,
+"ili": 31.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 51,
+"monday": "2019-12-16",
+"ari": 1212,
+"ili": 36.7,
+"source": "who_scaled"
+},
+{
+"year": 2019,
+"iso_week": 52,
+"monday": "2019-12-23",
+"ari": 548,
+"ili": 13.1,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 1,
+"monday": "2019-12-30",
+"ari": 705,
+"ili": 17.6,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 2,
+"monday": "2020-01-06",
+"ari": 1109,
+"ili": 29.6,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 3,
+"monday": "2020-01-13",
+"ari": 1195,
+"ili": 45.8,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 4,
+"monday": "2020-01-20",
+"ari": 1513,
+"ili": 111.6,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 5,
+"monday": "2020-01-27",
+"ari": 1949,
+"ili": 241.6,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 6,
+"monday": "2020-02-03",
+"ari": 1950,
+"ili": 286.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 7,
+"monday": "2020-02-10",
+"ari": 1647,
+"ili": 198.1,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 8,
+"monday": "2020-02-17",
+"ari": 1501,
+"ili": 143.1,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 9,
+"monday": "2020-02-24",
+"ari": 1401,
+"ili": 115.0,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 10,
+"monday": "2020-03-02",
+"ari": 1285,
+"ili": 84.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 11,
+"monday": "2020-03-09",
+"ari": 1143,
+"ili": 60.5,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 12,
+"monday": "2020-03-16",
+"ari": 774,
+"ili": 31.7,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 13,
+"monday": "2020-03-23",
+"ari": 630,
+"ili": 16.8,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 14,
+"monday": "2020-03-30",
+"ari": 518,
+"ili": 11.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 15,
+"monday": "2020-04-06",
+"ari": 430,
+"ili": 6.5,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 16,
+"monday": "2020-04-13",
+"ari": 381,
+"ili": 6.6,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 17,
+"monday": "2020-04-20",
+"ari": 354,
+"ili": 5.9,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 18,
+"monday": "2020-04-27",
+"ari": 320,
+"ili": 3.8,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 19,
+"monday": "2020-05-04",
+"ari": 306,
+"ili": 2.8,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 20,
+"monday": "2020-05-11",
+"ari": 301,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 21,
+"monday": "2020-05-18",
+"ari": 296,
+"ili": 2.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 22,
+"monday": "2020-05-25",
+"ari": 290,
+"ili": 3.5,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 23,
+"monday": "2020-06-01",
+"ari": 277,
+"ili": 3.3,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 24,
+"monday": "2020-06-08",
+"ari": 262,
+"ili": 2.5,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 25,
+"monday": "2020-06-15",
+"ari": 257,
+"ili": 1.5,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 26,
+"monday": "2020-06-22",
+"ari": 257,
+"ili": 2.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 27,
+"monday": "2020-06-29",
+"ari": 247,
+"ili": 1.3,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 28,
+"monday": "2020-07-06",
+"ari": 230,
+"ili": 1.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 29,
+"monday": "2020-07-13",
+"ari": 252,
+"ili": 2.0,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 30,
+"monday": "2020-07-20",
+"ari": 260,
+"ili": 1.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 31,
+"monday": "2020-07-27",
+"ari": 250,
+"ili": 1.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 32,
+"monday": "2020-08-03",
+"ari": 246,
+"ili": 1.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 33,
+"monday": "2020-08-10",
+"ari": 246,
+"ili": 1.1,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 34,
+"monday": "2020-08-17",
+"ari": 256,
+"ili": 2.0,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 35,
+"monday": "2020-08-24",
+"ari": 268,
+"ili": 2.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 36,
+"monday": "2020-08-31",
+"ari": 317,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 37,
+"monday": "2020-09-07",
+"ari": 483,
+"ili": 5.7,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 38,
+"monday": "2020-09-14",
+"ari": 605,
+"ili": 8.3,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 39,
+"monday": "2020-09-21",
+"ari": 599,
+"ili": 9.0,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 40,
+"monday": "2020-09-28",
+"ari": 542,
+"ili": 10.1,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 41,
+"monday": "2020-10-05",
+"ari": 571,
+"ili": 7.4,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 42,
+"monday": "2020-10-12",
+"ari": 605,
+"ili": 10.7,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 43,
+"monday": "2020-10-19",
+"ari": 638,
+"ili": 14.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 44,
+"monday": "2020-10-26",
+"ari": 565,
+"ili": 12.3,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 45,
+"monday": "2020-11-02",
+"ari": 572,
+"ili": 15.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 46,
+"monday": "2020-11-09",
+"ari": 552,
+"ili": 12.3,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 47,
+"monday": "2020-11-16",
+"ari": 495,
+"ili": 9.2,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 48,
+"monday": "2020-11-23",
+"ari": 504,
+"ili": 11.0,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 49,
+"monday": "2020-11-30",
+"ari": 483,
+"ili": 12.3,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 50,
+"monday": "2020-12-07",
+"ari": 547,
+"ili": 12.9,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 51,
+"monday": "2020-12-14",
+"ari": 543,
+"ili": 11.5,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 52,
+"monday": "2020-12-21",
+"ari": 353,
+"ili": 6.0,
+"source": "who_scaled"
+},
+{
+"year": 2020,
+"iso_week": 53,
+"monday": "2020-12-28",
+"ari": 325,
+"ili": 6.7,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 1,
+"monday": "2021-01-04",
+"ari": 515,
+"ili": 12.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 2,
+"monday": "2021-01-11",
+"ari": 487,
+"ili": 7.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 3,
+"monday": "2021-01-18",
+"ari": 474,
+"ili": 8.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 4,
+"monday": "2021-01-25",
+"ari": 493,
+"ili": 9.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 5,
+"monday": "2021-02-01",
+"ari": 490,
+"ili": 8.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 6,
+"monday": "2021-02-08",
+"ari": 500,
+"ili": 8.5,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 7,
+"monday": "2021-02-15",
+"ari": 517,
+"ili": 9.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 8,
+"monday": "2021-02-22",
+"ari": 522,
+"ili": 8.0,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 9,
+"monday": "2021-03-01",
+"ari": 521,
+"ili": 8.2,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 10,
+"monday": "2021-03-08",
+"ari": 491,
+"ili": 7.7,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 11,
+"monday": "2021-03-15",
+"ari": 463,
+"ili": 5.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 12,
+"monday": "2021-03-22",
+"ari": 433,
+"ili": 5.7,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 13,
+"monday": "2021-03-29",
+"ari": 355,
+"ili": 3.3,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 14,
+"monday": "2021-04-05",
+"ari": 360,
+"ili": 4.5,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 15,
+"monday": "2021-04-12",
+"ari": 369,
+"ili": 4.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 16,
+"monday": "2021-04-19",
+"ari": 336,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 17,
+"monday": "2021-04-26",
+"ari": 325,
+"ili": 4.2,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 18,
+"monday": "2021-05-03",
+"ari": 317,
+"ili": 5.0,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 19,
+"monday": "2021-05-10",
+"ari": 315,
+"ili": 3.7,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 20,
+"monday": "2021-05-17",
+"ari": 333,
+"ili": 3.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 21,
+"monday": "2021-05-24",
+"ari": 391,
+"ili": 3.5,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 22,
+"monday": "2021-05-31",
+"ari": 411,
+"ili": 4.3,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 23,
+"monday": "2021-06-07",
+"ari": 431,
+"ili": 4.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 24,
+"monday": "2021-06-14",
+"ari": 408,
+"ili": 5.6,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 25,
+"monday": "2021-06-21",
+"ari": 385,
+"ili": 4.0,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 26,
+"monday": "2021-06-28",
+"ari": 349,
+"ili": 3.4,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 27,
+"monday": "2021-07-05",
+"ari": 260,
+"ili": 2.4,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 28,
+"monday": "2021-07-12",
+"ari": 297,
+"ili": 3.0,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 29,
+"monday": "2021-07-19",
+"ari": 283,
+"ili": 2.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 30,
+"monday": "2021-07-26",
+"ari": 285,
+"ili": 2.0,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 31,
+"monday": "2021-08-02",
+"ari": 283,
+"ili": 2.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 32,
+"monday": "2021-08-09",
+"ari": 276,
+"ili": 2.2,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 33,
+"monday": "2021-08-16",
+"ari": 295,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 34,
+"monday": "2021-08-23",
+"ari": 329,
+"ili": 3.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 35,
+"monday": "2021-08-30",
+"ari": 398,
+"ili": 3.3,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 36,
+"monday": "2021-09-06",
+"ari": 573,
+"ili": 8.6,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 37,
+"monday": "2021-09-13",
+"ari": 818,
+"ili": 10.4,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 38,
+"monday": "2021-09-20",
+"ari": 1021,
+"ili": 13.6,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 39,
+"monday": "2021-09-27",
+"ari": 1030,
+"ili": 13.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 40,
+"monday": "2021-10-04",
+"ari": 1196,
+"ili": 16.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 41,
+"monday": "2021-10-11",
+"ari": 1350,
+"ili": 20.4,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 42,
+"monday": "2021-10-18",
+"ari": 1449,
+"ili": 28.2,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 43,
+"monday": "2021-10-25",
+"ari": 1236,
+"ili": 24.2,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 44,
+"monday": "2021-11-01",
+"ari": 1434,
+"ili": 25.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 45,
+"monday": "2021-11-08",
+"ari": 1326,
+"ili": 17.9,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 46,
+"monday": "2021-11-15",
+"ari": 1240,
+"ili": 23.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 47,
+"monday": "2021-11-22",
+"ari": 1313,
+"ili": 20.3,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 48,
+"monday": "2021-11-29",
+"ari": 1229,
+"ili": 21.1,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 49,
+"monday": "2021-12-06",
+"ari": 1192,
+"ili": 21.8,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 50,
+"monday": "2021-12-13",
+"ari": 1094,
+"ili": 18.2,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 51,
+"monday": "2021-12-20",
+"ari": 868,
+"ili": 13.0,
+"source": "who_scaled"
+},
+{
+"year": 2021,
+"iso_week": 52,
+"monday": "2021-12-27",
+"ari": 641,
+"ili": 10.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 1,
+"monday": "2022-01-03",
+"ari": 820,
+"ili": 13.6,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 2,
+"monday": "2022-01-10",
+"ari": 887,
+"ili": 13.9,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 3,
+"monday": "2022-01-17",
+"ari": 989,
+"ili": 15.6,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 4,
+"monday": "2022-01-24",
+"ari": 1126,
+"ili": 13.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 5,
+"monday": "2022-01-31",
+"ari": 1125,
+"ili": 21.3,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 6,
+"monday": "2022-02-07",
+"ari": 1012,
+"ili": 15.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 7,
+"monday": "2022-02-14",
+"ari": 985,
+"ili": 12.4,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 8,
+"monday": "2022-02-21",
+"ari": 881,
+"ili": 10.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 9,
+"monday": "2022-02-28",
+"ari": 898,
+"ili": 11.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 10,
+"monday": "2022-03-07",
+"ari": 899,
+"ili": 14.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 11,
+"monday": "2022-03-14",
+"ari": 980,
+"ili": 13.6,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 12,
+"monday": "2022-03-21",
+"ari": 1053,
+"ili": 16.7,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 13,
+"monday": "2022-03-28",
+"ari": 1128,
+"ili": 19.1,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 14,
+"monday": "2022-04-04",
+"ari": 1157,
+"ili": 21.7,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 15,
+"monday": "2022-04-11",
+"ari": 990,
+"ili": 19.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 16,
+"monday": "2022-04-18",
+"ari": 1024,
+"ili": 28.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 17,
+"monday": "2022-04-25",
+"ari": 1006,
+"ili": 22.4,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 18,
+"monday": "2022-05-02",
+"ari": 947,
+"ili": 18.4,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 19,
+"monday": "2022-05-09",
+"ari": 874,
+"ili": 13.5,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 20,
+"monday": "2022-05-16",
+"ari": 793,
+"ili": 9.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 21,
+"monday": "2022-05-23",
+"ari": 760,
+"ili": 8.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 22,
+"monday": "2022-05-30",
+"ari": 708,
+"ili": 6.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 23,
+"monday": "2022-06-06",
+"ari": 714,
+"ili": 7.4,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 24,
+"monday": "2022-06-13",
+"ari": 702,
+"ili": 7.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 25,
+"monday": "2022-06-20",
+"ari": 681,
+"ili": 7.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 26,
+"monday": "2022-06-27",
+"ari": 647,
+"ili": 8.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 27,
+"monday": "2022-07-04",
+"ari": 460,
+"ili": 3.9,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 28,
+"monday": "2022-07-11",
+"ari": 581,
+"ili": 4.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 29,
+"monday": "2022-07-18",
+"ari": 552,
+"ili": 4.6,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 30,
+"monday": "2022-07-25",
+"ari": 537,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 31,
+"monday": "2022-08-01",
+"ari": 514,
+"ili": 1.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 32,
+"monday": "2022-08-08",
+"ari": 489,
+"ili": 3.3,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 33,
+"monday": "2022-08-15",
+"ari": 467,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 34,
+"monday": "2022-08-22",
+"ari": 420,
+"ili": 3.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 35,
+"monday": "2022-08-29",
+"ari": 509,
+"ili": 3.9,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 36,
+"monday": "2022-09-05",
+"ari": 604,
+"ili": 5.6,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 37,
+"monday": "2022-09-12",
+"ari": 837,
+"ili": 9.7,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 38,
+"monday": "2022-09-19",
+"ari": 1042,
+"ili": 14.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 39,
+"monday": "2022-09-26",
+"ari": 958,
+"ili": 14.5,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 40,
+"monday": "2022-10-03",
+"ari": 1107,
+"ili": 19.4,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 41,
+"monday": "2022-10-10",
+"ari": 1138,
+"ili": 13.8,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 42,
+"monday": "2022-10-17",
+"ari": 1151,
+"ili": 19.0,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 43,
+"monday": "2022-10-24",
+"ari": 973,
+"ili": 12.9,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 44,
+"monday": "2022-10-31",
+"ari": 1094,
+"ili": 17.9,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 45,
+"monday": "2022-11-07",
+"ari": 1123,
+"ili": 15.1,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 46,
+"monday": "2022-11-14",
+"ari": 1026,
+"ili": 16.5,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 47,
+"monday": "2022-11-21",
+"ari": 1283,
+"ili": 21.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 48,
+"monday": "2022-11-28",
+"ari": 1428,
+"ili": 27.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 49,
+"monday": "2022-12-05",
+"ari": 1684,
+"ili": 50.2,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 50,
+"monday": "2022-12-12",
+"ari": 2261,
+"ili": 126.4,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 51,
+"monday": "2022-12-19",
+"ari": 2227,
+"ili": 196.3,
+"source": "who_scaled"
+},
+{
+"year": 2022,
+"iso_week": 52,
+"monday": "2022-12-26",
+"ari": 1670,
+"ili": 155.2,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 1,
+"monday": "2023-01-02",
+"ari": 2019,
+"ili": 183.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 2,
+"monday": "2023-01-09",
+"ari": 1688,
+"ili": 135.0,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 3,
+"monday": "2023-01-16",
+"ari": 1455,
+"ili": 106.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 4,
+"monday": "2023-01-23",
+"ari": 1403,
+"ili": 86.2,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 5,
+"monday": "2023-01-30",
+"ari": 1374,
+"ili": 78.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 6,
+"monday": "2023-02-06",
+"ari": 1346,
+"ili": 65.1,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 7,
+"monday": "2023-02-13",
+"ari": 1321,
+"ili": 59.0,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 8,
+"monday": "2023-02-20",
+"ari": 1434,
+"ili": 72.9,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 9,
+"monday": "2023-02-27",
+"ari": 1434,
+"ili": 85.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 10,
+"monday": "2023-03-06",
+"ari": 1464,
+"ili": 78.4,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 11,
+"monday": "2023-03-13",
+"ari": 1397,
+"ili": 63.4,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 12,
+"monday": "2023-03-20",
+"ari": 1342,
+"ili": 52.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 13,
+"monday": "2023-03-27",
+"ari": 1277,
+"ili": 47.5,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 14,
+"monday": "2023-04-03",
+"ari": 1079,
+"ili": 30.6,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 15,
+"monday": "2023-04-10",
+"ari": 1082,
+"ili": 26.9,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 16,
+"monday": "2023-04-17",
+"ari": 1104,
+"ili": 26.6,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 17,
+"monday": "2023-04-24",
+"ari": 1047,
+"ili": 21.0,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 18,
+"monday": "2023-05-01",
+"ari": 947,
+"ili": 16.0,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 19,
+"monday": "2023-05-08",
+"ari": 885,
+"ili": 12.8,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 20,
+"monday": "2023-05-15",
+"ari": 902,
+"ili": 12.4,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 21,
+"monday": "2023-05-22",
+"ari": 842,
+"ili": 9.9,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 22,
+"monday": "2023-05-29",
+"ari": 829,
+"ili": 7.0,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 23,
+"monday": "2023-06-05",
+"ari": 815,
+"ili": 8.4,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 24,
+"monday": "2023-06-12",
+"ari": 795,
+"ili": 7.3,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 25,
+"monday": "2023-06-19",
+"ari": 726,
+"ili": 7.1,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 26,
+"monday": "2023-06-26",
+"ari": 679,
+"ili": 7.1,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 27,
+"monday": "2023-07-03",
+"ari": 385,
+"ili": 2.9,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 28,
+"monday": "2023-07-10",
+"ari": 483,
+"ili": 3.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 29,
+"monday": "2023-07-17",
+"ari": 449,
+"ili": 4.1,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 30,
+"monday": "2023-07-24",
+"ari": 433,
+"ili": 3.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 31,
+"monday": "2023-07-31",
+"ari": 398,
+"ili": 2.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 32,
+"monday": "2023-08-07",
+"ari": 397,
+"ili": 2.6,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 33,
+"monday": "2023-08-14",
+"ari": 374,
+"ili": 3.5,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 34,
+"monday": "2023-08-21",
+"ari": 378,
+"ili": 3.6,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 35,
+"monday": "2023-08-28",
+"ari": 415,
+"ili": 4.5,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 36,
+"monday": "2023-09-04",
+"ari": 457,
+"ili": 4.8,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 37,
+"monday": "2023-09-11",
+"ari": 630,
+"ili": 8.7,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 38,
+"monday": "2023-09-18",
+"ari": 784,
+"ili": 10.9,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 39,
+"monday": "2023-09-25",
+"ari": 670,
+"ili": 8.5,
+"source": "who_scaled"
+},
+{
+"year": 2023,
+"iso_week": 40,
+"monday": "2023-10-02",
+"ari": 910.0,
+"ili": 10.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/10/40_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 41,
+"monday": "2023-10-09",
+"ari": 962.0,
+"ili": 10.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/10/41_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 42,
+"monday": "2023-10-16",
+"ari": 1079.0,
+"ili": 14.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/10/42_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 43,
+"monday": "2023-10-23",
+"ari": 1060.0,
+"ili": 15.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/10/43_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 44,
+"monday": "2023-10-30",
+"ari": 1161.0,
+"ili": 16.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/11/44_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 45,
+"monday": "2023-11-06",
+"ari": 1217.0,
+"ili": 19.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/11/45_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 46,
+"monday": "2023-11-13",
+"ari": 1185.0,
+"ili": 12.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/11/46_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 47,
+"monday": "2023-11-20",
+"ari": 1338.0,
+"ili": 27.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/11/47_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 48,
+"monday": "2023-11-27",
+"ari": 1457.0,
+"ili": 34.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/12/48_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 49,
+"monday": "2023-12-04",
+"ari": 1542.0,
+"ili": 44.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/12/49_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 50,
+"monday": "2023-12-11",
+"ari": 1679.0,
+"ili": 52.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/12/50_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 51,
+"monday": "2023-12-18",
+"ari": 1544.0,
+"ili": 53.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2023/12/51_tyden.pdf"
+},
+{
+"year": 2023,
+"iso_week": 52,
+"monday": "2023-12-25",
+"ari": 854.0,
+"ili": 32.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/01/52_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 1,
+"monday": "2024-01-01",
+"ari": 1228.0,
+"ili": 50.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/01/1_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 2,
+"monday": "2024-01-08",
+"ari": 1302.0,
+"ili": 51.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/01/2_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 3,
+"monday": "2024-01-15",
+"ari": 1432.0,
+"ili": 93.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/01/3_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 4,
+"monday": "2024-01-22",
+"ari": 1750.0,
+"ili": 163.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/01/4_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 5,
+"monday": "2024-01-29",
+"ari": 1943.0,
+"ili": 251.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/02/5_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 6,
+"monday": "2024-02-05",
+"ari": 1901.0,
+"ili": 276.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/02/6_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 7,
+"monday": "2024-02-12",
+"ari": 1713.0,
+"ili": 206.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/02/7_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 8,
+"monday": "2024-02-19",
+"ari": 1480.0,
+"ili": 137.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/02/8_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 9,
+"monday": "2024-02-26",
+"ari": 1380.0,
+"ili": 85.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/03/9_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 10,
+"monday": "2024-03-04",
+"ari": 1257.0,
+"ili": 57.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/03/10_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 11,
+"monday": "2024-03-11",
+"ari": 1227.0,
+"ili": 35.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/03/11_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 12,
+"monday": "2024-03-18",
+"ari": 1241.0,
+"ili": 24.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/03/12_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 13,
+"monday": "2024-03-25",
+"ari": 1045.0,
+"ili": 18.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/04/13_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 14,
+"monday": "2024-04-01",
+"ari": 1067.0,
+"ili": 18.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/04/14_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 15,
+"monday": "2024-04-08",
+"ari": 1067.0,
+"ili": 17.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/04/15_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 16,
+"monday": "2024-04-15",
+"ari": 1055.0,
+"ili": 16.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/04/16_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 17,
+"monday": "2024-04-22",
+"ari": 1057.0,
+"ili": 10.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/05/17_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 18,
+"monday": "2024-04-29",
+"ari": 892.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/05/18_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 19,
+"monday": "2024-05-06",
+"ari": 877.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/05/19_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 20,
+"monday": "2024-05-13",
+"ari": 947.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/05/20_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 21,
+"monday": "2024-05-20",
+"ari": 891.0,
+"ili": 11.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/05/21_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 22,
+"monday": "2024-05-27",
+"ari": 864.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/06/22_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 23,
+"monday": "2024-06-03",
+"ari": 845.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/06/23_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 24,
+"monday": "2024-06-10",
+"ari": 846.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/06/24_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 25,
+"monday": "2024-06-17",
+"ari": 772.0,
+"ili": 6.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/06/25_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 26,
+"monday": "2024-06-24",
+"ari": 723.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/07/26_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 27,
+"monday": "2024-07-01",
+"ari": 578.0,
+"ili": 3.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/07/27_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 28,
+"monday": "2024-07-08",
+"ari": 575.0,
+"ili": 4.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/07/28_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 29,
+"monday": "2024-07-15",
+"ari": 571.0,
+"ili": 3.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/07/29_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 30,
+"monday": "2024-07-22",
+"ari": 561.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/08/30_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 31,
+"monday": "2024-07-29",
+"ari": 567.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/08/31_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 32,
+"monday": "2024-08-05",
+"ari": 560.0,
+"ili": 4.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/08/32_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 33,
+"monday": "2024-08-12",
+"ari": 514.0,
+"ili": 4.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/08/33_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 34,
+"monday": "2024-08-19",
+"ari": 530.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/08/34_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 35,
+"monday": "2024-08-26",
+"ari": 556.0,
+"ili": 4.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/09/35_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 36,
+"monday": "2024-09-02",
+"ari": 616.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/09/36_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 37,
+"monday": "2024-09-09",
+"ari": 819.0,
+"ili": 10.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/09/37_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 38,
+"monday": "2024-09-16",
+"ari": 924.0,
+"ili": 14.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/09/38_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 39,
+"monday": "2024-09-23",
+"ari": 1116.0,
+"ili": 15.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/10/39_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 40,
+"monday": "2024-09-30",
+"ari": 1218.0,
+"ili": 21.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/10/40_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 41,
+"monday": "2024-10-07",
+"ari": 1320.0,
+"ili": 21.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/10/41_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 42,
+"monday": "2024-10-14",
+"ari": 1323.0,
+"ili": 20.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/10/42_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 43,
+"monday": "2024-10-21",
+"ari": 1361.0,
+"ili": 22.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/10/43_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 44,
+"monday": "2024-10-28",
+"ari": 1014.0,
+"ili": 21.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/11/44_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 45,
+"monday": "2024-11-04",
+"ari": 1370,
+"ili": 21.5,
+"source": "who_scaled"
+},
+{
+"year": 2024,
+"iso_week": 46,
+"monday": "2024-11-11",
+"ari": 1429.0,
+"ili": 24.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/11/46_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 47,
+"monday": "2024-11-18",
+"ari": 1489.0,
+"ili": 23.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/11/47_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 48,
+"monday": "2024-11-25",
+"ari": 1464.0,
+"ili": 22.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/12/48_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 49,
+"monday": "2024-12-02",
+"ari": 1544.0,
+"ili": 20.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/12/49_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 50,
+"monday": "2024-12-09",
+"ari": 1577.0,
+"ili": 22.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/12/50_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 51,
+"monday": "2024-12-16",
+"ari": 1575.0,
+"ili": 33.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/12/51_tyden.pdf"
+},
+{
+"year": 2024,
+"iso_week": 52,
+"monday": "2024-12-23",
+"ari": 746.0,
+"ili": 14.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2024/12/52_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 1,
+"monday": "2024-12-30",
+"ari": 834.0,
+"ili": 20.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/01/1_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 2,
+"monday": "2025-01-06",
+"ari": 1416.0,
+"ili": 40.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/01/2_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 3,
+"monday": "2025-01-13",
+"ari": 1499.0,
+"ili": 77.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/01/3_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 4,
+"monday": "2025-01-20",
+"ari": 1940.0,
+"ili": 138.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/01/4_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 5,
+"monday": "2025-01-27",
+"ari": 2251.0,
+"ili": 257.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/02/5_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 6,
+"monday": "2025-02-03",
+"ari": 2219.0,
+"ili": 251.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/02/6_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 7,
+"monday": "2025-02-10",
+"ari": 2138.0,
+"ili": 240.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/02/7_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 8,
+"monday": "2025-02-17",
+"ari": 1988.0,
+"ili": 196.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/02/8_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 9,
+"monday": "2025-02-24",
+"ari": 1867.0,
+"ili": 159.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/03/9_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 10,
+"monday": "2025-03-03",
+"ari": 1536.0,
+"ili": 113.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/03/10_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 11,
+"monday": "2025-03-10",
+"ari": 1584.0,
+"ili": 88.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/03/11_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 12,
+"monday": "2025-03-17",
+"ari": 1501.0,
+"ili": 61.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/03/12_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 13,
+"monday": "2025-03-24",
+"ari": 1431.0,
+"ili": 44.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/04/13_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 14,
+"monday": "2025-03-31",
+"ari": 1381.0,
+"ili": 39.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/04/14_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 15,
+"monday": "2025-04-07",
+"ari": 1295.0,
+"ili": 25.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/04/15_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 16,
+"monday": "2025-04-14",
+"ari": 998.0,
+"ili": 15.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/04/16_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 17,
+"monday": "2025-04-21",
+"ari": 685.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/04/17_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 18,
+"monday": "2025-04-28",
+"ari": 783.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/05/18_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 19,
+"monday": "2025-05-05",
+"ari": 711.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/05/19_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 20,
+"monday": "2025-05-12",
+"ari": 797.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/05/20_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 21,
+"monday": "2025-05-19",
+"ari": 783.0,
+"ili": 10.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/05/21_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 22,
+"monday": "2025-05-26",
+"ari": 795.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/06/22_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 23,
+"monday": "2025-06-02",
+"ari": 775.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/06/23_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 24,
+"monday": "2025-06-09",
+"ari": 738.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/06/24_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 25,
+"monday": "2025-06-16",
+"ari": 732.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/06/25_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 26,
+"monday": "2025-06-23",
+"ari": 715.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/07/26_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 27,
+"monday": "2025-06-30",
+"ari": 615.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/07/27_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 28,
+"monday": "2025-07-07",
+"ari": 525.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/07/28_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 29,
+"monday": "2025-07-14",
+"ari": 452.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/07/29_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 30,
+"monday": "2025-07-21",
+"ari": 474.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/07/30_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 31,
+"monday": "2025-07-28",
+"ari": 475.0,
+"ili": 6.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/08/31_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 32,
+"monday": "2025-08-04",
+"ari": 420.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/08/32_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 33,
+"monday": "2025-08-11",
+"ari": 423.0,
+"ili": 4.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/08/33_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 34,
+"monday": "2025-08-18",
+"ari": 434.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/08/34_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 35,
+"monday": "2025-08-25",
+"ari": 466.0,
+"ili": 6.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/09/35_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 36,
+"monday": "2025-09-01",
+"ari": 468.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/09/36_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 37,
+"monday": "2025-09-08",
+"ari": 621.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/09/37_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 38,
+"monday": "2025-09-15",
+"ari": 851.0,
+"ili": 13.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/09/38_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 39,
+"monday": "2025-09-22",
+"ari": 955.0,
+"ili": 17.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/10/39_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 40,
+"monday": "2025-09-29",
+"ari": 1063.0,
+"ili": 16.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/10/40_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 41,
+"monday": "2025-10-06",
+"ari": 1081.0,
+"ili": 16.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/10/41_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 42,
+"monday": "2025-10-13",
+"ari": 984.0,
+"ili": 13.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/10/42_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 43,
+"monday": "2025-10-20",
+"ari": 1069.0,
+"ili": 16.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/10/43_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 44,
+"monday": "2025-10-27",
+"ari": 762.0,
+"ili": 11.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/11/44_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 45,
+"monday": "2025-11-03",
+"ari": 932.0,
+"ili": 14.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/11/45_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 46,
+"monday": "2025-11-10",
+"ari": 939.0,
+"ili": 13.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/11/46_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 47,
+"monday": "2025-11-17",
+"ari": 862.0,
+"ili": 12.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/11/47_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 48,
+"monday": "2025-11-24",
+"ari": 1078.0,
+"ili": 18.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/12/48_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 49,
+"monday": "2025-12-01",
+"ari": 1242.0,
+"ili": 33.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/12/49_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 50,
+"monday": "2025-12-08",
+"ari": 1486.0,
+"ili": 71.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/12/50_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 51,
+"monday": "2025-12-15",
+"ari": 1580.0,
+"ili": 97.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2025/12/51_tyden.pdf"
+},
+{
+"year": 2025,
+"iso_week": 52,
+"monday": "2025-12-22",
+"ari": 839,
+"ili": 56.3,
+"source": "who_scaled"
+},
+{
+"year": 2026,
+"iso_week": 1,
+"monday": "2025-12-29",
+"ari": 939.0,
+"ili": 43.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/01/1_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 2,
+"monday": "2026-01-05",
+"ari": 1583.0,
+"ili": 72.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/01/2_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 3,
+"monday": "2026-01-12",
+"ari": 1281.0,
+"ili": 69.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/01/3_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 4,
+"monday": "2026-01-19",
+"ari": 1456.0,
+"ili": 80.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/01/4_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 5,
+"monday": "2026-01-26",
+"ari": 1497.0,
+"ili": 73.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/02/5_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 6,
+"monday": "2026-02-02",
+"ari": 1534.0,
+"ili": 68.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/02/6_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 7,
+"monday": "2026-02-09",
+"ari": 1497.0,
+"ili": 59.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/02/7_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 8,
+"monday": "2026-02-16",
+"ari": 1423.0,
+"ili": 44.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/02/8_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 9,
+"monday": "2026-02-23",
+"ari": 1364.0,
+"ili": 32.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/03/9_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 10,
+"monday": "2026-03-02",
+"ari": 1326.0,
+"ili": 27.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/03/10_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 11,
+"monday": "2026-03-09",
+"ari": 1276.0,
+"ili": 21.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/03/11_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 12,
+"monday": "2026-03-16",
+"ari": 1255.0,
+"ili": 17.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/03/12_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 13,
+"monday": "2026-03-23",
+"ari": 1199.0,
+"ili": 15.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/03/13_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 14,
+"monday": "2026-03-30",
+"ari": 1171.0,
+"ili": 14.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/04/14_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 15,
+"monday": "2026-04-06",
+"ari": 826.0,
+"ili": 10.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/04/15_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 16,
+"monday": "2026-04-13",
+"ari": 1072.0,
+"ili": 12.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/04/16_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 17,
+"monday": "2026-04-20",
+"ari": 1024.0,
+"ili": 11.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/04/17_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 18,
+"monday": "2026-04-27",
+"ari": 1020.0,
+"ili": 12.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/05/18_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 19,
+"monday": "2026-05-04",
+"ari": 806.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/05/19_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 20,
+"monday": "2026-05-11",
+"ari": 756.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/05/20_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 21,
+"monday": "2026-05-18",
+"ari": 824.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/05/21_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 22,
+"monday": "2026-05-25",
+"ari": 790.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/06/22_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 23,
+"monday": "2026-06-01",
+"ari": 791.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/06/23_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 24,
+"monday": "2026-06-08",
+"ari": 744.0,
+"ili": 9.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/06/24_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 25,
+"monday": "2026-06-15",
+"ari": 738.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/06/25_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 26,
+"monday": "2026-06-22",
+"ari": 659.0,
+"ili": 7.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/06/26_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 27,
+"monday": "2026-06-29",
+"ari": 578,
+"ili": null,
+"source": "interpolated"
+},
+{
+"year": 2026,
+"iso_week": 28,
+"monday": "2026-07-06",
+"ari": 507.0,
+"ili": 6.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/07/28_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 29,
+"monday": "2026-07-13",
+"ari": 522.0,
+"ili": 6.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/07/29_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 30,
+"monday": "2026-07-20",
+"ari": 487.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/07/30_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 31,
+"monday": "2026-07-27",
+"ari": 529.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/08/31_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 32,
+"monday": "2026-08-03",
+"ari": 416.0,
+"ili": 4.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/08/32_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 33,
+"monday": "2026-08-10",
+"ari": 425.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/08/33_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 34,
+"monday": "2026-08-17",
+"ari": 427.0,
+"ili": 5.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/08/34_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 35,
+"monday": "2026-08-24",
+"ari": 595.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/09/35_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 36,
+"monday": "2026-08-31",
+"ari": 487.0,
+"ili": 6.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/09/36_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 37,
+"monday": "2026-09-07",
+"ari": 626.0,
+"ili": 8.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/09/37_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 38,
+"monday": "2026-09-14",
+"ari": 887.0,
+"ili": 11.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/09/38_tyden.pdf"
+},
+{
+"year": 2026,
+"iso_week": 39,
+"monday": "2026-09-21",
+"ari": 1078.0,
+"ili": 16.0,
+"source": "szu",
+"url": "https://szu.gov.cz/wp-content/uploads/2026/09/39_tyden.pdf"
+}
+]

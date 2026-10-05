@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ARI Dashboard – Plánování ordinace</title>
+<meta name="description" content="Týdenní nemocnost akutními respiračními infekcemi v ČR (SZÚ), předpověď na 8 týdnů a doporučení pro plánování akutní kapacity ordinace.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -13,211 +14,199 @@
     --navy2:    #0d1f35;
     --navy3:    #142740;
     --border:   #1e3555;
+    --grid:     #1a2f4b;
     --teal:     #00c9a7;
     --teal2:    #00a689;
     --amber:    #f5a623;
+    --yellow:   #e8c53a;
     --red:      #e84560;
     --green:    #2ecc71;
     --muted:    #8ba7c7;
     --text:     #ddeeff;
     --white:    #ffffff;
+    /* datové řady grafu (ověřeno validátorem palety na povrchu #0d1f35) */
+    --s-this:   #1aa37a;   /* letošní rok + předpověď */
+    --s-last:   #2e6fbe;   /* loňský rok */
+    --s-ctx:    #8ba7c7;   /* běžné rozmezí / starší roky (kontext) */
     --mono:     'IBM Plex Mono', monospace;
     --sans:     'IBM Plex Sans', sans-serif;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--navy);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
-    padding: 0;
-  }
+  body { background: var(--navy); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+  a { color: var(--teal); }
 
   /* ── HEADER ───────────────────────────────────────── */
   header {
-    background: var(--navy2);
-    border-bottom: 1px solid var(--border);
-    padding: 1.25rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    background: var(--navy2); border-bottom: 1px solid var(--border);
+    padding: 1.1rem 2rem; display: flex; align-items: center;
+    justify-content: space-between; flex-wrap: wrap; gap: .75rem;
   }
-  .logo {
-    display: flex; align-items: center; gap: 0.75rem;
-  }
+  .logo { display: flex; align-items: center; gap: .75rem; }
   .logo-icon {
-    width: 38px; height: 38px;
+    width: 38px; height: 38px; border-radius: 8px; font-size: 1.2rem;
     background: linear-gradient(135deg, var(--teal), var(--teal2));
-    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 1.2rem;
   }
-  .logo-text h1 {
-    font-size: 1.1rem; font-weight: 700; letter-spacing: -.02em; color: var(--white);
+  .logo-text h1 { font-size: 1.1rem; font-weight: 700; letter-spacing: -.02em; color: var(--white); }
+  .logo-text p  { font-size: .72rem; color: var(--muted); font-family: var(--mono); }
+  .freshness {
+    font-family: var(--mono); font-size: .72rem; color: var(--muted);
+    background: var(--navy3); padding: .4rem .75rem; border-radius: 6px;
+    border: 1px solid var(--border); line-height: 1.5; text-align: right;
   }
-  .logo-text p {
-    font-size: 0.72rem; color: var(--muted); font-family: var(--mono);
+  .freshness strong { color: var(--text); font-weight: 600; }
+  .freshness.stale { border-color: var(--amber); }
+
+  main { max-width: 1280px; margin: 0 auto; padding: 1.75rem 2rem 2rem; }
+
+  /* ── ALERT ────────────────────────────────────────── */
+  #alert-banner {
+    border-radius: 12px; padding: 1.15rem 1.4rem; margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem; border: 1.5px solid var(--border);
+    background: var(--navy2);
   }
-  #last-updated {
-    font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
-    background: var(--navy3); padding: .35rem .75rem; border-radius: 6px;
+  #alert-banner.green  { background: rgba(46,204,113,.07);  border-color: var(--green); }
+  #alert-banner.yellow { background: rgba(232,197,58,.07);  border-color: var(--yellow); }
+  #alert-banner.amber  { background: rgba(245,166,35,.08);  border-color: var(--amber); }
+  #alert-banner.red    { background: rgba(232,69,96,.09);   border-color: var(--red); }
+  .alert-icon { font-size: 2rem; line-height: 1; }
+  .alert-body { flex: 1; min-width: 0; }
+  .alert-body h2 { font-size: 1.08rem; font-weight: 700; margin-bottom: .25rem; color: var(--white); }
+  .alert-body p  { font-size: .88rem; color: var(--text); line-height: 1.55; opacity: .9; }
+  .alert-badge {
+    font-family: var(--mono); font-size: .74rem; padding: .3rem .8rem; border-radius: 20px;
+    font-weight: 600; white-space: nowrap; background: var(--navy3); color: var(--text);
     border: 1px solid var(--border);
   }
 
-  /* ── MAIN ─────────────────────────────────────────── */
-  main { max-width: 1280px; margin: 0 auto; padding: 2rem; }
-
-  /* ── ALERT BANNER ─────────────────────────────────── */
-  #alert-banner {
-    border-radius: 12px; padding: 1.25rem 1.5rem;
-    margin-bottom: 2rem;
-    display: flex; align-items: center; gap: 1rem;
-    border: 1.5px solid;
-    transition: all .4s ease;
-  }
-  #alert-banner.green  { background: rgba(46,204,113,.08); border-color: var(--green);  }
-  #alert-banner.amber  { background: rgba(245,166,35,.08);  border-color: var(--amber);  }
-  #alert-banner.yellow { background: rgba(232,197,58,.08);  border-color: #e8c53a;       }
-  #alert-banner.red    { background: rgba(232,69,96,.1);    border-color: var(--red);    }
-  .alert-icon { font-size: 2rem; }
-  .alert-body h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: .2rem; }
-  .alert-body p  { font-size: .875rem; color: var(--muted); line-height: 1.5; }
-  .alert-badge {
-    margin-left: auto; font-family: var(--mono); font-size: .75rem;
-    padding: .3rem .8rem; border-radius: 20px; font-weight: 600;
-    white-space: nowrap;
-  }
-  #alert-banner.green  .alert-badge { background: rgba(46,204,113,.2);  color: var(--green); }
-  #alert-banner.amber  .alert-badge { background: rgba(245,166,35,.2);  color: var(--amber); }
-  #alert-banner.yellow .alert-badge { background: rgba(232,197,58,.2);  color: #e8c53a; }
-  #alert-banner.red    .alert-badge { background: rgba(232,69,96,.2);   color: var(--red); }
-
-  /* ── KPI GRID ─────────────────────────────────────── */
-  .kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
+  /* ── KPI ──────────────────────────────────────────── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
   .kpi-card {
-    background: var(--navy2); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.25rem 1.5rem;
-    position: relative; overflow: hidden;
+    background: var(--navy2); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.1rem 1.35rem; position: relative; overflow: hidden;
   }
-  .kpi-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--teal);
-    border-radius: 12px 12px 0 0;
-  }
+  .kpi-card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--border); }
+  .kpi-card.green::before  { background: var(--green); }
+  .kpi-card.yellow::before { background: var(--yellow); }
   .kpi-card.amber::before  { background: var(--amber); }
-  .kpi-card.yellow::before { background: #e8c53a; }
   .kpi-card.red::before    { background: var(--red); }
-  .kpi-card.green::before { background: var(--green); }
-  .kpi-label {
-    font-family: var(--mono); font-size: .7rem; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--muted); margin-bottom: .5rem;
-  }
-  .kpi-value {
-    font-family: var(--mono); font-size: 2.4rem; font-weight: 600;
-    color: var(--white); line-height: 1;
-    margin-bottom: .3rem;
-  }
-  .kpi-unit {
-    font-family: var(--mono); font-size: .72rem; color: var(--muted);
-  }
-  .kpi-sub {
-    font-size: .8rem; color: var(--muted); margin-top: .4rem;
-    display: flex; align-items: center; gap: .3rem;
-  }
-  .kpi-sub .arrow { font-size: 1rem; }
+  .kpi-label { font-family: var(--mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: .45rem; }
+  .kpi-value { font-size: 2.2rem; font-weight: 600; color: var(--white); line-height: 1.05; margin-bottom: .35rem; }
+  .kpi-value.small { font-size: 1.45rem; padding-top: .3rem; }
+  .kpi-unit  { font-family: var(--mono); font-size: .72rem; color: var(--muted); line-height: 1.55; }
+  .kpi-unit strong { color: var(--text); font-weight: 600; }
+  .arrow-up   { color: var(--red); }
+  .arrow-down { color: var(--green); }
 
-  /* ── COLUMNS ──────────────────────────────────────── */
-  .columns {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  @media (max-width: 900px) { .columns { grid-template-columns: 1fr; } }
-
-  /* ── PANEL ────────────────────────────────────────── */
-  .panel {
-    background: var(--navy2); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.5rem;
-  }
+  /* ── PANELS ───────────────────────────────────────── */
+  .panel { background: var(--navy2); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem; margin-bottom: 1.5rem; }
   .panel h3 {
     font-size: .8rem; font-family: var(--mono); text-transform: uppercase;
-    letter-spacing: .1em; color: var(--teal); margin-bottom: 1.25rem;
+    letter-spacing: .1em; color: var(--teal); margin-bottom: .35rem;
   }
+  .panel .sub { font-size: .8rem; color: var(--muted); margin-bottom: 1.1rem; line-height: 1.5; }
 
-  /* ── CHART ────────────────────────────────────────── */
-  .chart-wrap { position: relative; height: 420px; }
+  /* doporučení */
+  .rec-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .75rem; }
+  .rec-item { background: var(--navy3); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; display: flex; gap: .75rem; align-items: flex-start; }
+  .rec-emoji { font-size: 1.35rem; line-height: 1.2; }
+  .rec-item h4 { font-size: .87rem; font-weight: 600; color: var(--white); margin-bottom: .3rem; }
+  .rec-item p  { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+  .rec-why { margin-top: .9rem; font-size: .76rem; color: var(--muted); font-family: var(--mono); line-height: 1.6; }
 
-  /* ── FORECAST TABLE ───────────────────────────────── */
-  .forecast-rows { display: flex; flex-direction: column; gap: .6rem; }
-  .fc-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: .75rem 1rem;
-    background: var(--navy3); border-radius: 8px;
-    border: 1px solid var(--border);
+  /* graf */
+  .chart-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: .75rem; }
+  .controls { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .seg button {
+    background: transparent; color: var(--muted); border: 0; padding: .4rem .75rem;
+    font: 500 .74rem var(--sans); cursor: pointer;
   }
-  .fc-week { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
-  .fc-bar-wrap { flex: 1; margin: 0 1rem; background: var(--border); border-radius: 4px; height: 6px; overflow: hidden; }
-  .fc-bar { height: 100%; background: var(--teal); border-radius: 4px; transition: width .5s ease; }
-  .fc-val { font-family: var(--mono); font-size: .95rem; font-weight: 600; color: var(--white); min-width: 3.5rem; text-align: right; }
-  .fc-dir { font-size: .7rem; color: var(--muted); margin-top: .15rem; text-align: right; }
-
-  /* ── RECOMMENDATION ───────────────────────────────── */
-  .rec-panel { margin-bottom: 1.5rem; }
-  .rec-title { font-size: .8rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--teal); margin-bottom: 1rem; }
-  .rec-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; }
-  .rec-item {
-    background: var(--navy3); border: 1px solid var(--border); border-radius: 10px;
-    padding: 1rem; display: flex; gap: .75rem; align-items: flex-start;
+  .seg button + button { border-left: 1px solid var(--border); }
+  .seg button[aria-pressed="true"] { background: var(--navy3); color: var(--white); }
+  .seg button:focus-visible, .chk:focus-within { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .chk { display: inline-flex; align-items: center; gap: .4rem; font-size: .76rem; color: var(--muted); cursor: pointer; padding: .35rem .5rem; border-radius: 8px; }
+  .chk input { accent-color: var(--teal); }
+  .chart-wrap { position: relative; height: 440px; margin-top: .5rem; }
+  .chart-wrap canvas { cursor: crosshair; }
+  .legend { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: .9rem; font-size: .76rem; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: .45rem; }
+  .key-line { width: 22px; height: 0; border-top: 2px solid; display: inline-block; }
+  .key-line.dash { border-top-style: dashed; }
+  .key-band { width: 22px; height: 10px; border-radius: 2px; display: inline-block; }
+  .tooltip {
+    position: absolute; pointer-events: none; background: #0a1729; border: 1px solid var(--border);
+    border-radius: 8px; padding: .6rem .75rem; font-size: .76rem; color: var(--muted);
+    min-width: 210px; box-shadow: 0 6px 24px rgba(0,0,0,.35); opacity: 0; transition: opacity .08s;
+    z-index: 5;
   }
-  .rec-emoji { font-size: 1.4rem; }
-  .rec-item h4 { font-size: .85rem; font-weight: 600; color: var(--white); margin-bottom: .25rem; }
-  .rec-item p  { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+  .tooltip .tt-h { color: var(--white); font-weight: 600; margin-bottom: .4rem; font-size: .8rem; }
+  .tooltip .tt-r { display: flex; align-items: center; gap: .5rem; margin: .18rem 0; }
+  .tooltip .tt-r b { color: var(--white); font-weight: 600; font-variant-numeric: tabular-nums; min-width: 3.2rem; text-align: right; }
+  .tooltip .tt-r small { color: var(--muted); }
+  .chart-fallback { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--muted); font-size: .85rem; text-align: center; padding: 1rem; }
 
-  /* ── HISTORY TABLE ────────────────────────────────── */
-  .data-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: .8rem; }
-  .data-table th { text-align: left; color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; padding: .5rem .75rem; border-bottom: 1px solid var(--border); }
-  .data-table td { padding: .55rem .75rem; border-bottom: 1px solid rgba(30,53,85,.5); }
+  /* předpověď */
+  .fc-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; }
+  .fc-card { background: var(--navy3); border: 1px solid var(--border); border-radius: 10px; padding: .85rem .95rem; }
+  .fc-card.far { opacity: .78; }
+  .fc-top { display: flex; justify-content: space-between; align-items: baseline; gap: .5rem; }
+  .fc-week { font-family: var(--mono); font-size: .8rem; color: var(--white); font-weight: 600; }
+  .fc-tag { font-size: .66rem; color: var(--muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+  .fc-date { font-size: .74rem; color: var(--muted); margin-top: .1rem; }
+  .fc-val { font-size: 1.55rem; font-weight: 600; color: var(--white); margin: .45rem 0 .15rem; display: flex; align-items: center; gap: .45rem; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none; }
+  .dot.green { background: var(--green); } .dot.yellow { background: var(--yellow); }
+  .dot.amber { background: var(--amber); } .dot.red { background: var(--red); }
+  .fc-band { font-size: .74rem; color: var(--muted); }
+  .fc-range { font-family: var(--mono); font-size: .72rem; color: var(--muted); margin-top: .4rem; line-height: 1.6; }
+  .fc-range strong { color: var(--text); font-weight: 500; }
+  .note { margin-top: .9rem; font-size: .78rem; color: var(--muted); line-height: 1.6; }
+  .note strong { color: var(--text); }
+
+  /* tabulky */
+  .data-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+  .data-table th { text-align: left; color: var(--muted); font: 500 .68rem var(--mono); text-transform: uppercase; letter-spacing: .07em; padding: .5rem .7rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .data-table td { padding: .5rem .7rem; border-bottom: 1px solid rgba(30,53,85,.55); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .data-table td.num { text-align: right; font-family: var(--mono); }
+  .data-table th.num { text-align: right; }
   .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr.latest td { color: var(--teal); }
-  .bar-cell { display: flex; align-items: center; gap: .6rem; }
-  .inline-bar { flex: 1; background: var(--border); border-radius: 3px; height: 5px; overflow: hidden; }
-  .inline-bar-fill { height: 100%; border-radius: 3px; background: var(--teal); }
-  .change-up   { color: var(--red); }
-  .change-down { color: var(--green); }
-  .change-flat { color: var(--muted); }
+  .data-table tr.latest td { color: var(--white); font-weight: 600; }
+  .data-table .muted { color: var(--muted); font-size: .74rem; }
+  .bar-cell { display: flex; align-items: center; gap: .5rem; min-width: 120px; }
+  .inline-bar { flex: 1; background: var(--grid); border-radius: 3px; height: 6px; overflow: hidden; }
+  .inline-bar-fill { height: 100%; border-radius: 3px; }
+  .up { color: #ff8fa3; } .down { color: #7be3a8; } .flat { color: var(--muted); }
 
-  /* ── SOURCE ───────────────────────────────────────── */
-  footer {
-    text-align: center; padding: 1.5rem; color: var(--muted);
-    font-size: .75rem; font-family: var(--mono);
-    border-top: 1px solid var(--border);
+  /* legenda pásem */
+  .bands { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .75rem; }
+  .band-card { border-radius: 10px; padding: .9rem 1rem; border: 1px solid; }
+  .band-card h4 { font: 700 .95rem var(--mono); margin-bottom: .35rem; display: flex; gap: .45rem; align-items: center; color: var(--white); }
+  .band-card h4 small { font-weight: 400; font-size: .72rem; color: var(--muted); }
+  .band-card p { font-size: .8rem; line-height: 1.5; color: var(--text); opacity: .9; }
+  .band-card.red    { background: rgba(232,69,96,.06);  border-color: rgba(232,69,96,.35); }
+  .band-card.amber  { background: rgba(245,166,35,.06); border-color: rgba(245,166,35,.35); }
+  .band-card.yellow { background: rgba(232,197,58,.06); border-color: rgba(232,197,58,.35); }
+  .band-card.green  { background: rgba(46,204,113,.06); border-color: rgba(46,204,113,.35); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .two-col > *, .kpi-grid > *, .fc-grid > *, .rec-items > *, .bands > * { min-width: 0; }
+  footer { text-align: center; padding: 1.5rem 1rem 2rem; color: var(--muted); font-size: .74rem; line-height: 1.7; border-top: 1px solid var(--border); }
+  footer a { text-decoration: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 980px) {
+    .fc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .two-col { grid-template-columns: 1fr; }
   }
-  footer a { color: var(--teal); text-decoration: none; }
-  footer a:hover { text-decoration: underline; }
-
-  /* ── SKELETON/LOADING ─────────────────────────────── */
-  .skeleton {
-    background: linear-gradient(90deg, var(--navy3) 25%, var(--border) 50%, var(--navy3) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 6px; height: 1.5rem;
-  }
-  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-  /* ── RESPONSIVE ───────────────────────────────────── */
   @media (max-width: 600px) {
+    header { padding: 1rem; }
+    .freshness { text-align: left; }
     main { padding: 1rem; }
     .kpi-value { font-size: 1.8rem; }
+    .chart-wrap { height: 340px; }
+    .panel { padding: 1rem; }
+    .alert-badge { display: none; }
   }
 </style>
 </head>
@@ -225,590 +214,721 @@
 
 <header>
   <div class="logo">
-    <div class="logo-icon">🫁</div>
+    <div class="logo-icon" aria-hidden="true">🫁</div>
     <div class="logo-text">
       <h1>ARI Dashboard</h1>
-      <p>Plánování ordinace – akutní pacienti ČR</p>
+      <p>Plánování ordinace – akutní respirační infekce v ČR</p>
     </div>
   </div>
-  <div id="last-updated">⟳ načítám …</div>
+  <div class="freshness" id="freshness">⟳ načítám data…</div>
 </header>
 
 <main>
-
-  <!-- ALERT BANNER -->
-  <div id="alert-banner" class="green">
-    <div class="alert-icon" id="alert-icon">⏳</div>
+  <div id="alert-banner" role="status">
+    <div class="alert-icon" id="alert-icon" aria-hidden="true">⏳</div>
     <div class="alert-body">
       <h2 id="alert-title">Načítám data…</h2>
-      <p id="alert-desc">Prosím čekejte</p>
+      <p id="alert-desc">Prosím čekejte.</p>
     </div>
     <div class="alert-badge" id="alert-badge">–</div>
   </div>
 
-  <!-- KPI CARDS -->
-  <div class="kpi-grid" id="kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">ARI / 100 000 obyvatel</div><div class="kpi-value" id="kpi-ari">–</div><div class="kpi-unit" id="kpi-week">aktuální týden</div></div>
-    <div class="kpi-card" id="kpi-load-card"><div class="kpi-label">Vytížení vs. maximum</div><div class="kpi-value" id="kpi-load">–</div><div class="kpi-unit">% vrcholu (únor 2025)</div></div>
-    <div class="kpi-card"><div class="kpi-label">Forecast průměr (4T)</div><div class="kpi-value" id="kpi-fc">–</div><div class="kpi-unit">ARI / 100 000</div></div>
-    <div class="kpi-card"><div class="kpi-label">Trend příštích 4 týdnů</div><div class="kpi-value" id="kpi-trend" style="font-size:1.3rem;padding-top:.5rem">–</div><div class="kpi-sub" id="kpi-trend-sub"></div></div>
-  </div>
+  <section class="kpi-grid" aria-label="Hlavní ukazatele">
+    <div class="kpi-card" id="kpi-1"><div class="kpi-label">ARI na 100 000 obyvatel</div><div class="kpi-value" id="kpi-ari">–</div><div class="kpi-unit" id="kpi-ari-sub"></div></div>
+    <div class="kpi-card" id="kpi-2"><div class="kpi-label">Trend</div><div class="kpi-value small" id="kpi-trend">–</div><div class="kpi-unit" id="kpi-trend-sub"></div></div>
+    <div class="kpi-card" id="kpi-3"><div class="kpi-label">Předpověď za 4 týdny od dneška</div><div class="kpi-value" id="kpi-fc">–</div><div class="kpi-unit" id="kpi-fc-sub"></div></div>
+    <div class="kpi-card" id="kpi-4"><div class="kpi-label">Šance na epidemickou úroveň</div><div class="kpi-value small" id="kpi-risk">–</div><div class="kpi-unit" id="kpi-risk-sub"></div></div>
+  </section>
 
-  <!-- DOPORUČENÍ -->
-  <div class="panel rec-panel">
-    <div class="rec-title">🩺 Doporučení pro ordinaci tento týden</div>
-    <div class="rec-items" id="rec-items">
-      <div class="rec-item"><div class="rec-emoji">⏳</div><div><h4>Načítám…</h4><p> </p></div></div>
-    </div>
-  </div>
+  <section class="panel" aria-labelledby="rec-h">
+    <h3 id="rec-h">🩺 Doporučení pro ordinaci tento týden</h3>
+    <p class="sub" id="rec-situation">–</p>
+    <div class="rec-items" id="rec-items"></div>
+    <p class="rec-why" id="rec-why"></p>
+  </section>
 
-  <!-- CHART – full width -->
-  <div class="panel" style="margin-bottom:1.5rem">
-    <h3>📈 Trend ARI – posledních ~104 týdnů + forecast &nbsp;<span style="font-size:.7rem;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">Šedá oblast = stejné období loni pro srovnání</span></h3>
-    <div class="chart-wrap">
-      <canvas id="ari-chart"></canvas>
-    </div>
-  </div>
-
-  <!-- FORECAST – horizontal row -->
-  <div class="panel" style="margin-bottom:1.5rem">
-    <h3>🔭 Forecast – příštích 4 týdnů</h3>
-    <div id="forecast-rows" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
-      <div class="skeleton" style="height:60px"></div>
-      <div class="skeleton" style="height:60px"></div>
-      <div class="skeleton" style="height:60px"></div>
-      <div class="skeleton" style="height:60px"></div>
-    </div>
-  </div>
-
-
-  <!-- LEGENDA SEMAFORU -->
-  <div class="panel" style="margin-bottom:1.5rem">
-    <h3>🚦 Legenda semaforu – plánování akutního času v ordinaci</h3>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem;margin-top:.25rem">
-      <div style="background:rgba(232,69,96,.07);border:1px solid rgba(232,69,96,.3);border-radius:10px;padding:1rem">
-        <div style="font-size:1.1rem;font-weight:700;color:var(--red);font-family:var(--mono);margin-bottom:.4rem">🔴 Epidemie &nbsp;<span style="font-size:.75rem;font-weight:400">≥ 1 500 / 100k</span></div>
-        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Je akutní čas dostatečný? Zvažte navýšení kapacity. Telefonická triáž, priorita rizikových skupin.</div>
+  <section class="panel" aria-labelledby="chart-h">
+    <div class="chart-head">
+      <div>
+        <h3 id="chart-h">📈 Nemocnost ARI podle týdne v roce</h3>
+        <p class="sub" id="chart-sub">Letošní rok, loňský rok a běžné rozmezí z minulých let · předpověď na 8 týdnů s nejistotou</p>
       </div>
-      <div style="background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.3);border-radius:10px;padding:1rem">
-        <div style="font-size:1.1rem;font-weight:700;color:var(--amber);font-family:var(--mono);margin-bottom:.4rem">🟠 Zvýšená zátěž &nbsp;<span style="font-size:.75rem;font-weight:400">1 000–1 499</span></div>
-        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Udržujte akutní čas beze změn. Sledujte trend – roste-li ARI, připravte se na červené pásmo.</div>
-      </div>
-      <div style="background:rgba(232,197,58,.07);border:1px solid rgba(232,197,58,.3);border-radius:10px;padding:1rem">
-        <div style="font-size:1.1rem;font-weight:700;color:#e8c53a;font-family:var(--mono);margin-bottom:.4rem">🟡 Mírně zvýšená &nbsp;<span style="font-size:.75rem;font-weight:400">750–999</span></div>
-        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Ke zvážení redukce akutního času (při klesajícím trendu). Obsazujte uvolněné sloty kontrolami.</div>
-      </div>
-      <div style="background:rgba(46,204,113,.07);border:1px solid rgba(46,204,113,.3);border-radius:10px;padding:1rem">
-        <div style="font-size:1.1rem;font-weight:700;color:var(--green);font-family:var(--mono);margin-bottom:.4rem">🟢 Klidná sezóna &nbsp;<span style="font-size:.75rem;font-weight:400">&lt; 750</span></div>
-        <div style="font-size:.82rem;color:var(--text);line-height:1.5">Obsazujte akutní čas kontrolami a preventivními prohlídkami. Připravte kapacitu na podzim (W40).</div>
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Rozsah osy">
+          <button type="button" id="view-cal" aria-pressed="true">Kalendářní rok</button>
+          <button type="button" id="view-season" aria-pressed="false">Sezóna (čec–čer)</button>
+        </div>
+        <label class="chk"><input type="checkbox" id="show-older"> starší roky</label>
       </div>
     </div>
-    <div style="margin-top:.75rem;font-size:.72rem;color:var(--muted);font-family:var(--mono)">
-      Kalibrace: červená = sezóna 2025/26 (peak 2 251/100k) · oranžová = přechodné období · žlutá = přechod jaro/podzim · zelená = letní minimum (394–732/100k)
+    <div class="chart-wrap" id="chart-wrap">
+      <canvas id="ari-chart" role="img" aria-label="Graf týdenní nemocnosti ARI"></canvas>
+      <div class="tooltip" id="tooltip" aria-hidden="true"></div>
     </div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="fc-h">
+    <h3 id="fc-h">🔭 Předpověď na 8 týdnů</h3>
+    <p class="sub" id="fc-sub">–</p>
+    <div class="fc-grid" id="fc-grid"></div>
+    <p class="note" id="fc-note"></p>
+  </section>
+
+  <div class="two-col">
+    <section class="panel" aria-labelledby="hist-h">
+      <h3 id="hist-h">📋 Posledních 12 týdnů</h3>
+      <p class="sub">Oficiální týdenní data SZÚ · datum = pondělí daného týdne</p>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Týden</th><th class="num">ARI/100k</th><th></th><th class="num">ILI</th><th class="num">Změna</th></tr></thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+    <section class="panel" aria-labelledby="acc-h">
+      <h3 id="acc-h">🎯 Jak přesná je předpověď</h3>
+      <p class="sub" id="acc-sub">–</p>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead><tr><th>Horizont</th><th class="num">Nový model</th><th class="num">Původní model</th></tr></thead>
+          <tbody id="acc-body"></tbody>
+        </table>
+      </div>
+      <p class="note" id="acc-note"></p>
+    </section>
   </div>
 
-  <!-- RECENT DATA TABLE -->
-  <div class="panel">
-    <h3>📋 Posledních 12 týdnů – detail</h3>
-    <div style="overflow-x:auto">
-      <table class="data-table" id="history-table">
-        <thead><tr>
-          <th>Týden</th>
-          <th>ARI / 100k</th>
-          <th>Vizualizace</th>
-          <th>ILI / 100k</th>
-          <th>Změna t/t</th>
-          <th>Vytížení</th>
-        </tr></thead>
-        <tbody id="history-body"></tbody>
-      </table>
+  <section class="panel" aria-labelledby="bands-h">
+    <h3 id="bands-h">🚦 Pásma nemocnosti</h3>
+    <p class="sub">Kalibrace na sezónu 2024/25 a 2025/26 (vrchol 2 251/100k v únoru 2025, letní minimum ~400–700/100k)</p>
+    <div class="bands">
+      <div class="band-card red"><h4>🔴 Epidemie <small>≥ 1 500 / 100k</small></h4><p>Vysoký příliv akutních pacientů. Navýšit akutní kapacitu, telefonická triáž, priorita rizikových skupin.</p></div>
+      <div class="band-card amber"><h4>🟠 Zvýšená zátěž <small>1 000–1 499</small></h4><p>Udržet nebo navýšit akutní čas podle trendu. Roste-li nemocnost, připravit se na epidemické pásmo.</p></div>
+      <div class="band-card yellow"><h4>🟡 Mírně zvýšená <small>750–999</small></h4><p>Přechodné období. Při růstu (podzim) akutní čas nezkracovat; redukce jen při jarním poklesu.</p></div>
+      <div class="band-card green"><h4>🟢 Klidná sezóna <small>&lt; 750</small></h4><p>Akutní sloty lze obsazovat kontrolami a prevencí. Podzimní nástup přichází se začátkem škol (W36–W38).</p></div>
     </div>
-  </div>
-
+  </section>
 </main>
 
 <footer>
-  Zdroj dat: <a href="https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/" target="_blank">Státní zdravotní ústav – zprávy ARI/ILI</a>
-  &nbsp;·&nbsp; 100 % = nejhorší měsíční průměr ARI v ČR (únor 2025 = 2 053 / 100k)
-  &nbsp;·&nbsp; Forecast: 50 % krátkodobý trend + 50 % sezónní srovnání s loňskem
+  Zdroj dat: <a href="https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/" target="_blank" rel="noopener">Státní zdravotní ústav – týdenní hlášení ARI/ILI</a>
+  · historie 2009–2023: <a href="https://www.who.int/tools/flunet" target="_blank" rel="noopener">WHO FluID</a> přepočtená na měřítko SZÚ<br>
+  <span id="footer-model">Předpověď: sezónní model ověřený zpětným testem na minulých sezónách.</span>
+  Dashboard je orientační pomůcka pro plánování, nenahrazuje klinický úsudek.
 </footer>
 
 <script>
-/* ────────────────────────────────────────────────────────────
-   DATA LOADING
-   Pokud běžíme na GitHub Pages, stáhne data/ari_data.json.
-   Jinak (lokálně bez serveru) použijeme inline záložní data.
-──────────────────────────────────────────────────────────── */
-const BASELINE = 2053;
-
-// Inline data – vždy funguje i bez serveru
-window.__INLINE_DATA__ = {"meta":{"last_updated":"2026-04-28","source":"Státní zdravotní ústav (SZÚ) – https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/","baseline_label":"únor 2025","baseline_ari_per_100k":2053,"note":"100 % = nejhorší měsíční průměr ARI v roce 2025 (únor 2025 = 2053/100k)","note_w13plus":"Data od W13/2026 chybí ve zdrojovém Excelu (chyba formule, vliv Velikonoc). Scraper je nastaven na automatické doplnění ze SZÚ."},"current":{"week":"2026-W16","ari_per_100k":980,"ili_per_100k":null,"load_pct":0.4774,"trend":"klesající (post-Velikonoce)","note":"Odhad z KHS Středočeský kraj – není přesná národní hodnota SZÚ"},"forecast":[{"week":"2026-W17","ari_forecast":865.0,"direction":"spíš nižší"},{"week":"2026-W18","ari_forecast":913.0,"direction":"spíš nižší"},{"week":"2026-W19","ari_forecast":878.0,"direction":"spíš nižší"},{"week":"2026-W20","ari_forecast":920.0,"direction":"spíš nižší"}],"history":[{"week":"2025-W01","year":2025,"iso_week":1,"ari_per_100k":834,"ili_per_100k":20},{"week":"2025-W02","year":2025,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":40},{"week":"2025-W03","year":2025,"iso_week":3,"ari_per_100k":1499,"ili_per_100k":77},{"week":"2025-W04","year":2025,"iso_week":4,"ari_per_100k":1940,"ili_per_100k":138},{"week":"2025-W05","year":2025,"iso_week":5,"ari_per_100k":2251,"ili_per_100k":257},{"week":"2025-W06","year":2025,"iso_week":6,"ari_per_100k":2219,"ili_per_100k":251},{"week":"2025-W07","year":2025,"iso_week":7,"ari_per_100k":2138,"ili_per_100k":240},{"week":"2025-W08","year":2025,"iso_week":8,"ari_per_100k":1988,"ili_per_100k":196},{"week":"2025-W09","year":2025,"iso_week":9,"ari_per_100k":1867,"ili_per_100k":159},{"week":"2025-W10","year":2025,"iso_week":10,"ari_per_100k":1536,"ili_per_100k":113},{"week":"2025-W11","year":2025,"iso_week":11,"ari_per_100k":1584,"ili_per_100k":88},{"week":"2025-W12","year":2025,"iso_week":12,"ari_per_100k":1501,"ili_per_100k":null},{"week":"2025-W13","year":2025,"iso_week":13,"ari_per_100k":1431,"ili_per_100k":44},{"week":"2025-W14","year":2025,"iso_week":14,"ari_per_100k":1381,"ili_per_100k":39},{"week":"2025-W15","year":2025,"iso_week":15,"ari_per_100k":1295,"ili_per_100k":25},{"week":"2025-W16","year":2025,"iso_week":16,"ari_per_100k":998,"ili_per_100k":15},{"week":"2025-W17","year":2025,"iso_week":17,"ari_per_100k":685,"ili_per_100k":9},{"week":"2025-W18","year":2025,"iso_week":18,"ari_per_100k":783,"ili_per_100k":7},{"week":"2025-W19","year":2025,"iso_week":19,"ari_per_100k":711,"ili_per_100k":7},{"week":"2025-W20","year":2025,"iso_week":20,"ari_per_100k":797,"ili_per_100k":9},{"week":"2025-W21","year":2025,"iso_week":21,"ari_per_100k":783,"ili_per_100k":10},{"week":"2025-W22","year":2025,"iso_week":22,"ari_per_100k":795,"ili_per_100k":9},{"week":"2025-W23","year":2025,"iso_week":23,"ari_per_100k":775,"ili_per_100k":9},{"week":"2025-W24","year":2025,"iso_week":24,"ari_per_100k":738,"ili_per_100k":null},{"week":"2025-W25","year":2025,"iso_week":25,"ari_per_100k":732,"ili_per_100k":7},{"week":"2025-W26","year":2025,"iso_week":26,"ari_per_100k":655,"ili_per_100k":6},{"week":"2025-W27","year":2025,"iso_week":27,"ari_per_100k":449,"ili_per_100k":5},{"week":"2025-W28","year":2025,"iso_week":28,"ari_per_100k":514,"ili_per_100k":5},{"week":"2025-W29","year":2025,"iso_week":29,"ari_per_100k":448,"ili_per_100k":3},{"week":"2025-W30","year":2025,"iso_week":30,"ari_per_100k":515,"ili_per_100k":4},{"week":"2025-W31","year":2025,"iso_week":31,"ari_per_100k":394,"ili_per_100k":4},{"week":"2025-W32","year":2025,"iso_week":32,"ari_per_100k":430,"ili_per_100k":5},{"week":"2025-W33","year":2025,"iso_week":33,"ari_per_100k":444,"ili_per_100k":4},{"week":"2025-W34","year":2025,"iso_week":34,"ari_per_100k":528,"ili_per_100k":5},{"week":"2025-W35","year":2025,"iso_week":35,"ari_per_100k":558,"ili_per_100k":5},{"week":"2025-W36","year":2025,"iso_week":36,"ari_per_100k":643,"ili_per_100k":6},{"week":"2025-W37","year":2025,"iso_week":37,"ari_per_100k":811,"ili_per_100k":8},{"week":"2025-W38","year":2025,"iso_week":38,"ari_per_100k":890,"ili_per_100k":11},{"week":"2025-W39","year":2025,"iso_week":39,"ari_per_100k":934,"ili_per_100k":12},{"week":"2025-W40","year":2025,"iso_week":40,"ari_per_100k":1002,"ili_per_100k":13},{"week":"2025-W41","year":2025,"iso_week":41,"ari_per_100k":1083,"ili_per_100k":15},{"week":"2025-W42","year":2025,"iso_week":42,"ari_per_100k":1062,"ili_per_100k":15},{"week":"2025-W43","year":2025,"iso_week":43,"ari_per_100k":1069,"ili_per_100k":16},{"week":"2025-W44","year":2025,"iso_week":44,"ari_per_100k":762,"ili_per_100k":11},{"week":"2025-W45","year":2025,"iso_week":45,"ari_per_100k":932,"ili_per_100k":14},{"week":"2025-W46","year":2025,"iso_week":46,"ari_per_100k":939,"ili_per_100k":13},{"week":"2025-W47","year":2025,"iso_week":47,"ari_per_100k":862,"ili_per_100k":12},{"week":"2025-W48","year":2025,"iso_week":48,"ari_per_100k":1078,"ili_per_100k":18},{"week":"2025-W49","year":2025,"iso_week":49,"ari_per_100k":1242,"ili_per_100k":33},{"week":"2025-W50","year":2025,"iso_week":50,"ari_per_100k":1486,"ili_per_100k":null},{"week":"2025-W51","year":2025,"iso_week":51,"ari_per_100k":1580,"ili_per_100k":null},{"week":"2026-W01","year":2026,"iso_week":1,"ari_per_100k":939,"ili_per_100k":43},{"week":"2026-W02","year":2026,"iso_week":2,"ari_per_100k":1416,"ili_per_100k":null},{"week":"2026-W03","year":2026,"iso_week":3,"ari_per_100k":1281,"ili_per_100k":69},{"week":"2026-W04","year":2026,"iso_week":4,"ari_per_100k":1456,"ili_per_100k":80},{"week":"2026-W05","year":2026,"iso_week":5,"ari_per_100k":1497,"ili_per_100k":73},{"week":"2026-W06","year":2026,"iso_week":6,"ari_per_100k":1534,"ili_per_100k":68},{"week":"2026-W07","year":2026,"iso_week":7,"ari_per_100k":1497,"ili_per_100k":null},{"week":"2026-W08","year":2026,"iso_week":8,"ari_per_100k":1423,"ili_per_100k":null},{"week":"2026-W09","year":2026,"iso_week":9,"ari_per_100k":1364,"ili_per_100k":null},{"week":"2026-W10","year":2026,"iso_week":10,"ari_per_100k":1326,"ili_per_100k":27},{"week":"2026-W11","year":2026,"iso_week":11,"ari_per_100k":1276,"ili_per_100k":21},{"week":"2026-W12","year":2026,"iso_week":12,"ari_per_100k":1255,"ili_per_100k":17},{"week":"2026-W13","year":2026,"iso_week":13,"ari_per_100k":1200,"ili_per_100k":null,"note":"odhad z KHS StC (1084) + YoY; Velikonoce 29.3.2026 v tomto týdnu"},{"week":"2026-W14","year":2026,"iso_week":14,"ari_per_100k":1150,"ili_per_100k":15,"note":"odhad z KHS StC (1064); Velký pátek 3.4. + Velikonoce 5-6.4."},{"week":"2026-W15","year":2026,"iso_week":15,"ari_per_100k":900,"ili_per_100k":null,"note":"odhad z KHS StC (734, -31% Velikonoce); skutečná hodnota pravděpodobně 850-1000"},{"week":"2026-W16","year":2026,"iso_week":16,"ari_per_100k":980,"ili_per_100k":null,"note":"odhad z KHS StC (982, +34% post-Velikonoce recovery)"}]};
-
-async function loadData() {
-  const inline = window.__INLINE_DATA__;
-  let fetched = null;
-  try {
-    const r = await fetch('data/ari_data.json?v=' + Date.now());
-    if (r.ok) fetched = await r.json();
-  } catch(e) {
-    console.warn('JSON fetch selhal:', e.message);
+'use strict';
+/* ══════════════════════════════════════════════════════════════════════
+   ISO TÝDNY A FORMÁTOVÁNÍ
+══════════════════════════════════════════════════════════════════════ */
+function isoWeekOf(d) {                              // Date → [isoRok, isoTýden]
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - day);
+  const y0 = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
+  return [t.getUTCFullYear(), Math.ceil((((t - y0) / 86400000) + 1) / 7)];
+}
+function weeksInYear(y) { return isoWeekOf(new Date(y, 11, 28))[1]; }
+function isoMonday(y, w) {                            // pondělí ISO týdne (UTC)
+  const jan4 = new Date(Date.UTC(y, 0, 4));
+  const d = new Date(jan4);
+  d.setUTCDate(jan4.getUTCDate() - ((jan4.getUTCDay() || 7) - 1) + (w - 1) * 7);
+  return d;
+}
+function weeksBetween(a, b) { return Math.round((isoMonday(b[0], b[1]) - isoMonday(a[0], a[1])) / 6048e5); }
+function addWeeks(y, w, k) { const d = isoMonday(y, w); d.setUTCDate(d.getUTCDate() + 7 * k); return isoWeekOf(new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())); }
+const fmtDM  = d => `${d.getUTCDate()}. ${d.getUTCMonth() + 1}.`;
+const fmtDMY = d => `${fmtDM(d)} ${d.getUTCFullYear()}`;
+const nf = new Intl.NumberFormat('cs-CZ', { maximumFractionDigits: 0 });
+const fmtN = v => (v == null || !isFinite(v)) ? '–' : nf.format(Math.round(v));
+const fmtPct = (v, sign = true) => v == null ? '–' : (sign && v > 0 ? '+' : '') + v.toLocaleString('cs-CZ', { maximumFractionDigits: 1 }) + ' %';
+/** „W39 · po 21. 9. 2026" */
+function weekLabel(y, w, { year = true, prefix = true } = {}) {
+  const m = isoMonday(y, w);
+  return `W${String(w).padStart(2, '0')} · ${prefix ? 'po ' : ''}${year ? fmtDMY(m) : fmtDM(m)}`;
+}
+function el(id) { return document.getElementById(id); }
+function setText(id, t) { el(id).textContent = t; }
+function h(tag, attrs = {}, ...kids) {             // bezpečná tvorba DOM (textContent)
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === 'class') n.className = v; else if (k === 'style') n.style.cssText = v; else n.setAttribute(k, v);
   }
-  if (!fetched) return inline;
-  const merged = Object.assign({}, inline, fetched);
-  // History: zvolíme delší (více dat = lepší)
-  if ((inline.history||[]).length > (fetched.history||[]).length) {
-    merged.history = inline.history;
-  }
-  // Forecast: pokud server nemá, použijeme inline
-  if (!fetched.forecast || fetched.forecast.length === 0) {
-    merged.forecast = inline.forecast || [];
-  }
-  // Current: pokud inline je novější ISO týden, zachováme ho
-  if (inline.current && fetched.current) {
-    const a = parseWeekKey(inline.current.week), b = parseWeekKey(fetched.current.week);
-    if (a && b && (a[0] > b[0] || (a[0] === b[0] && a[1] > b[1]))) {
-      merged.current = inline.current;
-    }
-  }
-  return merged;
+  for (const k of kids.flat()) if (k != null) n.append(k instanceof Node ? k : document.createTextNode(String(k)));
+  return n;
 }
 
-/* ────────────────────────────────────────────────────────────
-   ALERT / DOPORUČENÍ  logic – 4 úrovně dle reálných dat 2025/2026
-   Kalibrace z dat:
-     Zelená (klid):   <  750 – hodnoty červen-srpen 2025 (394–732)
-     Žlutá (mírná):  750–999 – předzimní nástup, jarní ústup  
-     Oranžová:      1000–1499 – zvýšená zátěž, mimo vrchol epidemie
-     Červená:       ≥ 1500 – epidemická sezóna (únor 2025 peak=2251)
-──────────────────────────────────────────────────────────── */
-function getStatus(ari) {
-  if (ari >= 1500) return 'red';
-  if (ari >= 1000) return 'amber';
-  if (ari >= 750)  return 'yellow';
-  return 'green';
+/* ══════════════════════════════════════════════════════════════════════
+   PÁSMA, SVÁTKY, FÁZE SEZÓNY
+══════════════════════════════════════════════════════════════════════ */
+const BANDS = [
+  { key: 'red',    min: 1500, name: 'epidemie',        color: '#e84560' },
+  { key: 'amber',  min: 1000, name: 'zvýšená zátěž',   color: '#f5a623' },
+  { key: 'yellow', min: 750,  name: 'mírně zvýšená',   color: '#e8c53a' },
+  { key: 'green',  min: 0,    name: 'klidná sezóna',   color: '#2ecc71' },
+];
+const bandOf = v => BANDS.find(b => v >= b.min) || BANDS[3];
+function seasonPhase(w) {
+  if (w >= 34 && w <= 48) return 'podzim';
+  if (w >= 49 || w <= 10) return 'zima';
+  if (w >= 11 && w <= 26) return 'jaro';
+  return 'léto';
+}
+function easterSunday(y) {                           // anonymní gregoriánský algoritmus
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
+  const f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), hh = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - hh - k) % 7, m = Math.floor((a + 11 * hh + 22 * l) / 451);
+  const month = Math.floor((hh + l - 7 * m + 114) / 31), day = ((hh + l - 7 * m + 114) % 31) + 1;
+  return new Date(Date.UTC(y, month - 1, day));
+}
+/** Týdny, kdy svátky/prázdniny uměle snižují hlášenou nemocnost. */
+function holidayNote(y, w) {
+  const mon = isoMonday(y, w), sun = new Date(mon); sun.setUTCDate(mon.getUTCDate() + 6);
+  const inWeek = d => d >= mon && d <= sun;
+  const yy = mon.getUTCFullYear();
+  const notes = [];
+  for (const Y of [yy, yy + 1]) {
+    if (inWeek(new Date(Date.UTC(Y, 9, 28)))) notes.push('28. října a podzimní prázdniny');
+    if (inWeek(new Date(Date.UTC(Y, 10, 17)))) notes.push('17. listopadu');
+    if ([24, 25, 26, 31].some(dd => inWeek(new Date(Date.UTC(Y, 11, dd)))) || inWeek(new Date(Date.UTC(Y, 0, 1)))) notes.push('vánoční svátky');
+    const e = easterSunday(Y), gf = new Date(e), em = new Date(e);
+    gf.setUTCDate(e.getUTCDate() - 2); em.setUTCDate(e.getUTCDate() + 1);
+    if (inWeek(gf) || inWeek(em)) notes.push('Velikonoce');
+  }
+  return [...new Set(notes)];
 }
 
-const STATUS_CONFIG = {
-  red: {
-    icon: '🔴',
-    title: 'EPIDEMICKÁ SEZÓNA (≥ 1 500 / 100k)',
-    desc: 'ARI na epidemické úrovni. Příliv akutních respiračních pacientů je výrazně nadprůměrný.',
-    badge: 'Epidemie',
-    color: 'var(--red)',
+/* ══════════════════════════════════════════════════════════════════════
+   DOPORUČENÍ – rozhodovací tabulka (úroveň × trend × předpověď)
+   Zásada: nikdy nedoporučit zkrácení akutního času, když nemocnost roste
+   nebo předpověď na příští týdny roste.
+══════════════════════════════════════════════════════════════════════ */
+const VAX = { e: '💉', h: 'Očkování teď', p: 'Říjen a listopad jsou ideální na očkování proti chřipce (a COVID-19 u rizikových skupin) – ochrana nastupuje zhruba za 2 týdny, tedy před vrcholem sezóny.' };
+const SITUATIONS = {
+  epidemie: { band: 'red', icon: '🔴', badge: 'Epidemie',
+    title: 'EPIDEMICKÁ ÚROVEŇ – plná akutní kapacita',
     recs: [
-      { e:'⏱️', h:'Je akutní čas dostatečný?', p:'Zkontrolujte, zda aktuální počet vyhrazených akutních slotů kapacitně stačí. Pokud ne, navyšte je – jinak hrozí přetížení ordinace.' },
-      { e:'📈', h:'Sledujte týdenní vývoj', p:'Roste-li ARI >10 % t/t, přidejte akutní sloty preventivně ještě před vrcholem vlny.' },
-      { e:'📞', h:'Zvažte telefonickou triáž', p:'Předtřídění přes telefon odfiltruje pacienty, kteří nepotřebují osobní vyšetření – uvolní kapacitu pro těžší případy.' },
-      { e:'🤧', h:'Rizikové skupiny bez čekání', p:'Senioři 65+, imunosuprimovaní a chroničtí pacienti – přednostní přístup, kratší čekací doba.' },
-    ]
-  },
-  amber: {
-    icon: '🟠',
-    title: 'ZVÝŠENÁ ZÁTĚŽ (1 000–1 499 / 100k)',
-    desc: 'ARI nad standardní úrovní – přechodné období (předzimní nástup nebo jarní ústup). Akutní poptávka je zvýšená, ale zvladatelná.',
-    badge: 'Zvýšená zátěž',
-    color: 'var(--amber)',
+      { e: '⏱️', h: 'Navyšte akutní kapacitu', p: 'Orientačně o 20–40 % proti běžnému provozu. Akutní sloty uvolněte z odkladatelných kontrol a preventivních prohlídek.' },
+      { e: '📞', h: 'Telefonická triáž', p: 'Předtřídění po telefonu odfiltruje pacienty bez potřeby osobního vyšetření (poradenství, neschopenky) a uvolní místo pro těžší stavy.' },
+      { e: '🤧', h: 'Rizikové skupiny přednostně', p: 'Senioři 65+, chronicky nemocní, těhotné a imunosuprimovaní: kratší čekání, včasná indikace antivirotik u chřipky.' },
+      { e: '👥', h: 'Personál a provoz', p: 'Počítejte s nemocností personálu (zástupy). Oddělte respirační pacienty v čekárně, roušky pro pacienty s příznaky.' },
+    ] },
+  epidemie_ustupuje: { band: 'red', icon: '🔴', badge: 'Epidemie · ustupuje',
+    title: 'EPIDEMIE ODEZNÍVÁ – kapacitu zatím držte',
     recs: [
-      { e:'⏱️', h:'Udržujte akutní čas beze změn', p:'Současný objem vyhrazených akutních slotů je správný – nezkracujte ho, dokud ARI neklesne pod 1 000.' },
-      { e:'📊', h:'Monitorujte trend každý týden', p:'Roste-li ARI, připravte se na přechod do červeného pásma a případné navýšení kapacity.' },
-      { e:'📋', h:'Efektivnější dokumentace', p:'Používejte šablony pro rychlé záznamy respiračních konzultací – ušetříte čas při vyšším počtu pacientů.' },
-      { e:'💉', h:'Aktivní nabídka očkování', p:'Vhodný čas pro nabídku chřipkové vakcíny rizikovým skupinám, které ještě nejsou očkované.' },
-    ]
-  },
-  yellow: {
-    icon: '🟡',
-    title: 'MÍRNĚ ZVÝŠENÁ ZÁTĚŽ (750–999 / 100k)',
-    desc: 'ARI na přechodné úrovni – podzimní nástup nebo jarní doznívání. Akutní čas lze začít pozvolna upravovat.',
-    badge: 'Mírně zvýšená',
-    color: '#e8c53a',
+      { e: '⏱️', h: 'Akutní kapacitu zatím nesnižujte', p: 'Snižujte až po dvou týdnech poklesu pod 1 500/100k – pokles bývá pozvolný a občas přijde druhá vlna (chřipka B po chřipce A).' },
+      { e: '📋', h: 'Připravte návrat kontrol', p: 'Naplánujte odložené kontroly a preventivní prohlídky na týdny, kdy předpověď klesne do pásma zvýšené zátěže.' },
+      { e: '📞', h: 'Triáž ponechte', p: 'Telefonické předtřídění ponechte, dokud je nemocnost nad 1 000/100k.' },
+      { e: '👥', h: 'Personál', p: 'Dejte prostor na zotavení týmu, ale plánujte dovolené až po poklesu do žlutého pásma.' },
+    ] },
+  zvysena_roste: { band: 'amber', icon: '🟠', badge: 'Zvýšená · roste',
+    title: 'ZVÝŠENÁ ZÁTĚŽ A NEMOCNOST DÁL ROSTE – navyšte kapacitu',
     recs: [
-      { e:'⏱️', h:'Ke zvážení: mírná redukce akutního času', p:'Pokud ARI klesá (jarní ústup), zvažte postupné snižování vyhrazeného akutního času a nahrazení kontrolami. Pokud roste (podzim), zatím udržujte.' },
-      { e:'📊', h:'Sledujte směr trendu', p:'Klíčové je, zda ARI roste nebo klesá. Rostoucí trend = udržet kapacitu. Klesající trend = můžete pomalu redukovat.' },
-      { e:'📆', h:'Plánujte předem', p:'Podzimní sezóna nastupuje kolem W40–42. Začněte nyní domlouvat rozvrh pro zimní provoz ordinace.' },
-      { e:'💉', h:'Preventivní konzultace', p:'Ideální čas pro diskuzi o prevenci, očkování a úpravě léčby u chronicky nemocných pacientů.' },
-    ]
-  },
-  green: {
-    icon: '🟢',
-    title: 'KLIDNÁ SEZÓNA – letní minimum (< 750 / 100k)',
-    desc: 'ARI na mezisezónním minimu. Respirační akutní poptávka je minimální.',
-    badge: 'Klid',
-    color: 'var(--green)',
+      { e: '⏱️', h: 'Navyšte akutní kapacitu', p: 'Orientačně o 10–20 % v příštích 2–4 týdnech. Akutní čas rozhodně nezkracujte.' },
+      VAX,
+      { e: '📞', h: 'Připravte triáž', p: 'Nastavte telefonické předtřídění a šablony pro rychlé záznamy respiračních konzultací dřív, než přijde vrchol.' },
+      { e: '📅', h: 'Plánujte personál', p: 'Dovolené a zástupy plánujte s ohledem na zimní vlnu – vrchol chřipky bývá v lednu až únoru (W03–W07).' },
+    ] },
+  zvysena_stabilni: { band: 'amber', icon: '🟠', badge: 'Zvýšená · stabilní',
+    title: 'ZVÝŠENÁ ZÁTĚŽ – STABILNÍ',
     recs: [
-      { e:'⏱️', h:'Obsazujte akutní čas kontrolami', p:'Vyhrazené akutní sloty, které nejsou obsazeny akutními pacienty, využijte pro plánované kontroly, preventivní prohlídky nebo dispenzární vyšetření.' },
-      { e:'🏥', h:'Preventivní prohlídky a dispenzarizace', p:'Nejlepší čas pro objednání pacientů na preventivní prohlídky, mamografie, kolonoskopie, bilance chronicky nemocných.' },
-      { e:'📚', h:'Administrativa a vzdělávání', p:'Vhodný čas pro CME aktivity, audit dokumentace, příprava zimního provozu ordinace.' },
-      { e:'🔭', h:'Připravte kapacitu na podzim', p:'Sezóna typicky nastoupí W40–42 (říjen). Dohodněte rozvrh a zásoby léčiv předem.' },
-    ]
-  }
+      { e: '⏱️', h: 'Akutní čas udržujte', p: 'Současný objem akutních slotů ponechte. Nezkracujte ho, dokud nemocnost neklesne pod 1 000/100k.' },
+      { e: '📊', h: 'Sledujte trend', p: 'Při obratu k růstu přidejte akutní sloty preventivně – nástup chřipkové vlny bývá rychlý (+20–40 % za týden).' },
+      VAX,
+      { e: '📋', h: 'Efektivní dokumentace', p: 'Šablony pro respirační konzultace a e-neschopenky ušetří čas při vyšším počtu pacientů.' },
+    ] },
+  zvysena_klesa: { band: 'amber', icon: '🟠', badge: 'Zvýšená · klesá',
+    title: 'ZVÝŠENÁ ZÁTĚŽ, ALE KLESÁ',
+    recs: [
+      { e: '⏱️', h: 'Akutní čas zatím ponechte', p: 'Redukovat začněte až po dvou týdnech poklesu pod 1 000/100k a jen pokud předpověď dál klesá.' },
+      { e: '📋', h: 'Vracejte odložené kontroly', p: 'Postupně obsazujte uvolněné sloty kontrolami, které se během vlny odkládaly.' },
+      { e: '📊', h: 'Pozor na výkyvy', p: 'Po svátcích a prázdninách hlášená nemocnost krátkodobě vyskočí – nejde o novou vlnu, pokud předpověď klesá.' },
+      { e: '💉', h: 'Dočkování rizikových', p: 'Nabídněte očkování těm, kdo ho ještě nemají – sezóna ještě nekončí.' },
+    ] },
+  nastup: { band: 'yellow', icon: '🟡', badge: 'Nástup sezóny',
+    title: 'NÁSTUP SEZÓNY – NEMOCNOST ROSTE, PŘIPRAVTE NAVÝŠENÍ',
+    recs: [
+      { e: '⏱️', h: 'Akutní čas nezkracujte', p: 'Naopak připravte jeho navýšení o 10–20 % na příští týdny – předpověď míří do pásma zvýšené zátěže.' },
+      VAX,
+      { e: '📞', h: 'Připravte provoz', p: 'Telefonická triáž, šablony záznamů, zásoba testů (chřipka/COVID/RSV) a ochranných pomůcek.' },
+      { e: '📅', h: 'Personál', p: 'Rozvrh na podzim a zimu domluvte teď; počítejte s tím, že kolem podzimních prázdnin (W44) bývá krátký pokles a pak další růst.' },
+    ] },
+  mirna_stabilni: { band: 'yellow', icon: '🟡', badge: 'Mírně zvýšená',
+    title: 'MÍRNĚ ZVÝŠENÁ ZÁTĚŽ – STABILNÍ',
+    recs: [
+      { e: '⏱️', h: 'Akutní čas udržujte', p: 'Bez změny. Rozhoduje směr – při obratu k růstu připravte navýšení, při dlouhodobém poklesu můžete pozvolna ubírat.' },
+      { e: '📊', h: 'Sledujte směr trendu', p: 'Na podzim nemocnost téměř vždy dál roste; na jaře spíš klesá. Řiďte se předpovědí na příští 4 týdny.' },
+      VAX,
+      { e: '🩺', h: 'Prevence a chronici', p: 'Vhodný čas na kontroly chronicky nemocných a úpravu léčby před zimou.' },
+    ] },
+  dozniva: { band: 'yellow', icon: '🟡', badge: 'Doznívání',
+    title: 'DOZNÍVÁNÍ SEZÓNY – můžete pozvolna redukovat',
+    recs: [
+      { e: '⏱️', h: 'Pozvolná redukce akutního času', p: 'Nemocnost i předpověď klesají – akutní sloty můžete postupně nahrazovat kontrolami a preventivními prohlídkami.' },
+      { e: '📋', h: 'Odložená péče', p: 'Dohoňte preventivní prohlídky, screeningy a dispenzární kontroly odložené během zimy.' },
+      { e: '📊', h: 'Hlídejte výkyvy', p: 'Velikonoce a jarní prázdniny dočasně snižují hlášenou nemocnost – po nich bývá mírný návrat.' },
+      { e: '📚', h: 'Administrativa a vzdělávání', p: 'Prostor pro CME, audit dokumentace a vyhodnocení zimní sezóny.' },
+    ] },
+  pred_sezonou: { band: 'green', icon: '🟢', badge: 'Klid · roste',
+    title: 'KLID, ALE NEMOCNOST ZAČÍNÁ RŮST',
+    recs: [
+      { e: '⏱️', h: 'Připravte se na podzim', p: 'Akutní sloty zatím obsazujte kontrolami, ale rozvrh nezamykejte dlouho dopředu – se začátkem škol nemocnost každoročně roste (W34–W41).' },
+      VAX,
+      { e: '📅', h: 'Plánujte kapacitu', p: 'Dohodněte rozvrh a zástupy na říjen až únor, objednejte vakcíny a testy.' },
+      { e: '🩺', h: 'Prevence teď', p: 'Využijte poslední klidné týdny na preventivní prohlídky a dispenzarizaci.' },
+    ] },
+  klid: { band: 'green', icon: '🟢', badge: 'Klid',
+    title: 'KLIDNÁ SEZÓNA – letní minimum',
+    recs: [
+      { e: '⏱️', h: 'Obsazujte akutní čas kontrolami', p: 'Nevyužité akutní sloty využijte pro plánované kontroly, preventivní prohlídky a dispenzární vyšetření.' },
+      { e: '🏥', h: 'Prevence a screening', p: 'Nejlepší čas na preventivní prohlídky, screeningy a bilance chronicky nemocných.' },
+      { e: '📚', h: 'Administrativa a vzdělávání', p: 'Prostor pro CME, audit dokumentace a přípravu zimního provozu.' },
+      { e: '🔭', h: 'Podzim přijde se školou', p: 'Nemocnost začíná růst se začátkem školního roku (W36–W38) – plánujte kapacitu na září až únor.' },
+    ] },
 };
 
-/* ────────────────────────────────────────────────────────────
-   ISO-TÝDEN HELPERY – aby dashboard věděl, kolik je "teď"
-──────────────────────────────────────────────────────────── */
-function isoWeekOf(d) {                       // Date -> [isoRok, isoTýden]
-  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-  const day = t.getUTCDay() || 7;             // Po=1 … Ne=7
-  t.setUTCDate(t.getUTCDate() + 4 - day);     // posun na čtvrtek téhož týdne
-  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1));
-  const week = Math.ceil((((t - yearStart) / 86400000) + 1) / 7);
-  return [t.getUTCFullYear(), week];
+function decideSituation(ctx) {
+  const { band, rising, falling, fcRising, fcFalling, pRed4, pAmber4 } = ctx;
+  const up = rising || fcRising, down = falling && fcFalling;
+  if (band === 'red') return down ? 'epidemie_ustupuje' : 'epidemie';
+  if (band === 'amber') return (up || pRed4 >= 0.25) ? 'zvysena_roste' : down ? 'zvysena_klesa' : 'zvysena_stabilni';
+  if (band === 'yellow') return (up || pAmber4 >= 0.5) ? 'nastup' : down ? 'dozniva' : 'mirna_stabilni';
+  return (up || ctx.pYellow4 >= 0.5) ? 'pred_sezonou' : 'klid';
 }
-function isoWeeksInYear(year) { return isoWeekOf(new Date(year, 11, 28))[1]; } // 52 nebo 53
-function isoWeekMonday(year, week) {          // pondělí daného ISO týdne (UTC)
-  const jan4 = new Date(Date.UTC(year, 0, 4));
-  const day = jan4.getUTCDay() || 7;
-  const mon = new Date(jan4);
-  mon.setUTCDate(jan4.getUTCDate() - day + 1 + (week - 1) * 7);
-  return mon;
+
+/* ══════════════════════════════════════════════════════════════════════
+   NAČTENÍ DAT
+══════════════════════════════════════════════════════════════════════ */
+async function loadData() {
+  const r = await fetch('data/ari_data.json?v=' + Date.now(), { cache: 'no-store' });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
 }
-function weeksBetween(y1, w1, y2, w2) {        // celé týdny z (y1,w1) do (y2,w2)
-  return Math.round((isoWeekMonday(y2, w2) - isoWeekMonday(y1, w1)) / (7 * 86400000));
-}
-function nextWk(y, w) { return w >= isoWeeksInYear(y) ? [y + 1, 1] : [y, w + 1]; }
-function wkKey(y, w) { return `${y}-W${String(w).padStart(2, '0')}`; }
-function parseWeekKey(wk) {
-  const mm = /(\d{4})-W(\d{1,2})/.exec(wk || '');
-  return mm ? [parseInt(mm[1], 10), parseInt(mm[2], 10)] : null;
-}
-function lastCompletedWeek() {                 // poslední UZAVŘENÝ ISO týden
-  const [cy, cw] = isoWeekOf(new Date());
-  return cw > 1 ? [cy, cw - 1] : [cy - 1, isoWeeksInYear(cy - 1)];
-}
-function plTydny(n) { return n === 1 ? 'týden' : (n >= 2 && n <= 4) ? 'týdny' : 'týdnů'; }
 
-/* ────────────────────────────────────────────────────────────
-   RENDER
-──────────────────────────────────────────────────────────── */
-function renderDashboard(data) {
-  const { meta, current, forecast, history } = data;
-  const ari    = current.ari_per_100k ?? 0;
-  const status = getStatus(Math.max(0, ari));
-  const cfg    = STATUS_CONFIG[status];
+/* ══════════════════════════════════════════════════════════════════════
+   VYKRESLENÍ
+══════════════════════════════════════════════════════════════════════ */
+let STATE = null;
 
-  // ── Jak stará jsou data? ──
-  const realHist = (history || []).filter(h => h.ari_per_100k != null);
-  const lastReal = realHist.length ? realHist[realHist.length - 1] : null;
-  const lastKey  = lastReal ? lastReal.week : current.week;
-  const lrk      = parseWeekKey(lastKey) || (lastReal ? [lastReal.year, lastReal.iso_week] : null);
-  const [tY, tW] = lastCompletedWeek();
-  const behind   = lrk ? Math.max(0, weeksBetween(lrk[0], lrk[1], tY, tW)) : 0;
-  const stale    = behind >= 2;
+function render(data) {
+  const hist = data.history.filter(r => r.ari_per_100k != null)
+    .map(r => ({ ...r, y: r.year, w: r.iso_week, v: r.ari_per_100k }));
+  const last = hist[hist.length - 1];
+  const prev = hist[hist.length - 2], prev2 = hist[hist.length - 3];
+  const fc = (data.forecast || []).map(f => ({ ...f, y: f.year, w: f.iso_week }));
+  const now = isoWeekOf(new Date());
+  const lag = weeksBetween([last.y, last.w], now);       // 1–2 = běžné zpoždění SZÚ
+  const band = bandOf(last.v);
 
-  // Last updated – ukaž týden DAT, ne jen datum zápisu souboru
-  const luEl = document.getElementById('last-updated');
-  luEl.textContent = `Data: ${lastKey} · zdroj ${meta.last_updated}`
-    + (behind >= 1 ? `  ·  ⚠ ${behind} ${plTydny(behind)} pozadu` : '');
-  luEl.style.color = stale ? 'var(--amber)' : '';
-  luEl.style.borderColor = stale ? 'var(--amber)' : '';
+  /* ── čerstvost dat ── */
+  const fr = el('freshness');
+  fr.replaceChildren(
+    h('div', {}, 'Poslední data: ', h('strong', {}, weekLabel(last.y, last.w)), ' (SZÚ)'),
+    h('div', {}, `Tento týden: W${String(now[1]).padStart(2, '0')} · aktualizováno ${data.meta?.last_updated ? fmtDMY(new Date(data.meta.last_updated + 'T00:00:00Z')) : '–'}`)
+  );
+  fr.classList.toggle('stale', lag >= 3);
+  if (lag >= 3) fr.append(h('div', { style: 'color:var(--amber)' }, `⚠ data ${lag} týdny pozadu – SZÚ zatím nezveřejnil novější report`));
 
-  // Alert banner
-  const banner = document.getElementById('alert-banner');
-  banner.className = status;
-  document.getElementById('alert-icon').textContent  = stale ? '⚠️' : cfg.icon;
-  document.getElementById('alert-title').textContent = cfg.title;
-  document.getElementById('alert-desc').textContent  = stale
-    ? `Poslední dostupná data jsou z týdne ${lastKey} (před ${behind} ${plTydny(behind)}). `
-      + `Novější týdny zatím nebyly ze SZÚ/KHS staženy – níže uvedená čísla popisují stav k ${lastKey}, `
-      + `ne nutně aktuální týden. ${cfg.desc}`
-    : cfg.desc;
-  document.getElementById('alert-badge').textContent = stale ? `Data ${behind} ${plTydny(behind)} pozadu` : cfg.badge;
+  /* ── trend a předpověď ── */
+  const g2 = prev2 ? Math.log(last.v / prev2.v) / 2 : (prev ? Math.log(last.v / prev.v) : 0);
+  const rising = g2 > Math.log(1.05), falling = g2 < -Math.log(1.05);
+  // „za 4 týdny" = od DNEŠNÍHO týdne (data mají ~1–2 týdny zpoždění)
+  const target = addWeeks(now[0], now[1], 4);
+  const f4 = fc.find(f => f.y === target[0] && f.w === target[1]) || fc[fc.length - 1];
+  const first4 = fc.filter(f => weeksBetween(now, [f.y, f.w]) <= 4);
+  const maxP = (k, arr = first4) => arr.length ? Math.max(...arr.map(f => f[k] || 0)) : 0;
+  const ctx = {
+    band: band.key, rising, falling,
+    fcRising: f4 ? f4.median > last.v * 1.05 : false,
+    fcFalling: f4 ? f4.median < last.v * 0.95 : false,
+    pRed4: maxP('p_1500'), pAmber4: maxP('p_1000'), pYellow4: maxP('p_750'),
+  };
+  const sitKey = decideSituation(ctx);
+  const sit = SITUATIONS[sitKey];
+  const ch1 = prev ? (last.v / prev.v - 1) * 100 : null;
+  const ch2 = prev2 ? (last.v / prev2.v - 1) * 100 : null;
 
-  // KPI
-  document.getElementById('kpi-ari').textContent  = (ari ?? 0).toLocaleString('cs-CZ');
-  document.getElementById('kpi-week').textContent = lastKey + (behind >= 1
-    ? ` · před ${behind} ${plTydny(behind)}` : ' · poslední týden');
+  /* ── hlavní hlášení ── */
+  el('alert-banner').className = sit.band;
+  setText('alert-icon', sit.icon);
+  setText('alert-title', sit.title);
+  let desc = `Nemocnost ARI ${fmtN(last.v)}/100k v týdnu ${weekLabel(last.y, last.w, { year: false })}`
+    + (ch1 != null ? ` (${fmtPct(ch1)} proti předchozímu týdnu)` : '') + '.';
+  if (f4) desc += ` Předpověď na ${weekLabel(f4.y, f4.w, { year: false })} (za ${weeksBetween(now, [f4.y, f4.w])} týdny): ${fmtN(f4.median)}/100k (80% rozmezí ${fmtN(f4.q10)}–${fmtN(f4.q90)}).`;
+  if (ctx.pRed4 >= 0.05) desc += ` Šance na epidemickou úroveň do 4 týdnů ${Math.round(ctx.pRed4 * 100)} %.`;
+  setText('alert-desc', desc);
+  setText('alert-badge', sit.badge);
 
-  const loadPct = Math.max(0, ari) / BASELINE * 100;
-  document.getElementById('kpi-load').textContent = loadPct.toFixed(1) + ' %';
-  const lc = document.getElementById('kpi-load-card');
-  lc.classList.remove('green','amber','red');
-  lc.classList.add(status);
+  /* ── KPI ── */
+  const k1 = el('kpi-1'); k1.className = 'kpi-card ' + band.key;
+  setText('kpi-ari', fmtN(last.v));
+  el('kpi-ari-sub').replaceChildren(
+    h('div', {}, weekLabel(last.y, last.w)),
+    h('div', {}, h('span', { class: ch1 > 2 ? 'arrow-up' : ch1 < -2 ? 'arrow-down' : '' }, ch1 > 2 ? '▲ ' : ch1 < -2 ? '▼ ' : '● '),
+      h('strong', {}, fmtPct(ch1)), ' proti předchozímu týdnu'),
+    h('div', {}, `${band.name} · ${fmtN(last.v / (data.meta?.baseline_ari_per_100k || 2053) * 100)} % úrovně vrcholu 2025`)
+  );
+  const trendTxt = rising ? '↗ Rostoucí' : falling ? '↘ Klesající' : '→ Stabilní';
+  setText('kpi-trend', trendTxt);
+  el('kpi-2').className = 'kpi-card ' + (rising ? 'amber' : falling ? 'green' : '');
+  el('kpi-trend-sub').replaceChildren(
+    h('div', {}, h('strong', {}, fmtPct(ch2)), ' za 2 týdny'),
+    h('div', {}, `fáze sezóny: ${seasonPhase(last.w)}`),
+    h('div', {}, ctx.fcRising ? 'předpověď: další růst' : ctx.fcFalling ? 'předpověď: pokles' : 'předpověď: spíš stabilní')
+  );
+  if (f4) {
+    setText('kpi-fc', '≈ ' + fmtN(f4.median));
+    el('kpi-3').className = 'kpi-card ' + bandOf(f4.median).key;
+    el('kpi-fc-sub').replaceChildren(
+      h('div', {}, weekLabel(f4.y, f4.w)),
+      h('div', {}, '80% rozmezí ', h('strong', {}, `${fmtN(f4.q10)}–${fmtN(f4.q90)}`)),
+      h('div', {}, `${fmtPct((f4.median / last.v - 1) * 100)} proti W${String(last.w).padStart(2, '0')}`)
+    );
+  }
+  const f8 = fc.find(f => f.horizon === 8);
+  const p4 = f4 ? Math.round((f4.p_1500 || 0) * 100) : null, p8 = f8 ? Math.round((f8.p_1500 || 0) * 100) : null;
+  setText('kpi-risk', p4 == null ? '–' : `${p4} % · ${p8} %`);
+  el('kpi-4').className = 'kpi-card ' + ((p8 ?? 0) >= 50 ? 'red' : (p8 ?? 0) >= 20 ? 'amber' : 'green');
+  el('kpi-risk-sub').replaceChildren(
+    h('div', {}, 'pravděpodobnost, že nemocnost bude ≥ 1 500/100k'),
+    h('div', {}, f4 && f8 ? `v týdnu W${String(f4.w).padStart(2, '0')} (${p4} %) a W${String(f8.w).padStart(2, '0')} (${p8} %)` : '')
+  );
 
-  // Forecast: ukazuj jen týdny, které ještě nenastaly (jinak by se "předpověď"
-  // týkala už proběhlých týdnů a vypadala by jako chyba).
-  const [cy, cw] = isoWeekOf(new Date());
-  const futureForecast = (forecast || []).filter(f => {
-    const k = parseWeekKey(f.week);
-    return k && weeksBetween(k[0], k[1], cy, cw) <= 0;   // týden >= aktuální
-  });
+  /* ── doporučení ── */
+  setText('rec-situation', `Situace: ${sit.title.charAt(0) + sit.title.slice(1).toLowerCase()}`);
+  el('rec-items').replaceChildren(...sit.recs.map(r =>
+    h('div', { class: 'rec-item' }, h('div', { class: 'rec-emoji', 'aria-hidden': 'true' }, r.e),
+      h('div', {}, h('h4', {}, r.h), h('p', {}, r.p)))));
+  setText('rec-why',
+    `Proč: úroveň ${fmtN(last.v)}/100k (${band.name}), trend ${trendTxt.slice(2).toLowerCase()} (${fmtPct(ch2)} za 2 týdny), `
+    + (f4 ? `předpověď za 4 týdny ${fmtN(f4.median)}/100k, ` : '')
+    + `šance na ≥ 1 000/100k do 4 týdnů ${Math.round(ctx.pAmber4 * 100)} %, na ≥ 1 500/100k ${Math.round(ctx.pRed4 * 100)} %.`);
 
-  const fcAvg = futureForecast.length
-    ? (futureForecast.reduce((s,f)=>s+f.ari_forecast,0) / futureForecast.length).toFixed(1)
-    : '–';
-  document.getElementById('kpi-fc').textContent = fcAvg;
+  /* ── předpověď ── */
+  const lastLbl = weekLabel(last.y, last.w, { year: false });
+  setText('fc-sub', `Výchozí bod: poslední zveřejněný týden ${lastLbl}. Hodnota = nejpravděpodobnější úroveň; rozmezí = 50% a 80% interval z chyb modelu v minulých sezónách.`);
+  const holidays = [];
+  el('fc-grid').replaceChildren(...fc.map(f => {
+    const d = weeksBetween(now, [f.y, f.w]);
+    const tag = d < 0 ? 'proběhlo · čeká na data' : d === 0 ? 'tento týden' : d === 1 ? 'příští týden' : `za ${d} týdny`.replace('za 5 týdny', 'za 5 týdnů').replace(/za ([5-9]) týdny/, 'za $1 týdnů');
+    const b = bandOf(f.median);
+    const hn = holidayNote(f.y, f.w);
+    if (hn.length) holidays.push(`W${String(f.w).padStart(2, '0')} (${hn.join(', ')})`);
+    return h('div', { class: 'fc-card' + (f.horizon > 4 ? ' far' : '') },
+      h('div', { class: 'fc-top' }, h('span', { class: 'fc-week' }, `W${String(f.w).padStart(2, '0')}`), h('span', { class: 'fc-tag' }, tag)),
+      h('div', { class: 'fc-date' }, `po ${fmtDMY(isoMonday(f.y, f.w))}` + (hn.length ? ' · svátky' : '')),
+      h('div', { class: 'fc-val' }, h('span', { class: 'dot ' + b.key, 'aria-hidden': 'true' }), fmtN(f.median)),
+      h('div', { class: 'fc-band' }, b.name),
+      h('div', { class: 'fc-range' },
+        h('div', {}, '50 %: ', h('strong', {}, `${fmtN(f.q25)}–${fmtN(f.q75)}`)),
+        h('div', {}, '80 %: ', h('strong', {}, `${fmtN(f.q10)}–${fmtN(f.q90)}`)),
+        h('div', {}, `≥ 1 000: ${Math.round((f.p_1000 || 0) * 100)} % · ≥ 1 500: ${Math.round((f.p_1500 || 0) * 100)} %`)));
+  }));
+  const notes = [];
+  if (lag >= 1) notes.push(`SZÚ zveřejňuje týdenní data se zpožděním zhruba týden; týdny označené „proběhlo“ jsou proto zatím odhad.`);
+  notes.push('Týdny 1–4 jsou spolehlivější, 5–8 orientační (nejistota roste s horizontem).');
+  if (holidays.length) notes.push(`Pozor na svátky: ${holidays.join('; ')} – hlášená nemocnost bývá uměle nižší a po svátcích se vrací.`);
+  setText('fc-note', notes.join(' '));
 
-  const trendDir = futureForecast.length ? futureForecast[0].direction : '–';
-  document.getElementById('kpi-trend').textContent =
-      trendDir === 'spíš nižší' ? '↘ Klesající' :
-      trendDir === 'spíš vyšší' ? '↗ Rostoucí'  :
-      trendDir === '–'          ? '→ –'          : '→ Stagnace';
+  /* ── historie ── */
+  const recent = hist.slice(-12);
+  el('history-body').replaceChildren(...recent.map((r, i) => {
+    const p = i > 0 ? recent[i - 1].v : (hist[hist.length - 13]?.v ?? null);
+    const c = p ? (r.v / p - 1) * 100 : null;
+    const b = bandOf(r.v);
+    return h('tr', { class: i === recent.length - 1 ? 'latest' : '' },
+      h('td', {}, `W${String(r.w).padStart(2, '0')} `, h('span', { class: 'muted' }, `po ${fmtDMY(isoMonday(r.y, r.w))}`),
+        r.source === 'interpolated' ? h('span', { class: 'muted', title: r.note || 'dopočteno' }, ' · dopočteno') : null),
+      h('td', { class: 'num' }, fmtN(r.v)),
+      h('td', {}, h('div', { class: 'bar-cell' }, h('div', { class: 'inline-bar' },
+        h('div', { class: 'inline-bar-fill', style: `width:${Math.min(100, r.v / 2300 * 100).toFixed(1)}%;background:${b.color}` })))),
+      h('td', { class: 'num' }, r.ili_per_100k != null ? r.ili_per_100k.toLocaleString('cs-CZ') : '–'),
+      h('td', { class: 'num ' + (c == null ? 'flat' : c > 2 ? 'up' : c < -2 ? 'down' : 'flat') }, fmtPct(c)));
+  }));
 
-  // Doporučení
-  const recEl = document.getElementById('rec-items');
-  recEl.innerHTML = cfg.recs.map(r =>
-    `<div class="rec-item"><div class="rec-emoji">${r.e}</div><div><h4>${r.h}</h4><p>${r.p}</p></div></div>`
-  ).join('');
-
-  // Forecast rows
-  const fcEl = document.getElementById('forecast-rows');
-  if (!futureForecast.length) {
-    const msg = stale
-      ? `Forecast bude k dispozici po doplnění aktuálních dat (poslední data: ${lastKey}). Předpověď z minulých týdnů se nezobrazuje.`
-      : `Forecast není k dispozici – čekáme na doplnění dat ze SZÚ.`;
-    fcEl.innerHTML = `<div style="color:var(--muted);font-size:.85rem;padding:.5rem;grid-column:1/-1">${msg}</div>`;
-  } else {
-    const maxFc = Math.max(...futureForecast.map(f=>f.ari_forecast), 100);
-    fcEl.innerHTML = futureForecast.map(f => {
-      const pct = (f.ari_forecast / maxFc * 100).toFixed(1);
-      return `<div class="fc-row">
-        <div>
-          <div class="fc-week">${f.week}</div>
-          <div class="fc-dir">${f.direction ?? ''}</div>
-        </div>
-        <div class="fc-bar-wrap"><div class="fc-bar" style="width:${pct}%"></div></div>
-        <div>
-          <div class="fc-val">${f.ari_forecast.toLocaleString('cs-CZ')}</div>
-          <div class="fc-dir">/100k</div>
-        </div>
-      </div>`;
-    }).join('');
+  /* ── přesnost modelu ── */
+  const sk = data.model?.skill;
+  if (sk?.mdae_pct_by_h) {
+    const curSeason = last.w >= 27 ? last.y : last.y - 1;
+    const seasons = (sk.seasons || []).filter(x => x < curSeason);
+    setText('acc-sub', `Zpětný test: model „předpovídal“ každý týden ${seasons.length} minulých sezón (${seasons[0]}/${String(seasons[0] + 1).slice(2)}–${seasons[seasons.length - 1]}/${String(seasons[seasons.length - 1] + 1).slice(2)}, bez covidových let) jen z dat dostupných v danou chvíli. Číslo = typická (mediánová) odchylka od skutečnosti.`);
+    el('acc-body').replaceChildren(...sk.mdae_pct_by_h.map((v, i) => h('tr', {},
+      h('td', {}, `${i + 1} ${i === 0 ? 'týden' : i < 4 ? 'týdny' : 'týdnů'} dopředu`),
+      h('td', { class: 'num' }, `± ${v.toLocaleString('cs-CZ')} %`),
+      h('td', { class: 'num muted' }, sk.legacy_mdae_pct_by_h ? `± ${sk.legacy_mdae_pct_by_h[i].toLocaleString('cs-CZ')} %` : '–'))));
+    setText('acc-note', `Model: ${data.model.label}. Intervaly: ${data.model.interval_method}.`);
+    setText('footer-model', `Předpověď: ${data.model.label} – ověřeno zpětným testem na ${seasons.length} sezónách.`);
   }
 
-  // History table (last 12 weeks) – filtrujeme pouze záznamy s reálnými hodnotami
-  const recent = history.filter(h => h.ari_per_100k != null).slice(-12);
-  document.getElementById('history-body').innerHTML = recent.map((h, i) => {
-    const ari    = h.ari_per_100k;                      // guaranteed non-null here
-    const prev   = i > 0 ? recent[i-1].ari_per_100k : null;
-    const change = (prev != null && ari != null) ? ((ari - prev) / Math.abs(prev || 1) * 100) : null;
-    const chClass= change === null ? 'change-flat' : change > 2 ? 'change-up' : change < -2 ? 'change-down' : 'change-flat';
-    const chText = change === null ? '–' : (change > 0 ? '+' : '') + change.toFixed(1) + ' %';
-    const ariSafe  = Math.max(0, ari ?? 0);
-    const barPct   = ariSafe / BASELINE * 100;
-    const st = getStatus(ariSafe);
-    const barColor = st === 'red' ? 'var(--red)' : st === 'amber' ? 'var(--amber)' : st === 'yellow' ? '#e8c53a' : 'var(--teal)';
-    const isLatest = i === recent.length - 1;
-    return `<tr class="${isLatest ? 'latest' : ''}">
-      <td>${h.week}</td>
-      <td>${ariSafe.toLocaleString('cs-CZ')}</td>
-      <td><div class="bar-cell"><div class="inline-bar"><div class="inline-bar-fill" style="width:${barPct.toFixed(1)}%;background:${barColor}"></div></div></div></td>
-      <td>${h.ili_per_100k != null ? h.ili_per_100k : '–'}</td>
-      <td class="${chClass}">${chText}</td>
-      <td>${barPct.toFixed(1)} %</td>
-    </tr>`;
-  }).join('');
-
-  // Chart
-  renderChart(history, futureForecast);
+  STATE = { data, hist, fc, last, now };
+  renderChart();
 }
 
-/* ────────────────────────────────────────────────────────────
-   CHART – full width, ~2 roky dat, loňský rok jako srovnání
-──────────────────────────────────────────────────────────── */
-let chartInstance = null;
-function renderChart(history, forecast) {
-  const canvas = document.getElementById('ari-chart');
-  // Graf je „nice to have“ – když se knihovna Chart.js nenačte (výpadek CDN),
-  // nesmí to shodit zbytek dashboardu (KPI, doporučení, tabulka).
-  if (typeof Chart === 'undefined') {
-    const wrap = canvas && canvas.parentElement;
-    if (wrap) wrap.innerHTML =
-      `<div style="display:flex;align-items:center;justify-content:center;height:100%;`
-      + `color:var(--muted);font-size:.85rem;text-align:center;padding:1rem">`
-      + `Graf se nepodařilo načíst (knihovna Chart.js není dostupná). `
-      + `Data níže v tabulce jsou v pořádku.</div>`;
-    return;
+/* ══════════════════════════════════════════════════════════════════════
+   GRAF – překryv let podle týdne v roce
+══════════════════════════════════════════════════════════════════════ */
+let chart = null;
+let VIEW = 'cal';          // 'cal' = kalendářní rok (W1–W53) · 'season' = W27–W26
+
+/** Pozice týdne na ose X pro rok/sezónu „ref“. spill = povolit přesah
+    do dalšího roku (jen pro předpověď přes přelom roku v kalendářním pohledu). */
+function xPos(y, w, ref, spill = false) {
+  if (VIEW === 'cal') {
+    if (y === ref) return w;
+    if (spill && y === ref + 1) return weeksInYear(ref) + w;
+    return null;
   }
-  const ctx = canvas.getContext('2d');
+  // sezóna ref = W27 roku ref … W26 roku ref+1
+  const start = [ref, 27];
+  const d = weeksBetween(start, [y, w]);
+  return d >= 0 && d <= 60 ? d + 1 : null;
+}
+/** Kalendářní týden pro pozici x v roce/sezóně ref (pro popisky a tooltip). */
+function weekAt(x, ref) {
+  if (VIEW === 'cal') {
+    const n = weeksInYear(ref);
+    return x <= n ? [ref, x] : [ref + 1, x - n];
+  }
+  return addWeeks(ref, 27, x - 1);
+}
 
-  // Posledních 104 týdnů (cca 2 roky) aktuálního roku
-  const recent = history.slice(-104);
-
-  // Sestavíme mapu loňských hodnot pro srovnávací linii
-  // "Loni" = stejný ISO týden, rok - 1
-  const byYearWeek = {};
-  history.forEach(h => {
-    byYearWeek[`${h.year}-${h.iso_week}`] = h.ari_per_100k;
-  });
-
-  // "Gap" týdny: od posledního týdne s daty až po aktuální (uzavřený) týden.
-  // Díky tomu graf dosáhne až do "teď" a šedá loňská linie ukáže referenci
-  // i tam, kde aktuální data zatím chybí (= viditelná mezera místo zaseknutí).
-  const gap = [];
-  const lastH = recent[recent.length - 1];
-  if (lastH) {
-    const [tgY, tgW] = lastCompletedWeek();
-    let [gy, gw] = nextWk(lastH.year, lastH.iso_week);
-    let guard = 0;
-    while (weeksBetween(gy, gw, tgY, tgW) >= 0 && guard++ < 60) {
-      gap.push({ week: wkKey(gy, gw), year: gy, iso_week: gw });
-      [gy, gw] = nextWk(gy, gw);
+function buildSeries() {
+  const { hist, fc, last } = STATE;
+  const cur = VIEW === 'cal' ? last.y : (last.w >= 27 ? last.y : last.y - 1);
+  const byYear = new Map();
+  for (const r of hist) {
+    for (const ref of [cur, cur - 1]) {
+      const x = xPos(r.y, r.w, ref);
+      if (x == null) continue;
+      if (ref === cur && (r.y > last.y || (r.y === last.y && r.w > last.w))) continue;
+      if (!byYear.has(ref)) byYear.set(ref, []);
+      byYear.get(ref).push({ x, y: r.v, r });
     }
   }
+  // starší roky: běžné rozmezí (10.–90. percentil) + jednotlivé roky
+  const covid = VIEW === 'cal' ? new Set([2020, 2021]) : new Set([2019, 2020, 2021]);
+  const olderRefs = [];
+  const minRef = VIEW === 'cal' ? hist[0].y + 1 : hist[0].y + 1;
+  for (let ref = minRef; ref <= cur - 2; ref++) if (!covid.has(ref)) olderRefs.push(ref);
+  const older = olderRefs.map(ref => ({
+    ref, pts: hist.map(r => ({ x: xPos(r.y, r.w, ref), y: r.v, r }))
+      .filter(p => p.x != null && p.x <= 53),
+  }));
+  const maxX = 53;
+  const pct = (arr, q) => { const s = [...arr].sort((a, b) => a - b); const p = q * (s.length - 1); const lo = Math.floor(p), hi = Math.ceil(p); return s[lo] + (s[hi] - s[lo]) * (p - lo); };
+  const range = [];
+  for (let x = 1; x <= maxX; x++) {
+    const vals = older.map(o => o.pts.find(p => p.x === x)?.y).filter(v => v != null);
+    if (vals.length >= 5) range.push({ x, lo: pct(vals, 0.1), hi: pct(vals, 0.9), med: pct(vals, 0.5), n: vals.length });
+  }
+  const fcPts = fc.map(f => ({ x: xPos(f.y, f.w, cur, true), f })).filter(p => p.x != null);
+  const lastX = xPos(last.y, last.w, cur);
+  return { cur, thisYear: byYear.get(cur) || [], lastYear: byYear.get(cur - 1) || [], older, range, fcPts, lastX };
+}
 
-  // Osa X = reálná data + chybějící (gap) týdny + forecast
-  const tail      = [...gap, ...forecast];
-  const labels    = [...recent.map(h => h.week), ...tail.map(t => t.week)];
-  const totalLen  = labels.length;
+const thresholdPlugin = {
+  id: 'thresholds',
+  afterDraw(c) {
+    const { ctx, chartArea: a, scales: { y } } = c;
+    ctx.save();
+    for (const b of BANDS.slice(0, 3)) {
+      const py = y.getPixelForValue(b.min);
+      if (py < a.top || py > a.bottom) continue;
+      ctx.strokeStyle = b.color; ctx.globalAlpha = .55; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(a.left, py); ctx.lineTo(a.right, py); ctx.stroke();
+      ctx.globalAlpha = 1; ctx.fillStyle = '#8ba7c7'; ctx.font = '10px "IBM Plex Mono", monospace';
+      const lx = Math.max(a.left + 4, c.scales.x.getPixelForValue(VIEW === 'cal' ? 27 : 1));
+      ctx.textAlign = 'left'; ctx.fillText(`${fmtN(b.min)} · ${b.name}`, lx, py - 4);
+    }
+    ctx.restore();
+  },
+};
+const markerPlugin = {
+  id: 'marker',
+  afterDatasetsDraw(c) {
+    const S = c.$S; if (!S) return;
+    const { ctx, chartArea: a, scales: { x, y } } = c;
+    ctx.save();
+    // svislá čára „poslední data“ a „dnes“
+    const nowX = xPos(STATE.now[0], STATE.now[1], S.cur);
+    for (const [xv, label] of [[S.lastX, 'poslední data'], [nowX, 'dnes']]) {
+      if (xv == null) continue;
+      const px = x.getPixelForValue(xv);
+      if (px < a.left || px > a.right) continue;
+      ctx.strokeStyle = '#3a5a80'; ctx.lineWidth = 1; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(px, a.top); ctx.lineTo(px, a.bottom); ctx.stroke();
+      ctx.fillStyle = '#8ba7c7'; ctx.font = '10px "IBM Plex Mono", monospace'; ctx.textAlign = 'center';
+      ctx.fillText(label, px, a.top + 10 + (label === 'dnes' ? 12 : 0));
+    }
+    // koncový bod letoška s prstencem povrchu + přímý popisek
+    const lp = S.thisYear[S.thisYear.length - 1];
+    if (lp) {
+      const px = x.getPixelForValue(lp.x), py = y.getPixelForValue(lp.y);
+      ctx.beginPath(); ctx.arc(px, py, 6, 0, Math.PI * 2); ctx.fillStyle = '#0d1f35'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px, py, 4.5, 0, Math.PI * 2); ctx.fillStyle = getCss('--s-this'); ctx.fill();
+      ctx.fillStyle = '#ddeeff'; ctx.font = '600 11px "IBM Plex Sans", sans-serif'; ctx.textAlign = 'right';
+      ctx.fillText(`${refLabel(S.cur)}: ${fmtN(lp.y)}`, px - 9, py - 9);
+    }
+    // crosshair
+    if (c.$hoverX != null) {
+      const px = x.getPixelForValue(c.$hoverX);
+      ctx.strokeStyle = 'rgba(221,238,255,.35)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(px, a.top); ctx.lineTo(px, a.bottom); ctx.stroke();
+    }
+    ctx.restore();
+  },
+};
+/** Popisek roku/sezóny: „2026" v kalendářním pohledu, „2026/27" v sezónním. */
+function refLabel(ref) { return VIEW === 'cal' ? String(ref) : `${ref}/${String((ref + 1) % 100).padStart(2, '0')}`; }
+function getCss(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function rgba(hex, a) { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})`; }
 
-  // Dataset 1: aktuální data (null kde chybí, včetně celého gapu)
-  const ariData = [
-    ...recent.map(h => (h.ari_per_100k != null && h.ari_per_100k > 0) ? h.ari_per_100k : null),
-    ...tail.map(() => null)
-  ];
+function renderChart() {
+  const wrap = el('chart-wrap');
+  if (typeof Chart === 'undefined') {
+    wrap.replaceChildren(h('div', { class: 'chart-fallback' }, 'Graf se nepodařilo načíst (knihovna Chart.js není dostupná). Data jsou v tabulkách níže.'));
+    return;
+  }
+  const S = buildSeries();
+  const cThis = getCss('--s-this'), cLast = getCss('--s-last'), cCtx = getCss('--s-ctx');
+  const showOlder = el('show-older').checked;
+  const maxX = Math.max(VIEW === 'cal' ? weeksInYear(S.cur) : weeksBetween([S.cur, 27], [S.cur + 1, 27]), ...S.fcPts.map(p => p.x));
+  const ds = [];
+  // běžné rozmezí (kontext)
+  ds.push({ label: '_rlo', data: S.range.map(p => ({ x: p.x, y: p.lo })), borderWidth: 0, pointRadius: 0, fill: false, order: 9 });
+  ds.push({ label: '_rhi', data: S.range.map(p => ({ x: p.x, y: p.hi })), borderWidth: 0, pointRadius: 0,
+    backgroundColor: rgba(cCtx, .09), fill: '-1', order: 9 });
+  if (showOlder) for (const o of S.older) ds.push({ label: `_old${o.ref}`, data: o.pts, borderColor: rgba(cCtx, .28), borderWidth: 1, pointRadius: 0, spanGaps: false, order: 8 });
+  // předpověď: pásy 80 % a 50 % + medián (most od posledního bodu)
+  const bridge = S.lastX != null ? [{ x: S.lastX, y: S.thisYear[S.thisYear.length - 1]?.y }] : [];
+  const fq = k => [...bridge, ...S.fcPts.map(p => ({ x: p.x, y: p.f[k] }))];
+  ds.push({ label: '_q10', data: fq('q10'), borderWidth: 0, pointRadius: 0, fill: false, order: 5 });
+  ds.push({ label: '_q90', data: fq('q90'), borderWidth: 0, pointRadius: 0, backgroundColor: rgba(cThis, .12), fill: '-1', order: 5 });
+  ds.push({ label: '_q25', data: fq('q25'), borderWidth: 0, pointRadius: 0, fill: false, order: 4 });
+  ds.push({ label: '_q75', data: fq('q75'), borderWidth: 0, pointRadius: 0, backgroundColor: rgba(cThis, .22), fill: '-1', order: 4 });
+  ds.push({ label: 'Předpověď', data: fq('median'), borderColor: cThis, borderWidth: 2, borderDash: [6, 4], pointRadius: 0, order: 2 });
+  // loňský rok a letošek
+  ds.push({ label: refLabel(S.cur - 1), data: S.lastYear, borderColor: cLast, borderWidth: 1.5, pointRadius: 0, order: 3, spanGaps: false });
+  ds.push({ label: refLabel(S.cur), data: S.thisYear, borderColor: cThis, borderWidth: 2.5, pointRadius: 0, order: 1, spanGaps: false });
 
-  // Dataset 2: forecast – bridge na poslední reálnou hodnotu jen když na ni
-  // přímo navazuje (tj. žádný gap). Při existující mezeře se nekreslí přes prázdno.
-  const lastValidIdx = [...ariData].reverse().findIndex(v => v !== null);
-  const lastValidPos = lastValidIdx >= 0 ? ariData.length - 1 - lastValidIdx : -1;
-  const fcData = Array(totalLen).fill(null);
-  if (lastValidPos >= 0 && gap.length === 0) fcData[lastValidPos] = ariData[lastValidPos];
-  forecast.forEach((f, i) => { fcData[recent.length + gap.length + i] = f.ari_forecast; });
-
-  // Dataset 3: srovnání s loňskem – pro reálná data i pro gap týdny
-  const priorData = [
-    ...recent.map(h => byYearWeek[`${h.year - 1}-${h.iso_week}`]),
-    ...gap.map(g => byYearWeek[`${g.year - 1}-${g.iso_week}`]),
-    ...forecast.map(() => null)
-  ].map(v => (v != null && v > 0) ? v : null);
-
-  if (chartInstance) chartInstance.destroy();
-
-  chartInstance = new Chart(ctx, {
+  const yMax = Math.max(1600, ...S.lastYear.map(p => p.y), ...S.thisYear.map(p => p.y), ...S.fcPts.map(p => p.f.q90),
+    ...(showOlder ? S.older.flatMap(o => o.pts.map(p => p.y)) : S.range.map(p => p.hi)));
+  if (chart) chart.destroy();
+  const canvas = el('ari-chart');
+  chart = new Chart(canvas.getContext('2d'), {
     type: 'line',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'Stejné období loni (srovnání)',
-          data: priorData,
-          borderColor: 'rgba(139,167,199,.35)',
-          backgroundColor: 'rgba(139,167,199,.04)',
-          fill: false,
-          tension: 0.35,
-          pointRadius: 0,
-          borderWidth: 1.5,
-          borderDash: [4, 3],
-          spanGaps: true,
-          order: 3,
-        },
-        {
-          label: 'ARI / 100k (aktuální sezóna)',
-          data: ariData,
-          borderColor: '#00c9a7',
-          backgroundColor: 'rgba(0,201,167,.07)',
-          fill: true,
-          tension: 0.35,
-          pointRadius: (ctx) => {
-            // Zvýrazni body kde chybí okolní data (mezery)
-            const i = ctx.dataIndex, d = ctx.dataset.data;
-            return (d[i] !== null) ? 2 : 0;
-          },
-          pointHoverRadius: 6,
-          borderWidth: 2.5,
-          spanGaps: false,
-          order: 1,
-        },
-        {
-          label: 'Forecast (příštích 4T)',
-          data: fcData,
-          borderColor: '#f5a623',
-          borderDash: [6, 4],
-          backgroundColor: 'rgba(245,166,35,.06)',
-          fill: false,
-          tension: 0.35,
-          pointRadius: 3,
-          pointHoverRadius: 6,
-          borderWidth: 2,
-          spanGaps: false,
-          order: 2,
-        },
-        {
-          label: 'Baseline – max únor 2025',
-          data: Array(totalLen).fill(BASELINE),
-          borderColor: 'rgba(232,69,96,.25)',
-          borderDash: [10, 5],
-          fill: false,
-          pointRadius: 0,
-          borderWidth: 1,
-          order: 4,
-        }
-      ]
-    },
+    data: { datasets: ds },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: {
-          labels: {
-            color: '#8ba7c7',
-            font: { family: "'IBM Plex Mono'", size: 11 },
-            boxWidth: 16, padding: 20,
-            filter: item => item.text !== 'Baseline – max únor 2025' || true
-          }
-        },
-        tooltip: {
-          backgroundColor: '#0d1f35',
-          borderColor: '#1e3555',
-          borderWidth: 1,
-          titleColor: '#ddeeff',
-          bodyColor: '#8ba7c7',
-          titleFont: { family: "'IBM Plex Mono'", size: 12 },
-          bodyFont:  { family: "'IBM Plex Mono'", size: 11 },
-          padding: 12,
-          callbacks: {
-            label: ctx => {
-              const v = ctx.parsed.y;
-              if (v === null || v === undefined || isNaN(v)) return null;
-              return `  ${ctx.dataset.label}: ${(v ?? 0).toLocaleString('cs-CZ')} / 100k`;
-            }
-          }
-        }
-      },
+      responsive: true, maintainAspectRatio: false, animation: false, parsing: false, normalized: true,
+      interaction: { mode: 'nearest', intersect: false },
+      elements: { line: { cubicInterpolationMode: 'monotone', borderJoinStyle: 'round', borderCapStyle: 'round' } },
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
       scales: {
         x: {
-          ticks: {
-            color: '#8ba7c7',
-            maxRotation: 45,
-            font: { family: "'IBM Plex Mono'", size: 10 },
-            maxTicksLimit: 26,
-            // Zobraz jen každý 4. label (každý měsíc cca)
-            callback: (val, idx) => idx % 4 === 0 ? val : ''
+          type: 'linear', min: 1, max: maxX,
+          grid: { color: '#1a2f4b', drawTicks: false }, border: { color: '#1e3555' },
+          afterBuildTicks: sc => {
+            const t = [];
+            for (let v = 1; v <= maxX; v += 4) t.push({ value: v });
+            sc.ticks = t;
           },
-          grid: { color: 'rgba(30,53,85,.4)' },
+          ticks: {
+            color: '#8ba7c7', font: { family: "'IBM Plex Mono'", size: 10 }, maxRotation: 0, autoSkip: false, padding: 6,
+            callback: v => { const [yy, ww] = weekAt(v, S.cur); return [`W${String(ww).padStart(2, '0')}`, fmtDM(isoMonday(yy, ww))]; },
+          },
         },
         y: {
-          min: 0,
-          ticks: {
-            color: '#8ba7c7',
-            font: { family: "'IBM Plex Mono'", size: 10 },
-            callback: v => v.toLocaleString('cs-CZ')
-          },
-          grid: { color: 'rgba(30,53,85,.4)' },
-          title: { display: true, text: 'ARI / 100 000 obyvatel', color: '#8ba7c7', font: { size: 11 } }
-        }
-      }
-    }
+          min: 0, max: Math.ceil(yMax / 500) * 500,
+          grid: { color: '#1a2f4b' }, border: { display: false },
+          ticks: { color: '#8ba7c7', font: { family: "'IBM Plex Mono'", size: 10 }, stepSize: 500, callback: v => fmtN(v) },
+          title: { display: true, text: 'ARI na 100 000 obyvatel', color: '#8ba7c7', font: { size: 11 } },
+        },
+      },
+    },
+    plugins: [thresholdPlugin, markerPlugin],
   });
+  chart.$S = S;
+  canvas.setAttribute('aria-label', `Graf nemocnosti ARI podle týdne: ${VIEW === 'cal' ? 'rok' : 'sezóna'} ${refLabel(S.cur)} do ${weekLabel(STATE.last.y, STATE.last.w)} = ${fmtN(STATE.last.v)}/100k, ${refLabel(S.cur - 1)} pro srovnání, předpověď na 8 týdnů. Hodnoty jsou také v tabulkách.`);
+  bindTooltip(canvas, S);
+  renderLegend(S);
 }
 
-/* ────────────────────────────────────────────────────────────
-   BOOTSTRAP
-──────────────────────────────────────────────────────────── */
-loadData().then(data => {
-  if (!data) {
-    document.getElementById('alert-title').textContent = 'Chyba při načítání dat';
-    document.getElementById('alert-desc').textContent  = 'Nepodařilo se načíst data/ari_data.json';
-    return;
+function renderLegend(S) {
+  const cThis = getCss('--s-this'), cLast = getCss('--s-last'), cCtx = getCss('--s-ctx');
+  const firstOld = S.older[0]?.ref, lastOld = S.older[S.older.length - 1]?.ref;
+  el('legend').replaceChildren(
+    h('span', {}, h('i', { class: 'key-line', style: `border-color:${cThis};border-top-width:3px` }), `${refLabel(S.cur)} (letos)`),
+    h('span', {}, h('i', { class: 'key-line dash', style: `border-color:${cThis}` }), 'předpověď'),
+    h('span', {}, h('i', { class: 'key-band', style: `background:${rgba(cThis, .22)}` }), '50% interval'),
+    h('span', {}, h('i', { class: 'key-band', style: `background:${rgba(cThis, .12)}` }), '80% interval'),
+    h('span', {}, h('i', { class: 'key-line', style: `border-color:${cLast}` }), `${refLabel(S.cur - 1)} (loni)`),
+    h('span', {}, h('i', { class: 'key-band', style: `background:${rgba(cCtx, .18)}` }),
+      firstOld ? `běžné rozmezí ${refLabel(firstOld)}–${refLabel(lastOld)} (10.–90. percentil, bez covidu)` : 'běžné rozmezí'),
+  );
+}
+
+function bindTooltip(canvas, S) {
+  const tip = el('tooltip');
+  const lookup = arr => new Map(arr.map(p => [p.x, p]));
+  const mThis = lookup(S.thisYear), mLast = lookup(S.lastYear), mFc = lookup(S.fcPts), mRange = lookup(S.range);
+  const cThis = getCss('--s-this'), cLast = getCss('--s-last'), cCtx = getCss('--s-ctx');
+  const row = (color, dash, val, label) => h('div', { class: 'tt-r' },
+    h('i', { class: 'key-line' + (dash ? ' dash' : ''), style: `border-color:${color};width:14px` }), h('b', {}, val), h('small', {}, label));
+  function show(evt) {
+    const r = canvas.getBoundingClientRect();
+    const xVal = chart.scales.x.getValueForPixel(evt.clientX - r.left);
+    const x = Math.round(xVal);
+    if (x < chart.scales.x.min || x > chart.scales.x.max) return hide();
+    chart.$hoverX = x; chart.draw();
+    const [yy, ww] = weekAt(x, S.cur);
+    const kids = [h('div', { class: 'tt-h' }, `Týden ${ww} · po ${fmtDMY(isoMonday(yy, ww))}`)];
+    const t = mThis.get(x), f = mFc.get(x), l = mLast.get(x), rg = mRange.get(x);
+    if (t) kids.push(row(cThis, false, fmtN(t.y), `${refLabel(S.cur)}${t.r.source === 'interpolated' ? ' (dopočteno)' : ''}`));
+    if (f) {
+      kids.push(row(cThis, true, fmtN(f.f.median), 'předpověď'));
+      kids.push(h('div', { class: 'tt-r' }, h('small', {}, `50 %: ${fmtN(f.f.q25)}–${fmtN(f.f.q75)} · 80 %: ${fmtN(f.f.q10)}–${fmtN(f.f.q90)}`)));
+    }
+    if (l) kids.push(row(cLast, false, fmtN(l.y), `${refLabel(S.cur - 1)} (po ${fmtDMY(isoMonday(l.r.y, l.r.w))})`));
+    if (rg) kids.push(row(cCtx, false, `${fmtN(rg.lo)}–${fmtN(rg.hi)}`, 'běžné rozmezí'));
+    tip.replaceChildren(...kids);
+    const px = chart.scales.x.getPixelForValue(x);
+    const left = px + 14 + tip.offsetWidth > r.width ? px - tip.offsetWidth - 14 : px + 14;
+    tip.style.left = Math.max(0, left) + 'px'; tip.style.top = '12px'; tip.style.opacity = 1;
   }
-  renderDashboard(data);
+  function hide() { tip.style.opacity = 0; if (chart) { chart.$hoverX = null; chart.draw(); } }
+  canvas.onmousemove = show; canvas.onmouseleave = hide;
+  canvas.ontouchstart = e => show(e.touches[0]); canvas.ontouchmove = e => show(e.touches[0]);
+}
+
+/* ── ovládání grafu ── */
+function setView(v) {
+  VIEW = v;
+  el('view-cal').setAttribute('aria-pressed', String(v === 'cal'));
+  el('view-season').setAttribute('aria-pressed', String(v === 'season'));
+  if (STATE) renderChart();
+}
+el('view-cal').addEventListener('click', () => setView('cal'));
+el('view-season').addEventListener('click', () => setView('season'));
+el('show-older').addEventListener('change', () => STATE && renderChart());
+let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => STATE && renderChart(), 150); });
+
+/* ══════════════════════════════════════════════════════════════════════
+   START
+══════════════════════════════════════════════════════════════════════ */
+loadData().then(d => {
+  // v prosinci/lednu je přehlednější sezónní pohled (předpověď přes přelom roku)
+  const lw = d.current?.week ? +d.current.week.split('-W')[1] : 0;
+  if (lw >= 48 || lw <= 8) setView('season');
+  render(d);
 }).catch(e => {
   console.error(e);
-  document.getElementById('alert-title').textContent = 'Chyba: ' + e.message;
+  el('alert-banner').className = 'red';
+  setText('alert-icon', '⚠️');
+  setText('alert-title', 'Data se nepodařilo načíst');
+  setText('alert-desc', 'Soubor data/ari_data.json není dostupný. Zkuste stránku obnovit; pokud chyba přetrvává, zkontrolujte běh aktualizace v GitHub Actions.');
 });
 </script>
-
 </body>
 </html>
