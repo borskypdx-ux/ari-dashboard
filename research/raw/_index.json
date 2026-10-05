@@ -1,0 +1,481 @@
+[
+ {
+  "url": "https://apps.szu.cz/ari/ARO.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 6451,
+  "file": "apps.szu.cz_ari_ARO.html"
+ },
+ {
+  "url": "https://apps.szu.cz/ari/",
+  "status": 403,
+  "ctype": "text/html; charset=iso-8859-1",
+  "bytes": 206
+ },
+ {
+  "url": "https://apps.szu.cz/ari/index.html",
+  "status": 501,
+  "ctype": "text/html",
+  "bytes": 75
+ },
+ {
+  "url": "https://apps.szu.cz/ari/ILI.html",
+  "status": 501,
+  "ctype": "text/html",
+  "bytes": 75
+ },
+ {
+  "url": "https://apps.szu.cz/ari/ARI.html",
+  "status": 501,
+  "ctype": "text/html",
+  "bytes": 75
+ },
+ {
+  "url": "https://apps.szu.cz/",
+  "status": 501,
+  "ctype": "text/html",
+  "bytes": 75
+ },
+ {
+  "url": "https://apps.szu.cz/ari/MapaKraje82022ARI.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 553,
+  "file": "apps.szu.cz_ari_MapaKraje82022ARI.html"
+ },
+ {
+  "url": "https://apps.szu.cz/ari/GrafS82022ARI.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 691,
+  "file": "apps.szu.cz_ari_GrafS82022ARI.html"
+ },
+ {
+  "url": "https://apps.szu.cz/ari/Graf582022ARI.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 652,
+  "file": "apps.szu.cz_ari_Graf582022ARI.html"
+ },
+ {
+  "url": "https://apps.szu.cz/ari/MapaKraje82022ILI.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 553,
+  "file": "apps.szu.cz_ari_MapaKraje82022ILI.html"
+ },
+ {
+  "url": "https://apps.szu.cz/ari/GrafS82022ILI.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 659,
+  "file": "apps.szu.cz_ari_GrafS82022ILI.html"
+ },
+ {
+  "url": "https://apps.szu.cz/ari/Graf582022ILI.html",
+  "status": 200,
+  "ctype": "text/html",
+  "bytes": 632,
+  "file": "apps.szu.cz_ari_Graf582022ILI.html"
+ },
+ {
+  "url": "https://szu.gov.cz/publikace-szu/data/akutni-respiracni-infekce-chripka/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 109063,
+  "file": "szu.gov.cz_publikace-szu_data_akutni-respiracni-infekce-chripka"
+ },
+ {
+  "url": "https://szu.gov.cz/en/publications-data/incidence-of-acute-respiratory-infections-and-influenza-in-the-czech-republic/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 96826,
+  "file": "szu.gov.cz_en_publications-data_incidence-of-acute-respiratory-infections-and-influenza-in-the-czech-republic"
+ },
+ {
+  "url": "https://szu.gov.cz/zpravy-chripka-sars-cov-2-ari-ili/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 72883,
+  "file": "szu.gov.cz_zpravy-chripka-sars-cov-2-ari-ili"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 121060,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 89763,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/chripka-sezona-2008-2009/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 76026,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_chripka-sezona-2008-2009"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/ockovani-proti-chripce-sezona-2022-2023-the-flu-vaccination-2022-2023-season/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 82527,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_ockovani-proti-chripce-sezona-2022-2023-the-flu-vaccination-2022-2023-season"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2007-2008/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 77748,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2007-2008"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2008-2009/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 85040,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2008-2009"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2009-2010/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 121774,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2009-2010"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2010-2011/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 116539,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2010-2011"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2011-2012/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 89051,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2011-2012"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2012-2013/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 86262,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2012-2013"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2013-2014/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 94064,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2013-2014"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2014-2015/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 93976,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2014-2015"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2015-2016/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 93616,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2015-2016"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2016-2017/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 93811,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2016-2017"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2017-2018/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 93448,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2017-2018"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2018-2019/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 93610,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2018-2019"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2019-2020/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 92727,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2019-2020"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2020-2021/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 95843,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2020-2021"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2021-2022/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 95808,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2021-2022"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2022-2023/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 82933,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2022-2023"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2023-2024/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 106950,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2023-2024"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2024-2025/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 104682,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_chripkova-sezona-2024-2025"
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/chripkova-sezona-2025-2026/",
+  "status": 404,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 68621
+ },
+ {
+  "url": "https://szu.gov.cz/temata-zdravi-a-bezpecnosti/a-z-infekce/ch/chripka/zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni/vyskyt-akutnich-respiracnich-infekci-a-chripky-v-cr-sezona-2022-2023/",
+  "status": 200,
+  "ctype": "text/html; charset=UTF-8",
+  "bytes": 95295,
+  "file": "szu.gov.cz_temata-zdravi-a-bezpecnosti_a-z-infekce_ch_chripka_zprava-o-chripkove-aktivite-hlaseni-a-vysledky-laboratornich-vysetreni_vyskyt-akutnich-respiracnich-infekci-a-chripky-"
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2012.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 87607
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2012.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 70218
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2013.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 29537
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2013.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 223606
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2014.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 53146
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2014.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 41079
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2016-1.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 50807
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2016-1.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 148893
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2016.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 50807
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2016.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 148893
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2018-1.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 125525
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2018-1.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 47409
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2018.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 125525
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2018.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 47409
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2019.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 63775
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2019.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 93287
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2020.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 418292
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2020.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 104906
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2021-2.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 682551
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2021-2.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 512091
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_01tyden_2022.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 350056
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_02tyden_2022.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 350339
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_42tyden_2022.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 330502
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/04/Zprava_NRL_43tyden_2022.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 331308
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2024/10/39_tyden.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 431489
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2024/10/laboratorni_vysetreni_podle_typu_viru_39tyden_2024.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 71257
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2025/10/39_tyden.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 462627
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2025/09/laboratorni_vysetreni_podle_typu_viru_39tyden_2025.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 77678
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/10/39_tyden.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 413952
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/10/laboratorni_vysetreni_podle_typu_viru_39tyden_2023.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 79022
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2026/09/39_tyden.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 1156479
+ },
+ {
+  "url": "https://szu.gov.cz/wp-content/uploads/2023/10/40_tyden.pdf",
+  "status": 200,
+  "ctype": "application/pdf",
+  "bytes": 420378
+ },
+ {
+  "url": "https://xmart-api-public.who.int/FLUMART/VIW_FID_EPI?$format=csv&$filter=COUNTRY_CODE%20eq%20%27CZE%27",
+  "status": 200,
+  "ctype": "text/csv; charset=utf-8",
+  "bytes": 699021,
+  "file": "xmart-api-public.who.int_FLUMART_VIW_FID_EPI__format_csv_filter_COUNTRY_CODE_20eq_20_27CZE_27"
+ },
+ {
+  "url": "https://xmart-api-public.who.int/FLUMART/VIW_FID?$format=csv&$filter=COUNTRY_CODE%20eq%20%27CZE%27",
+  "status": 403,
+  "ctype": "text/csv; charset=utf-8",
+  "bytes": 23
+ },
+ {
+  "url": "https://xmart-api-public.who.int/FLUMART/VIW_FNT?$format=csv&$filter=COUNTRY_CODE%20eq%20%27CZE%27",
+  "status": 200,
+  "ctype": "text/csv; charset=utf-8",
+  "bytes": 240998,
+  "file": "xmart-api-public.who.int_FLUMART_VIW_FNT__format_csv_filter_COUNTRY_CODE_20eq_20_27CZE_27"
+ }
+]
