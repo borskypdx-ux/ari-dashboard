@@ -142,7 +142,7 @@ Doporučení vychází ze čtyř vstupů:
 **Ochranná pravidla (asymetrie):**
 - Navyšuje se hned, **snižuje se jen při potvrzeném poklesu** a jen na jaře, v zimě po vrcholu nebo v létě do W32 – nikdy na podzim, v zimě před vrcholem ani ve svátkovém týdnu.
 - I při potvrzeném poklesu se stupeň snižuje **nejvýše o jeden za týden** a % kapacity nejvýše o polovinu rozdílu proti minulému týdnu.
-- Bez potvrzeného poklesu se stupeň ani % **nesníží pod doporučení předchozího týdne**. Dashboard k tomu z předpovědí uložených za posledních 8 týdnů (`forecast_past`) dopočítá tehdejší doporučení a drží nejvyšší z nich, dokud pokles nepotvrdí data. Simulace všech týdnů 2024-W20 – 2026-W39 (data k danému týdnu, předpověď z tehdy dostupných dat, zobrazeno o 2 týdny později) nenašla jediný týden, kdy by doporučení kleslo při rostoucí nemocnosti nebo předpovědi.
+- Bez potvrzeného poklesu se stupeň ani % **nesníží pod doporučení předchozího týdne**. Dashboard k tomu z předpovědí uložených za posledních 8 týdnů (`forecast_past`) dopočítá tehdejší doporučení a drží nejvyšší z nich, dokud pokles nepotvrdí data. Protože SZÚ vydává report s proměnlivým zpožděním (1–2 týdny), počítá se každé tehdejší doporučení pro obě zpoždění a bere se vyšší – kratší zpoždění nového reportu tak doporučení nesníží. Simulace všech týdnů 2024-W20 – 2026-W39 (data k danému týdnu, předpověď z tehdy dostupných dat, zobrazeno o 1, o 2 nebo střídavě o 1 a 2 týdny později) nenašla jediný týden, kdy by doporučení kleslo při rostoucí nemocnosti nebo předpovědi.
 - Na podzim je minimum stupeň „připravenost".
 - **Zkrácení akutního času se nikdy nedoporučí, když nemocnost nebo předpověď roste.**
 
