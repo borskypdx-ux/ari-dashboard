@@ -653,8 +653,15 @@ function render(data) {
     const [py, pw] = p.origin.split('-W').map(Number);
     const n = hist.findIndex(r => r.y === py && r.w === pw);
     if (n < 8) continue;
-    const back = weeksBetween([py, pw], [last.y, last.w]);
-    G = guard(assess(hist.slice(0, n + 1), toFc(p.forecast), addWeeks(now[0], now[1], -back)), G);
+    // tehdejší doporučení se zobrazovalo 1–2 týdny po týdnu dat (podle toho, kdy SZÚ
+    // vydal další report) → bere se vyšší z obou, aby se při zkrácení zpoždění nesnížilo
+    const hp = hist.slice(0, n + 1), fp = toFc(p.forecast);
+    const [a1, a2] = [1, 2].map(k => assess(hp, fp, addWeeks(py, pw, k)));
+    const hi = a2.dec.L > a1.dec.L || (a2.dec.L === a1.dec.L && a2.capHi >= a1.capHi) ? a2 : a1;
+    hi.dec.L = Math.max(a1.dec.L, a2.dec.L);
+    hi.capLo = Math.max(a1.capLo, a2.capLo); hi.capHi = Math.max(a1.capHi, a2.capHi);
+    hi.dec.reduceOk = a1.dec.reduceOk && a2.dec.reduceOk;
+    G = guard(hi, G);
   }
   const A = guard(assess(hist, fc, now), G);
   // „klidné období“ jen při základní kapacitě; jinak ještě doznívá (drží se do potvrzeného poklesu)
